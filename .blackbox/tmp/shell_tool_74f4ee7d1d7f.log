@@ -1,0 +1,4 @@
+2026/03/14 16:22:05 Templates loaded successfully
+2026/03/14 16:22:05 Server started at http://localhost:8080
+2026/03/14 16:22:13 Error executing template: page=about.html, error=template: about.html:6:14: executing "about.html" at <.Tr>: Tr is not a method but has arguments
+signal: killed

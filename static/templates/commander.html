@@ -1,0 +1,67 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>File Commander - IT Tools</title>
+  <link rel="stylesheet" href="/static/css/style.css">
+  <style>
+    .dual-pane { display: flex; height: 80vh; gap: 1px; background: #333; }
+    .pane { flex: 1; background: #1a1a1a; color: #0f0; padding: 10px; font-family: monospace; }
+    .path-bar { background: #222; padding: 5px; color: #fff; }
+    .file-tree { white-space: pre; line-height: 1.4; }
+    .selected { background: #444; }
+  </style>
+</head>
+<body>
+  <div class="tabs">
+    <a href="/" class="tab active">IT Tools</a>
+  </div>
+  <main class="main">
+    <div class="container">
+      <h1>🗂️ File Commander</h1>
+      <p>Dual-pane file manager (frontend demo with virtual FS)</p>
+      <div class="dual-pane">
+        <div class="pane">
+          <div class="path-bar" id="left-path">/home/user</div>
+          <div class="file-tree" id="left-tree">
+dir1/
+  file1.txt
+  subdir/
+docs/
+  readme.md
+image.png
+          </div>
+        </div>
+        <div class="pane">
+          <div class="path-bar" id="right-path">/tmp</div>
+          <div class="file-tree" id="right-tree">
+temp.txt
+backup.zip
+          </div>
+        </div>
+      </div>
+      <div style="margin-top: 10px;">
+        <button onclick="copySelected()">Copy</button>
+        <button onclick="moveSelected()">Move</button>
+        <button onclick="deleteSelected()">Delete</button>
+      </div>
+    </div>
+  </main>
+  <script>
+    // Mock file manager logic
+    let selectedLeft = '', selectedRight = '';
+    document.addEventListener('click', (e) => {
+      if (e.target.classList.contains('file-tree')) {
+        const pane = e.target.closest('.pane');
+        const path = pane.querySelector('.path-bar');
+        path.textContent = e.target.textContent.trim() || path.textContent;
+      }
+    });
+    function copySelected() { alert('Copy left → right (mock)'); }
+    function moveSelected() { alert('Move left → right (mock)'); }
+    function deleteSelected() { alert('Delete selected (mock)'); }
+  </script>
+</body>
+</html>
+

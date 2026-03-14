@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+<html lang="{{ .Lang }}">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>{{ tr "app.title" }} - {{ tr "tools.kill-port" }}</title>
+    <link rel="stylesheet" href="/static/css/style.css">
+</head>
+<body>
+    <div class="tabs">
+        <a href="/?lang={{ .Lang }}" class="tab {{ if eq .CurrentRoute "/" }}active{{ end }}">{{ tr "nav.it-tools" }}</a>
+    </div>
+
+    <main class="main">
+        <div class="container">
+            <h1>Kill Port Tool</h1>
+            <p>Encuentra y mata procesos ocupando un puerto específico.</p>
+            
+            <div class="tool-section">
+                <label for="port">Puerto:</label>
+                <input type="number" id="port" placeholder="8080" min="1" max="65535">
+                <button onclick="killPort()">Kill Port</button>
+            </div>
+            
+            <div id="result"></div>
+        </div>
+    </main>
+
+    <script>
+        async function killPort() {
+            const port = document.getElementById('port').value;
+            if (!port) return;
+            
+            const result = document.getElementById('result');
+            result.innerHTML = '<pre>Comandos para matar puerto ' + port + ':</pre>';
+            
+            result.innerHTML += '<h3>macOS:</h3><pre>lsof -ti:' + port + ' | xargs kill -9</pre>';
+            result.innerHTML += '<h3>Linux:</h3><pre>sudo fuser -k ' + port + '/tcp</pre>';
+            result.innerHTML += '<h3>Alternativa Linux:</h3><pre>sudo lsof -ti:' + port + ' | xargs sudo kill -9</pre>';
+            result.innerHTML += '<h3>Windows:</h3><pre>netstat -ano | findstr :' + port + '\n taskkill /PID <PID> /F</pre>';
+        }
+    </script>
+</body>
+</html>

@@ -1,0 +1,6 @@
+# it-tools/internal/infrastructure/repositories
+internal/infrastructure/repositories/tool_repository.go:18:37: undefined: Tool
+internal/infrastructure/repositories/tool_repository.go:19:11: undefined: Tool
+# it-tools/internal/application/usecases
+internal/application/usecases/tool_usecase.go:20:40: undefined: Tool
+internal/application/usecases/tool_usecase.go:25:49: undefined: Tool
