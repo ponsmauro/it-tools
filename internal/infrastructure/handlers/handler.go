@@ -2,6 +2,7 @@ package handlers
 
 import (
 	"bytes"
+	"encoding/json"
 	"fmt"
 	"html/template"
 	"log"
@@ -10,7 +11,6 @@ import (
 	"it-tools/internal/application/usecases"
 	"it-tools/internal/config"
 	"it-tools/internal/infrastructure/templates"
-	toolregistry "it-tools/internal/tool_registry"
 )
 
 // Handler contains all HTTP handlers
@@ -59,13 +59,37 @@ func (h *Handler) ToolHandler(w http.ResponseWriter, r *http.Request) {
 
 // handleToolPost handles POST /tools/{id} dynamic content
 func (h *Handler) handleToolPost(w http.ResponseWriter, r *http.Request, toolID string) {
-	handler := toolregistry.GetHandler(toolID)
-	if handler == nil {
-		log.Printf("No handler for tool: %s", toolID)
-		http.NotFound(w, r)
+	var req struct {
+		Action string `json:"action"`
+	}
+	if err := json.NewDecoder(r.Body).Decode(&req); err != nil {
+		log.Printf("JSON decode error: tool=%s error=%v", toolID, err)
+		http.Error(w, "Invalid JSON", http.StatusBadRequest)
 		return
 	}
-	handler(w, r)
+
+	if req.Action != "open" {
+		http.Error(w, "Action must be 'open'", http.StatusBadRequest)
+		return
+	}
+
+	templateName := toolID + ".html"
+	lang := h.getLanguage(r)
+	data := h.buildPageData(toolID+" - IT Tools", lang, "/tools/"+toolID)
+
+	var buf bytes.Buffer
+	err := h.templates.ExecuteTemplate(&buf, templateName, data)
+	if err != nil {
+		log.Printf("Error executing tool template: tool=%s, template=%s, error=%v", toolID, templateName, err)
+		http.Error(w, fmt.Sprintf("Template not found for tool: %s", toolID), http.StatusNotFound)
+		return
+	}
+
+	w.Header().Set("Content-Type", "text/html; charset=utf-8")
+	_, err = buf.WriteTo(w)
+	if err != nil {
+		log.Printf("Error writing tool response: tool=%s, error=%v", toolID, err)
+	}
 }
 
 // servePage is a reusable method to serve any page
