@@ -46,8 +46,12 @@ func main() {
 	http.HandleFunc("/about", handler.AboutHandler)
 	http.HandleFunc("/tools/", handler.ToolHandler)
 
+	// Initialize kill-port tool
+	killport.Init()
+
 	// Start server
 	port := config.DefaultPort
 	log.Printf("Server started at http://localhost:%d", port)
 	log.Fatal(http.ListenAndServe(fmt.Sprintf(":%d", port), nil))
+
 }

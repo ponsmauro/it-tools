@@ -39,7 +39,7 @@ func (h *Handler) AboutHandler(w http.ResponseWriter, r *http.Request) {
 	h.servePage(w, r, config.AboutTemplate, "About - IT Tools", config.RouteAbout)
 }
 
-// ToolHandler serves individual tools (GET = redirect, POST = dynamic tab)
+// ToolHandler serves individual tools GET + POST tab
 func (h *Handler) ToolHandler(w http.ResponseWriter, r *http.Request) {
 	toolID := r.URL.Path[len("/tools/"):]
 	if toolID == "" {
@@ -52,8 +52,20 @@ func (h *Handler) ToolHandler(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 
-	// GET: redirect to home or serve static
-	http.Redirect(w, r, "/", http.StatusSeeOther)
+	// Legacy GET: serve static HTML
+	templateName := toolID + ".html"
+	h.servePage(w, r, templateName, toolID+" - IT Tools", "/tools/"+toolID)
+}
+
+// handleToolPost handles POST /tools/{id} dynamic content
+func (h *Handler) handleToolPost(w http.ResponseWriter, r *http.Request, toolID string) {
+	handler := toolregistry.GetHandler(toolID)
+	if handler == nil {
+		log.Printf("No handler for tool: %s", toolID)
+		http.NotFound(w, r)
+		return
+	}
+	handler(w, r)
 }
 
 // servePage is a reusable method to serve any page
@@ -82,16 +94,6 @@ func (h *Handler) getLanguage(r *http.Request) string {
 		return config.DefaultLanguage
 	}
 	return lang
-}
-
-// handleToolPost handles POST /tools/{id}
-func (h *Handler) handleToolPost(w http.ResponseWriter, r *http.Request, toolID string) {
-	handler := toolregistry.GetHandler(toolID)
-	if handler == nil {
-		http.NotFound(w, r)
-		return
-	}
-	handler(w, r)
 }
 
 // executeTemplate executes a template with error handling

@@ -27,6 +27,20 @@ build:
 run: build
 	./bin/server
 
+# Kill process on specific PORT (usage: make kill PORT=3000)
+kill:
+	@if [ -z "$(PORT)" ]; then \
+		echo "Usage: make kill PORT=8080"; \
+		exit 1; \
+	fi; \
+	PIDS=$$(lsof -ti:$(PORT)); \
+	if [ -n "$$PIDS" ]; then \
+		echo "$$PIDS" | xargs kill -9; \
+		echo "Killed PIDs $$PIDS on port $(PORT)"; \
+	else \
+		echo "No process on port $(PORT)"; \
+	fi
+
 # Clean
 clean:
 	rm -f bin/server coverage.out
