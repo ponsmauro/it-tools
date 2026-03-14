@@ -1,0 +1,3 @@
+2026/03/14 15:37:14 Servidor iniciado en http://localhost:8080
+2026/03/14 15:37:14 listen tcp :8080: bind: address already in use
+exit status 1

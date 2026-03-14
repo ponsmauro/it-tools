@@ -1,0 +1,9 @@
+lsof: status error on |: No such file or directory
+lsof: status error on xargs: No such file or directory
+lsof: status error on kill: No such file or directory
+lsof: status error on -9: No such file or directory
+lsof: status error on 2>/dev/null;: No such file or directory
+lsof: status error on sleep: No such file or directory
+lsof: status error on 1;: No such file or directory
+52504
+exit status 1

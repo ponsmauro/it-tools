@@ -1,0 +1,5 @@
+2026/03/14 16:18:49 Templates loaded successfully
+2026/03/14 16:18:49 Server started at http://localhost:8080
+2026/03/14 16:18:58 Serving page: about.html, title: About - IT Tools, lang: en
+2026/03/14 16:18:58 Available templates: [0x7ae5d61adbf0 0x7ae5d6214510 0x7ae5d61ad530 0x7ae5d61ad560 0x7ae5d61adb90 0x7ae5d61adbc0]
+signal: killed

@@ -1,0 +1,5 @@
+2026/03/14 15:51:07 Templates loaded successfully
+2026/03/14 15:51:07 Server started at http://localhost:8080
+2026/03/14 15:51:21 Error executing template layout.html: template: layout.html:6:35: executing "title$htmltemplate_stateRCDATA_elementTitle" at <.Tr>: Tr is not a method but has arguments
+2026/03/14 15:51:21 http: superfluous response.WriteHeader call from it-tools/internal/infrastructure/handlers.(*Handler).executeTemplate (handler.go:66)
+signal: killed

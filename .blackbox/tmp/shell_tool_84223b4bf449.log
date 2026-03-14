@@ -1,0 +1,12 @@
+2026/03/14 16:19:45 Templates loaded successfully
+2026/03/14 16:19:45 Server started at http://localhost:8080
+2026/03/14 16:19:56 Serving page: about.html, title: About - IT Tools, lang: en
+2026/03/14 16:19:56 Executing template: about.html
+2026/03/14 16:19:56 Template output length: 3
+2026/03/14 16:20:23 Serving page: about.html, title: About - IT Tools, lang: en
+2026/03/14 16:20:23 Executing template: about.html
+2026/03/14 16:20:23 Template output length: 3
+2026/03/14 16:20:36 Serving page: about.html, title: About - IT Tools, lang: en
+2026/03/14 16:20:36 Executing template: about.html
+2026/03/14 16:20:36 Template output length: 3
+signal: killed

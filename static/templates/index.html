@@ -1,0 +1,63 @@
+<!DOCTYPE html>
+<html lang="{{ .Lang }}">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>{{ tr "app.title" }} - {{ tr "tools.all" }}</title>
+    <link rel="stylesheet" href="/static/css/style.css">
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            const searchInput = document.getElementById('tool-search');
+            const toolCards = document.querySelectorAll('.tool-card');
+            
+            searchInput.addEventListener('input', function() {
+                const query = searchInput.value.toLowerCase();
+                toolCards.forEach(card => {
+                    const searchText = card.getAttribute('data-search').toLowerCase();
+                    if (searchText.includes(query)) {
+                        card.classList.remove('hidden');
+                    } else {
+                        card.classList.add('hidden');
+                    }
+                });
+            });
+        });
+    </script>
+</head>
+<body>
+    <div class="tabs">
+        <a href="/?lang={{ .Lang }}" class="tab {{ if eq .CurrentRoute "/" }}active{{ end }}">{{ tr "nav.it-tools" }}</a>
+
+
+    </div>
+
+    <main class="main">
+        <div class="container">
+<section class="tools-section">
+                <input type="text" id="tool-search" placeholder="Search tools..." class="search-input">
+                <div class="tools-grid" id="tools-grid">
+                    {{ range .Tools }}
+                    <a href="{{ .URL }}" class="tool-card" data-search="{{ .Name }} {{ .Description }} {{ .Category }}">
+                        <div class="tool-info">
+                            <h4>{{ .Name }}</h4>
+                            <p>{{ .Description }}</p>
+                            <span class="tool-category">{{ .Category }}</span>
+                        </div>
+                    </a>
+                    {{ end }}
+                </div>
+            </section>
+        </div>
+    </main>
+    
+    <footer class="footer">
+        <div class="container-full">
+            <div class="container">
+                <p><strong>Our Mission:</strong> IT Tools is a collection of online tools designed to facilitate the daily work of developers.</p>
+                <p>Made by mpons</p>
+            </div>
+        </div>
+    </footer>
+</body>
+
+</html>
