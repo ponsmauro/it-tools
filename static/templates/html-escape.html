@@ -1,0 +1,170 @@
+<div class="tool-content html-escape-tool">
+    <h2>HTML Escape / Unescape</h2>
+    <p>Convert plain text to HTML entities and decode entities back to plain text.</p>
+
+    <div class="tool-grid">
+        <div class="panel">
+            <label for="html-escape-input">Input</label>
+            <textarea id="html-escape-input" class="tool-textarea" placeholder="Type or paste text here..."></textarea>
+        </div>
+
+        <div class="panel actions">
+            <button type="button" id="btn-escape">Escape</button>
+            <button type="button" id="btn-unescape">Unescape</button>
+            <button type="button" id="btn-clear">Clear</button>
+            <button type="button" id="btn-copy">Copy Output</button>
+        </div>
+
+        <div class="panel">
+            <label for="html-escape-output">Output</label>
+            <textarea id="html-escape-output" class="tool-textarea" placeholder="Result will appear here..." readonly></textarea>
+        </div>
+    </div>
+
+    <div id="html-escape-status" class="status" aria-live="polite"></div>
+</div>
+
+<style>
+    .html-escape-tool {
+        width: 100%;
+        max-width: 100%;
+    }
+
+    .html-escape-tool h2 {
+        margin-bottom: 8px;
+    }
+
+    .html-escape-tool p {
+        margin-bottom: 16px;
+        color: #475569;
+    }
+
+    .tool-grid {
+        display: grid;
+        gap: 12px;
+    }
+
+    .panel {
+        display: flex;
+        flex-direction: column;
+        gap: 8px;
+    }
+
+    .panel.actions {
+        display: flex;
+        flex-wrap: wrap;
+        flex-direction: row;
+        gap: 8px;
+    }
+
+    .panel.actions button {
+        border: 1px solid #cbd5e1;
+        border-radius: 8px;
+        background: #ffffff;
+        color: #0f172a;
+        padding: 10px 14px;
+        cursor: pointer;
+    }
+
+    .panel.actions button:hover {
+        background: #f8fafc;
+    }
+
+    .tool-textarea {
+        width: 100%;
+        min-height: 180px;
+        border: 1px solid #cbd5e1;
+        border-radius: 8px;
+        padding: 12px;
+        font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, "Liberation Mono", "Courier New", monospace;
+        font-size: 14px;
+        line-height: 1.4;
+        resize: vertical;
+    }
+
+    .status {
+        margin-top: 8px;
+        min-height: 24px;
+        font-size: 14px;
+        color: #0f766e;
+    }
+
+    .status.error {
+        color: #b91c1c;
+    }
+</style>
+
+<script>
+    (function initHtmlEscapeTool() {
+        const input = document.getElementById('html-escape-input');
+        const output = document.getElementById('html-escape-output');
+        const status = document.getElementById('html-escape-status');
+        const escapeButton = document.getElementById('btn-escape');
+        const unescapeButton = document.getElementById('btn-unescape');
+        const clearButton = document.getElementById('btn-clear');
+        const copyButton = document.getElementById('btn-copy');
+
+        if (!input || !output || !status || !escapeButton || !unescapeButton || !clearButton || !copyButton) {
+            return;
+        }
+
+        const entityMap = {
+            '&': '&amp;',
+            '<': '<',
+            '>': '>',
+            '"': '"',
+            "'": '&#39;'
+        };
+
+        const reverseEntityMap = {
+            '&amp;': '&',
+            '<': '<',
+            '>': '>',
+            '"': '"',
+            '&#39;': "'"
+        };
+
+        function setStatus(message, isError) {
+            status.textContent = message;
+            status.classList.toggle('error', Boolean(isError));
+        }
+
+        function escapeHtml(value) {
+            return value.replace(/[&<>"']/g, function (match) {
+                return entityMap[match];
+            });
+        }
+
+        function unescapeHtml(value) {
+            return value.replace(/&(amp|lt|gt|quot|#39);/g, function (match) {
+                return reverseEntityMap[match] || match;
+            });
+        }
+
+        escapeButton.addEventListener('click', function () {
+            output.value = escapeHtml(input.value);
+            setStatus('Escaped successfully.', false);
+        });
+
+        unescapeButton.addEventListener('click', function () {
+            output.value = unescapeHtml(input.value);
+            setStatus('Unescaped successfully.', false);
+        });
+
+        clearButton.addEventListener('click', function () {
+            input.value = '';
+            output.value = '';
+            setStatus('Cleared.', false);
+            input.focus();
+        });
+
+        copyButton.addEventListener('click', async function () {
+            try {
+                await navigator.clipboard.writeText(output.value);
+                setStatus('Output copied to clipboard.', false);
+            } catch (error) {
+                setStatus('Clipboard copy failed.', true);
+            }
+        });
+    })();
+</script>
