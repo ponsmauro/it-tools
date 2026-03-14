@@ -224,6 +224,172 @@ make lint-install
 - Package `handlers` → `KillPortHandler()` not `HandlersKillPortHandler()`
 - File `killport.go` not `kill_port_handler.go`
 
+### 18. Standard Delivery Workflow Template (MANDATORY)
+1. Sync base branch:
+   - `git checkout develop`
+   - `git pull origin develop`
+2. Create work branch:
+   - **Only** `feature/{feature-name}` format
+   - Example: `feature/kill-port`
+3. Confirm scope and update context:
+   - Update `BLACKBOX.md` when introducing new mandatory rules
+   - Create/update `specs/{feature}/context.md`
+   - Create/update `specs/{feature}/plan.md`
+4. Create/update `TODO.md` with phases and checklist.
+5. Implement feature following Clean Architecture and i18n rules.
+6. Add/update table-driven tests for affected logic and handlers.
+7. Run local validation:
+   - `go test ./... -v`
+   - `make run`
+   - curl checks for impacted endpoints (200/400/404/405)
+8. Run functional validation on affected pages/components.
+9. Review git changes and exclude generated artifacts from commit.
+10. Commit with representative conventional message.
+11. Push branch:
+   - `git push -u origin feature/{feature-name}`
+12. Open PR to `develop`.
+13. Address review feedback and rerun validations.
+14. Merge PR to `develop`.
+15. Post-merge hygiene:
+   - Clean branch if policy allows
+   - Confirm `develop` includes final changes.
+
+### 19. PR Naming & Commit Convention (MANDATORY)
+- PR/commit titles MUST follow:
+  - `feat(scope): short summary`
+  - `fix(scope): short summary`
+  - `refactor(scope): short summary`
+  - `test(scope): short summary`
+  - `docs(scope): short summary`
+- Scope should match feature/tool ID when possible.
+- Examples:
+  - `feat(kill-port): add localized OS guide tabs`
+  - `fix(kill-port): validate unsupported HTTP methods`
+- PR body minimum sections:
+  1. **Summary**
+  2. **Validation**
+  3. **Notes**
+
+### 20. Testing Protocol (MANDATORY Before Merge)
+#### 20.1 Minimum Validation
+- `go test ./... -v` must pass.
+- `make run` must start server without startup errors.
+- Curl tests must cover impacted endpoints:
+  - Happy path(s)
+  - Invalid JSON/body
+  - Invalid action/input
+  - Unknown resource/tool
+
+#### 20.2 Thorough Validation
+- **Web/UI**:
+  - Navigate all affected pages/sections/components
+  - Interact with all links/buttons/inputs
+  - Verify i18n labels in supported languages
+  - Verify result states and error states
+- **API/Backend**:
+  - Test all impacted endpoints with:
+    - happy paths
+    - error paths
+    - edge cases (empty body, wrong content-type, malformed payload)
+  - Validate unsupported methods return correct status code (prefer `405 Method Not Allowed` where applicable)
+
+#### 20.3 Test Result Handling
+- If tests fail:
+  - Fix implementation first
+  - Rerun tests
+  - Only continue when passing or when failure is explicitly documented and approved.
+
+### 21. API Validation Rules (MANDATORY)
+- Validate request method per endpoint.
+- Validate request payload and JSON decoding errors.
+- Validate required fields and accepted action values.
+- Unknown tool/resource should return `404`.
+- Invalid client input should return `400`.
+- Unsupported method should return `405` when endpoint contract is method-specific.
+- Internal execution/render failures should return `500`.
+- Error logging must include reproduction context and follow section 13 (error-only logging).
+
+### 22. Feature Template Blocks (Copy/Paste)
+
+#### 22.1 `specs/{feature}/context.md`
+```md
+# Context - {Feature Name}
+
+## Current State
+- Relevant existing files/routes/components:
+  - ...
+
+## Constraints
+- Architecture constraints:
+- Security constraints:
+- UX constraints:
+
+## Tech Stack
+- Backend:
+- Frontend:
+- i18n:
+- Testing:
+```
+
+#### 22.2 `specs/{feature}/plan.md`
+```md
+# Plan - {Feature Name}
+
+## Initial Requirements
+- Base branch: develop
+- Work branch: feature/{feature-name}
+- Target PR branch: develop
+
+## Steps
+1. ...
+2. ...
+3. ...
+
+## Validation Plan
+- Unit tests:
+- Integration/API tests:
+- UI smoke/thorough tests:
+```
+
+#### 22.3 `TODO.md` phase template
+```md
+# {Feature Name} TODO
+
+## Phase 1: Setup
+- [ ] Sync develop
+- [ ] Create branch feature/{feature-name}
+- [ ] Update specs/{feature}/context.md
+- [ ] Update specs/{feature}/plan.md
+
+## Phase 2: Implementation
+- [ ] Backend
+- [ ] Frontend
+- [ ] i18n
+
+## Phase 3: Testing
+- [ ] go test ./... -v
+- [ ] make run
+- [ ] curl API checks
+- [ ] UI checks
+
+## Phase 4: Delivery
+- [ ] Commit conventional message
+- [ ] Push feature branch
+- [ ] Open PR to develop
+- [ ] Address review feedback
+- [ ] Merge
+```
+
+### 23. Definition of Done (DoD)
+A feature is considered done only if all are true:
+1. Implemented according to approved scope.
+2. Architecture rules respected (Clean Architecture + no inline HTML/JS in handlers).
+3. i18n completed for all user-facing text.
+4. Table-driven tests added/updated.
+5. Minimum and required thorough testing completed (or formally waived).
+6. PR title/body follow convention.
+7. PR merged to `develop`.
+8. Documentation (`BLACKBOX.md`, specs, TODO) updated accordingly.
 
 
 ## Notes
