@@ -2,6 +2,7 @@ package handlers
 
 import (
 	"bytes"
+	"encoding/json"
 	"fmt"
 	"html/template"
 	"log"
@@ -38,19 +39,57 @@ func (h *Handler) AboutHandler(w http.ResponseWriter, r *http.Request) {
 	h.servePage(w, r, config.AboutTemplate, "About - IT Tools", config.RouteAbout)
 }
 
-// ToolHandler serves individual tools
+// ToolHandler serves individual tools GET + POST tab
 func (h *Handler) ToolHandler(w http.ResponseWriter, r *http.Request) {
 	toolID := r.URL.Path[len("/tools/"):]
 	if toolID == "" {
 		http.NotFound(w, r)
 		return
 	}
-	templateName := toolID + ".html"
-	if templateName == "" {
-		http.NotFound(w, r)
+
+	if r.Method == http.MethodPost {
+		h.handleToolPost(w, r, toolID)
 		return
 	}
+
+	// Legacy GET: serve static HTML
+	templateName := toolID + ".html"
 	h.servePage(w, r, templateName, toolID+" - IT Tools", "/tools/"+toolID)
+}
+
+// handleToolPost handles POST /tools/{id} dynamic content
+func (h *Handler) handleToolPost(w http.ResponseWriter, r *http.Request, toolID string) {
+	var req struct {
+		Action string `json:"action"`
+	}
+	if err := json.NewDecoder(r.Body).Decode(&req); err != nil {
+		log.Printf("JSON decode error: tool=%s error=%v", toolID, err)
+		http.Error(w, "Invalid JSON", http.StatusBadRequest)
+		return
+	}
+
+	if req.Action != "open" {
+		http.Error(w, "Action must be 'open'", http.StatusBadRequest)
+		return
+	}
+
+	templateName := toolID + ".html"
+	lang := h.getLanguage(r)
+	data := h.buildPageData(toolID+" - IT Tools", lang, "/tools/"+toolID)
+
+	var buf bytes.Buffer
+	err := h.templates.ExecuteTemplate(&buf, templateName, data)
+	if err != nil {
+		log.Printf("Error executing tool template: tool=%s, template=%s, error=%v", toolID, templateName, err)
+		http.Error(w, fmt.Sprintf("Template not found for tool: %s", toolID), http.StatusNotFound)
+		return
+	}
+
+	w.Header().Set("Content-Type", "text/html; charset=utf-8")
+	_, err = buf.WriteTo(w)
+	if err != nil {
+		log.Printf("Error writing tool response: tool=%s, error=%v", toolID, err)
+	}
 }
 
 // servePage is a reusable method to serve any page

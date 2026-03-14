@@ -203,9 +203,33 @@ make lint-install
 9. SQL Formatter
 10. Regex Tester
 
+### 15. Tool Architecture (Modular Tabs)
+- **Click on tool** → POST `/tools/{id}` opens **dynamic tab** (lazy load).
+- Tabs bar: Active tool, close button (X), max 8 tabs.
+- **Dynamic content**: Server response HTML/JS/CSS fragment injected via AJAX (no full page reload).
+- **Separate PR per tool**: `feature/{tool-id}` branch → `develop`.
+- Structure:
+  - `internal/tools/{id}/` package: handler.go, template.tmpl (embedded), tool.go (models.Tool).
+  - Registration: `tool_registry.Register("{id}", ToolHandlerFunc, Base64Tool)`.
+  - POST `/tools/{id}`: `{ "action": "open" }` → render tab content.
+- Benefits: Isolation, lazy load, multi-tab workflow, easy PR review.
+- Frontend: index.html JS manages tabs (localStorage persist open tabs).
+
+### 16. Branch Policy (MANDATORY)
+- **NEVER create blackboxai/ branches or repos**
+- Use `feature/{tool-id}` branches only
+
+### 17. Go Naming Convention (MANDATORY)
+- Go struct/function names **MUST NOT** repeat package name
+- Package `handlers` → `KillPortHandler()` not `HandlersKillPortHandler()`
+- File `killport.go` not `kill_port_handler.go`
+
+
+
 ## Notes
 
 - The server runs on port 8080 by default
 - Templates are parsed using `template.ParseGlob`
 - Static files are served from the `static/` directory
 - All paths must use `filepath.Join()` for cross-platform compatibility
+

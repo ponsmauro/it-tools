@@ -10,6 +10,7 @@ import (
 	"it-tools/internal/infrastructure/handlers"
 	"it-tools/internal/infrastructure/repositories"
 	"it-tools/internal/infrastructure/templates"
+	killport "it-tools/internal/tools/kill-port"
 )
 
 func main() {
@@ -37,13 +38,20 @@ func main() {
 	fs := http.FileServer(http.Dir("./static"))
 	http.Handle("/static/", http.StripPrefix("/static/", fs))
 
+	// Init kill-port registry
+	killport.Init()
+
 	// Routes
 	http.HandleFunc("/", handler.HomeHandler)
 	http.HandleFunc("/about", handler.AboutHandler)
 	http.HandleFunc("/tools/", handler.ToolHandler)
 
+	// Initialize kill-port tool
+	killport.Init()
+
 	// Start server
 	port := config.DefaultPort
 	log.Printf("Server started at http://localhost:%d", port)
 	log.Fatal(http.ListenAndServe(fmt.Sprintf(":%d", port), nil))
+
 }

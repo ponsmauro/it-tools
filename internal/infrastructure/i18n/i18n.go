@@ -8,18 +8,29 @@ import (
 
 // Translation keys
 const (
-	KeyAppTitle      = "app.title"
-	KeyAppWelcome    = "app.welcome"
-	KeyAppSubtitle   = "app.subtitle"
-	KeyNavTools      = "nav.tools"
-	KeyNavItTools    = "nav.it-tools"
-	KeyNavAbout      = "nav.about"
-	KeyToolsAll      = "tools.all"
-	KeyAboutTitle    = "about.title"
-	KeyAboutMission  = "about.mission"
-	KeyAboutFeatures = "about.features"
-	KeyAboutTech     = "about.tech"
-	KeyFooterCopy    = "footer.copyright"
+	KeyAppTitle                = "app.title"
+	KeyAppWelcome              = "app.welcome"
+	KeyAppSubtitle             = "app.subtitle"
+	KeyNavTools                = "nav.tools"
+	KeyNavItTools              = "nav.it-tools"
+	KeyNavAbout                = "nav.about"
+	KeyToolsAll                = "tools.all"
+	KeyAboutTitle              = "about.title"
+	KeyAboutMission            = "about.mission"
+	KeyAboutFeatures           = "about.features"
+	KeyAboutTech               = "about.tech"
+	KeyFooterCopy              = "footer.copyright"
+	KeyToolsKillPort           = "tools.kill-port"
+	KeyToolsKillPortDesc       = "tools.kill-port.desc"
+	KeyToolsKillPortPort       = "tools.kill-port.port"
+	KeyToolsKillPortScan       = "tools.kill-port.scan"
+	KeyToolsKillPortGuideTitle = "tools.kill-port.guide.title"
+	KeyToolsKillPortOSMac      = "tools.kill-port.os.macos"
+	KeyToolsKillPortOSLinux    = "tools.kill-port.os.linux"
+	KeyToolsKillPortOSWindows  = "tools.kill-port.os.windows"
+	KeyToolsKillPortStepFind   = "tools.kill-port.step.find"
+	KeyToolsKillPortStepKill   = "tools.kill-port.step.kill"
+	KeyToolsKillPortStepVerify = "tools.kill-port.step.verify"
 )
 
 // Translator handles internationalization
@@ -75,6 +86,17 @@ func (t *Translator) InitDefaultTranslations() {
 	t.AddTranslation(config.SupportedLangEN, KeyAboutFeatures, "Features")
 	t.AddTranslation(config.SupportedLangEN, KeyAboutTech, "Technologies")
 	t.AddTranslation(config.SupportedLangEN, KeyFooterCopy, "2026 IT Tools - Tools for developers")
+	t.AddTranslation(config.SupportedLangEN, KeyToolsKillPort, "Kill Port")
+	t.AddTranslation(config.SupportedLangEN, KeyToolsKillPortDesc, "Find and kill processes occupying specific ports (macOS lsof + kill mock)")
+	t.AddTranslation(config.SupportedLangEN, KeyToolsKillPortPort, "Port")
+	t.AddTranslation(config.SupportedLangEN, KeyToolsKillPortScan, "Scan & Kill")
+	t.AddTranslation(config.SupportedLangEN, KeyToolsKillPortGuideTitle, "How to kill a port from terminal")
+	t.AddTranslation(config.SupportedLangEN, KeyToolsKillPortOSMac, "macOS")
+	t.AddTranslation(config.SupportedLangEN, KeyToolsKillPortOSLinux, "Linux")
+	t.AddTranslation(config.SupportedLangEN, KeyToolsKillPortOSWindows, "Windows")
+	t.AddTranslation(config.SupportedLangEN, KeyToolsKillPortStepFind, "Find the process using the port")
+	t.AddTranslation(config.SupportedLangEN, KeyToolsKillPortStepKill, "Kill the process with PID")
+	t.AddTranslation(config.SupportedLangEN, KeyToolsKillPortStepVerify, "Verify the port is free")
 
 	// Spanish translations
 	t.AddTranslation(config.SupportedLangES, KeyAppTitle, "IT Tools")
@@ -89,4 +111,15 @@ func (t *Translator) InitDefaultTranslations() {
 	t.AddTranslation(config.SupportedLangES, KeyAboutFeatures, "Características")
 	t.AddTranslation(config.SupportedLangES, KeyAboutTech, "Tecnologías")
 	t.AddTranslation(config.SupportedLangES, KeyFooterCopy, "2026 IT Tools - Herramientas para desarrolladores")
+	t.AddTranslation(config.SupportedLangES, KeyToolsKillPort, "Matar Puerto")
+	t.AddTranslation(config.SupportedLangES, KeyToolsKillPortDesc, "Encuentra y mata procesos ocupando puertos específicos (mock macOS lsof + kill)")
+	t.AddTranslation(config.SupportedLangES, KeyToolsKillPortPort, "Puerto")
+	t.AddTranslation(config.SupportedLangES, KeyToolsKillPortScan, "Escanear y Matar")
+	t.AddTranslation(config.SupportedLangES, KeyToolsKillPortGuideTitle, "Cómo matar un puerto desde terminal")
+	t.AddTranslation(config.SupportedLangES, KeyToolsKillPortOSMac, "macOS")
+	t.AddTranslation(config.SupportedLangES, KeyToolsKillPortOSLinux, "Linux")
+	t.AddTranslation(config.SupportedLangES, KeyToolsKillPortOSWindows, "Windows")
+	t.AddTranslation(config.SupportedLangES, KeyToolsKillPortStepFind, "Encontrar el proceso que usa el puerto")
+	t.AddTranslation(config.SupportedLangES, KeyToolsKillPortStepKill, "Matar el proceso por PID")
+	t.AddTranslation(config.SupportedLangES, KeyToolsKillPortStepVerify, "Verificar que el puerto quedó libre")
 }
