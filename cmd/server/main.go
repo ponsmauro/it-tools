@@ -10,6 +10,7 @@ import (
 	"it-tools/internal/infrastructure/handlers"
 	"it-tools/internal/infrastructure/repositories"
 	"it-tools/internal/infrastructure/templates"
+	killport "it-tools/internal/tools/kill-port"
 )
 
 func main() {
@@ -36,6 +37,9 @@ func main() {
 	// Static files
 	fs := http.FileServer(http.Dir("./static"))
 	http.Handle("/static/", http.StripPrefix("/static/", fs))
+
+	// Init kill-port registry
+	killport.Init()
 
 	// Routes
 	http.HandleFunc("/", handler.HomeHandler)

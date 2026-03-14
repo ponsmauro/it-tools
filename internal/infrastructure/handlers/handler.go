@@ -10,6 +10,7 @@ import (
 	"it-tools/internal/application/usecases"
 	"it-tools/internal/config"
 	"it-tools/internal/infrastructure/templates"
+	toolregistry "it-tools/internal/tool_registry"
 )
 
 // Handler contains all HTTP handlers
@@ -38,19 +39,21 @@ func (h *Handler) AboutHandler(w http.ResponseWriter, r *http.Request) {
 	h.servePage(w, r, config.AboutTemplate, "About - IT Tools", config.RouteAbout)
 }
 
-// ToolHandler serves individual tools
+// ToolHandler serves individual tools (GET = redirect, POST = dynamic tab)
 func (h *Handler) ToolHandler(w http.ResponseWriter, r *http.Request) {
 	toolID := r.URL.Path[len("/tools/"):]
 	if toolID == "" {
 		http.NotFound(w, r)
 		return
 	}
-	templateName := toolID + ".html"
-	if templateName == "" {
-		http.NotFound(w, r)
+
+	if r.Method == http.MethodPost {
+		h.handleToolPost(w, r, toolID)
 		return
 	}
-	h.servePage(w, r, templateName, toolID+" - IT Tools", "/tools/"+toolID)
+
+	// GET: redirect to home or serve static
+	http.Redirect(w, r, "/", http.StatusSeeOther)
 }
 
 // servePage is a reusable method to serve any page
@@ -79,6 +82,16 @@ func (h *Handler) getLanguage(r *http.Request) string {
 		return config.DefaultLanguage
 	}
 	return lang
+}
+
+// handleToolPost handles POST /tools/{id}
+func (h *Handler) handleToolPost(w http.ResponseWriter, r *http.Request, toolID string) {
+	handler := toolregistry.GetHandler(toolID)
+	if handler == nil {
+		http.NotFound(w, r)
+		return
+	}
+	handler(w, r)
 }
 
 // executeTemplate executes a template with error handling
