@@ -1,0 +1,193 @@
+<div class="tool-content lorem-generator-tool">
+    <h2>Lorem Generator</h2>
+    <p>Generate lorem ipsum style text by words or paragraphs.</p>
+
+    <div class="lorem-controls">
+        <div class="control-group">
+            <label for="lorem-type">Mode</label>
+            <select id="lorem-type">
+                <option value="words">Words</option>
+                <option value="paragraphs">Paragraphs</option>
+            </select>
+        </div>
+
+        <div class="control-group">
+            <label for="lorem-count">Count</label>
+            <input id="lorem-count" type="number" min="1" max="100" value="20" />
+        </div>
+
+        <div class="control-actions">
+            <button type="button" id="btn-lorem-generate">Generate</button>
+            <button type="button" id="btn-lorem-copy">Copy</button>
+            <button type="button" id="btn-lorem-clear">Clear</button>
+        </div>
+    </div>
+
+    <label for="lorem-output">Output</label>
+    <textarea id="lorem-output" class="lorem-output" placeholder="Generated text will appear here..."></textarea>
+    <div id="lorem-status" class="lorem-status" aria-live="polite"></div>
+</div>
+
+<style>
+    .lorem-generator-tool {
+        display: flex;
+        flex-direction: column;
+        gap: 12px;
+    }
+
+    .lorem-controls {
+        display: grid;
+        grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+        gap: 10px;
+        align-items: end;
+    }
+
+    .control-group {
+        display: flex;
+        flex-direction: column;
+        gap: 6px;
+    }
+
+    .control-group input,
+    .control-group select {
+        border: 1px solid #cbd5e1;
+        border-radius: 8px;
+        padding: 10px;
+        font-size: 14px;
+        background: #fff;
+    }
+
+    .control-actions {
+        display: flex;
+        gap: 8px;
+        flex-wrap: wrap;
+    }
+
+    .control-actions button {
+        border: 1px solid #cbd5e1;
+        border-radius: 8px;
+        background: #fff;
+        padding: 10px 14px;
+        cursor: pointer;
+    }
+
+    .control-actions button:hover {
+        background: #f8fafc;
+    }
+
+    .lorem-output {
+        width: 100%;
+        min-height: 220px;
+        border: 1px solid #cbd5e1;
+        border-radius: 8px;
+        padding: 12px;
+        resize: vertical;
+        font-size: 14px;
+        line-height: 1.5;
+    }
+
+    .lorem-status {
+        min-height: 20px;
+        color: #0f766e;
+        font-size: 14px;
+    }
+
+    .lorem-status.error {
+        color: #b91c1c;
+    }
+</style>
+
+<script>
+    (function initLoremGenerator() {
+        const wordPool = [
+            "lorem", "ipsum", "dolor", "sit", "amet", "consectetur", "adipiscing", "elit",
+            "sed", "do", "eiusmod", "tempor", "incididunt", "ut", "labore", "et", "dolore",
+            "magna", "aliqua", "enim", "ad", "minim", "veniam", "quis", "nostrud", "exercitation",
+            "ullamco", "laboris", "nisi", "aliquip", "ex", "ea", "commodo", "consequat", "duis",
+            "aute", "irure", "in", "reprehenderit", "voluptate", "velit", "esse", "cillum",
+            "eu", "fugiat", "nulla", "pariatur", "excepteur", "sint", "occaecat", "cupidatat",
+            "non", "proident", "sunt", "culpa", "qui", "officia", "deserunt", "mollit", "anim", "id", "est", "laborum"
+        ];
+
+        const typeSelect = document.getElementById("lorem-type");
+        const countInput = document.getElementById("lorem-count");
+        const output = document.getElementById("lorem-output");
+        const status = document.getElementById("lorem-status");
+        const generateBtn = document.getElementById("btn-lorem-generate");
+        const copyBtn = document.getElementById("btn-lorem-copy");
+        const clearBtn = document.getElementById("btn-lorem-clear");
+
+        if (!typeSelect || !countInput || !output || !status || !generateBtn || !copyBtn || !clearBtn) {
+            return;
+        }
+
+        function setStatus(message, isError) {
+            status.textContent = message;
+            status.classList.toggle("error", Boolean(isError));
+        }
+
+        function randomWord() {
+            const index = Math.floor(Math.random() * wordPool.length);
+            return wordPool[index];
+        }
+
+        function generateWords(count) {
+            const words = [];
+            for (let i = 0; i < count; i++) {
+                words.push(randomWord());
+            }
+            const sentence = words.join(" ");
+            return sentence.charAt(0).toUpperCase() + sentence.slice(1) + ".";
+        }
+
+        function generateParagraph() {
+            const sentenceCount = 3 + Math.floor(Math.random() * 4);
+            const sentences = [];
+            for (let i = 0; i < sentenceCount; i++) {
+                const wordsInSentence = 8 + Math.floor(Math.random() * 10);
+                sentences.push(generateWords(wordsInSentence));
+            }
+            return sentences.join(" ");
+        }
+
+        function getSafeCount() {
+            const value = Number.parseInt(countInput.value, 10);
+            if (Number.isNaN(value)) {
+                return 1;
+            }
+            return Math.min(100, Math.max(1, value));
+        }
+
+        generateBtn.addEventListener("click", function () {
+            const mode = typeSelect.value;
+            const count = getSafeCount();
+
+            if (mode === "words") {
+                output.value = generateWords(count);
+                setStatus("Generated words.", false);
+                return;
+            }
+
+            const paragraphs = [];
+            for (let i = 0; i < count; i++) {
+                paragraphs.push(generateParagraph());
+            }
+            output.value = paragraphs.join("\n\n");
+            setStatus("Generated paragraphs.", false);
+        });
+
+        copyBtn.addEventListener("click", async function () {
+            try {
+                await navigator.clipboard.writeText(output.value);
+                setStatus("Output copied.", false);
+            } catch (error) {
+                setStatus("Clipboard copy failed.", true);
+            }
+        });
+
+        clearBtn.addEventListener("click", function () {
+            output.value = "";
+            setStatus("Output cleared.", false);
+        });
+    })();
+</script>
