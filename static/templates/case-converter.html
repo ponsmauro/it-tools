@@ -1,13 +1,19 @@
-{{define "case-converter.html"}}
-{{template "layout" .}}
-{{end}}
-
-{{define "content"}}
-<section class="tool-page">
-  <div class="tool-header">
-    <h1>Case Converter</h1>
-    <p>Convert text between common naming and sentence styles.</p>
-  </div>
+<!DOCTYPE html>
+<html lang="{{ .Lang }}">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>{{ tr "app.title" }} - Case Converter</title>
+    <link rel="stylesheet" href="/static/css/style.css">
+</head>
+<body>
+    <main class="main">
+        <div class="container">
+            <section class="tool-page">
+              <div class="tool-header">
+                <h1>Case Converter</h1>
+                <p>Convert text between common naming and sentence styles.</p>
+              </div>
 
   <div class="tool-grid">
     <div class="panel">
@@ -65,8 +71,10 @@
     </div>
   </div>
 
-  <p id="status-message" class="status" aria-live="polite"></p>
-</section>
+              <p id="status-message" class="status" aria-live="polite"></p>
+            </section>
+        </div>
+    </main>
 
 <style>
   .tool-page { display: flex; flex-direction: column; gap: 12px; }
@@ -198,4 +206,5 @@
   render();
 })();
 </script>
-{{end}}
+</body>
+</html>

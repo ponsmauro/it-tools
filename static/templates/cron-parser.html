@@ -1,0 +1,106 @@
+<!DOCTYPE html>
+<html lang="{{ .Lang }}">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>{{ tr "app.title" }} - Cron Expression Parser</title>
+    <link rel="stylesheet" href="/static/css/style.css">
+</head>
+<body>
+    <main class="main">
+        <div class="container">
+            <section class="tool-page">
+              <div class="tool-header">
+                <h1>Cron Expression Parser</h1>
+                <p>Parse and explain cron expressions.</p>
+              </div>
+
+              <div class="tool-grid">
+                <div class="panel">
+                  <label for="cron-input">Cron Expression</label>
+                  <input type="text" id="cron-input" class="tool-input" value="* * * * *" placeholder="* * * * *">
+                  <div class="actions">
+                    <button id="parse-btn" type="button" class="btn-primary">Parse</button>
+                  </div>
+                </div>
+
+                <div class="panel">
+                  <h2>Explanation</h2>
+                  <div id="cron-explanation" class="cron-explanation">
+                    Every minute
+                  </div>
+                  
+                  <h3 style="margin-top: 16px; margin-bottom: 8px;">Next occurrences</h3>
+                  <ul id="cron-next" class="cron-next-list">
+                  </ul>
+                </div>
+              </div>
+            </section>
+        </div>
+    </main>
+
+<style>
+  .tool-page { display: flex; flex-direction: column; gap: 12px; }
+  .tool-header h1 { margin-bottom: 4px; font-size: 18px; }
+  .tool-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: 12px; }
+  .panel { background: #1e293b; border: 1px solid #334155; border-radius: 6px; padding: 12px; }
+  .panel label { display: block; margin-bottom: 6px; font-weight: 500; font-size: 13px; color: #94a3b8; }
+  .tool-input { width: 100%; background: #0f172a; color: #f1f5f9; border: 1px solid #334155; border-radius: 6px; padding: 10px; font-family: ui-monospace, monospace; font-size: 16px; }
+  .actions { display: flex; gap: 8px; margin-top: 12px; flex-wrap: wrap; }
+  .btn-primary { background: #3b82f6; color: #fff; border: none; border-radius: 6px; padding: 8px 12px; cursor: pointer; font-weight: 500; font-size: 13px; }
+  .btn-primary:hover { background: #2563eb; }
+  .cron-explanation { font-size: 16px; font-weight: 500; color: #34d399; padding: 12px; background: #0f172a; border-radius: 6px; border: 1px solid #334155; }
+  .cron-next-list { list-style: none; padding: 0; margin: 0; }
+  .cron-next-list li { padding: 8px; border-bottom: 1px solid #334155; font-family: ui-monospace, monospace; font-size: 13px; color: #cbd5e1; }
+  .cron-next-list li:last-child { border-bottom: none; }
+  .tool-page > p { color: #64748b; font-size: 13px; margin: 0; }
+</style>
+
+<script src="https://cdn.jsdelivr.net/npm/cronstrue@2.26.0/cronstrue.min.js"></script>
+<script>
+  (function () {
+    const inputEl = document.getElementById('cron-input');
+    const parseBtn = document.getElementById('parse-btn');
+    const explanationEl = document.getElementById('cron-explanation');
+    const nextListEl = document.getElementById('cron-next');
+
+    function parseCron() {
+      const expr = inputEl.value.trim();
+      if (!expr) return;
+
+      try {
+        // Use cronstrue if available
+        if (window.cronstrue) {
+          const explanation = window.cronstrue.toString(expr);
+          explanationEl.textContent = explanation;
+          explanationEl.style.color = '#34d399';
+        } else {
+          explanationEl.textContent = 'cronstrue library not loaded';
+          explanationEl.style.color = '#fca5a5';
+        }
+        
+        // Mock next occurrences for now
+        const now = new Date();
+        let html = '';
+        for (let i = 1; i <= 5; i++) {
+            const next = new Date(now.getTime() + i * 60000);
+            html += `<li>${next.toLocaleString()}</li>`;
+        }
+        nextListEl.innerHTML = html;
+        
+      } catch (err) {
+        explanationEl.textContent = err.toString();
+        explanationEl.style.color = '#fca5a5';
+        nextListEl.innerHTML = '';
+      }
+    }
+
+    parseBtn.addEventListener('click', parseCron);
+    inputEl.addEventListener('input', parseCron);
+    
+    // Initial parse
+    setTimeout(parseCron, 500);
+  })();
+</script>
+</body>
+</html>

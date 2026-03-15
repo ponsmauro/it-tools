@@ -1,0 +1,38 @@
+<!DOCTYPE html>
+<html lang="{{ .Lang }}">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>{{ tr "app.title" }} - Formatters</title>
+    <link rel="stylesheet" href="/static/css/style.css">
+</head>
+<body>
+    <main class="main">
+        <div class="container">
+            <section class="tool-page">
+              <div class="tool-header">
+                <h1>Formatters</h1>
+                <p>Collection of formatting tools.</p>
+              </div>
+
+              <div class="tools-grid">
+                <a href="#" class="tool-card" onclick="loadToolContent('json-formatter'); return false;">
+                    <div class="tool-icon">✨</div>
+                    <div class="tool-info">
+                        <h4>JSON Formatter</h4>
+                        <p>Format and validate JSON data</p>
+                    </div>
+                </a>
+                <a href="#" class="tool-card" onclick="loadToolContent('env-formatter'); return false;">
+                    <div class="tool-icon">⚙️</div>
+                    <div class="tool-info">
+                        <h4>Environment Formatter</h4>
+                        <p>Format environment variables and .env files</p>
+                    </div>
+                </a>
+              </div>
+            </section>
+        </div>
+    </main>
+</body>
+</html>

@@ -1,0 +1,59 @@
+<!DOCTYPE html>
+<html lang="{{ .Lang }}">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>{{ tr "app.title" }} - Converters</title>
+    <link rel="stylesheet" href="/static/css/style.css">
+</head>
+<body>
+    <main class="main">
+        <div class="container">
+            <section class="tool-page">
+              <div class="tool-header">
+                <h1>Converters</h1>
+                <p>Collection of conversion tools.</p>
+              </div>
+
+              <div class="tools-grid">
+                <a href="#" class="tool-card" onclick="loadToolContent('base64'); return false;">
+                    <div class="tool-icon">🔐</div>
+                    <div class="tool-info">
+                        <h4>Base64 Encoder/Decoder</h4>
+                        <p>Encode and decode text in Base64 format</p>
+                    </div>
+                </a>
+                <a href="#" class="tool-card" onclick="loadToolContent('url-encoder'); return false;">
+                    <div class="tool-icon">🔗</div>
+                    <div class="tool-info">
+                        <h4>URL Encoder/Decoder</h4>
+                        <p>Encode and decode special URL characters</p>
+                    </div>
+                </a>
+                <a href="#" class="tool-card" onclick="loadToolContent('color-converter'); return false;">
+                    <div class="tool-icon">🎨</div>
+                    <div class="tool-info">
+                        <h4>Color Converter</h4>
+                        <p>Convert between HEX, RGB, HSL, etc.</p>
+                    </div>
+                </a>
+                <a href="#" class="tool-card" onclick="loadToolContent('timestamp-converter'); return false;">
+                    <div class="tool-icon">🕐</div>
+                    <div class="tool-info">
+                        <h4>Timestamp Converter</h4>
+                        <p>Convert between Unix timestamp and dates</p>
+                    </div>
+                </a>
+                <a href="#" class="tool-card" onclick="loadToolContent('case-converter'); return false;">
+                    <div class="tool-icon">🔤</div>
+                    <div class="tool-info">
+                        <h4>Case Converter</h4>
+                        <p>Convert text between camelCase, snake_case, etc.</p>
+                    </div>
+                </a>
+              </div>
+            </section>
+        </div>
+    </main>
+</body>
+</html>
