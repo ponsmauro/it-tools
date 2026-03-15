@@ -1,0 +1,264 @@
+<!DOCTYPE html>
+<html lang="{{ .Lang }}">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>{{ tr "app.title" }} - {{ tr "tools.timestamp-converter.title" }}</title>
+    <link rel="stylesheet" href="/static/css/style.css">
+</head>
+<body>
+    <main class="main">
+        <div class="container">
+            <div class="tool-container">
+                <h1>{{ tr "tools.timestamp-converter.title" }}</h1>
+                <p>{{ tr "tools.timestamp-converter.desc" }}</p>
+
+                <!-- Current Timestamp Section -->
+                <div class="current-timestamp-section">
+                    <h2>{{ tr "tools.timestamp-converter.current" }}</h2>
+                    <div class="current-timestamp-display">
+                        <div class="timestamp-box">
+                            <span class="label">{{ tr "tools.timestamp-converter.seconds" }}</span>
+                            <code id="current-ts-sec"></code>
+                            <button class="btn-icon" onclick="copyText('current-ts-sec')" title="{{ tr "tools.copy" }}">📋</button>
+                        </div>
+                        <div class="timestamp-box">
+                            <span class="label">{{ tr "tools.timestamp-converter.milliseconds" }}</span>
+                            <code id="current-ts-ms"></code>
+                            <button class="btn-icon" onclick="copyText('current-ts-ms')" title="{{ tr "tools.copy" }}">📋</button>
+                        </div>
+                        <button class="btn-secondary" onclick="updateCurrentTimestamp()">{{ tr "tools.timestamp-converter.refresh" }}</button>
+                    </div>
+                </div>
+
+                <div class="tool-grid">
+                    <!-- Timestamp to Date -->
+                    <div class="panel">
+                        <h2>{{ tr "tools.timestamp-converter.ts-to-date" }}</h2>
+                        <label for="ts-input">{{ tr "tools.timestamp-converter.timestamp" }}</label>
+                        <input type="number" id="ts-input" class="tool-input" placeholder="e.g., 1672531200">
+                        
+                        <div class="actions">
+                            <button type="button" id="btn-ts-to-date" class="btn-primary">{{ tr "tools.timestamp-converter.convert" }}</button>
+                            <button type="button" id="btn-clear-ts" class="btn-secondary">{{ tr "tools.clear" }}</button>
+                        </div>
+
+                        <div class="output-group">
+                            <label>{{ tr "tools.timestamp-converter.local-time" }}</label>
+                            <div class="output-with-copy">
+                                <input type="text" id="ts-out-local" class="tool-input" readonly>
+                                <button class="btn-icon" onclick="copyText('ts-out-local')" title="{{ tr "tools.copy" }}">📋</button>
+                            </div>
+                            
+                            <label>{{ tr "tools.timestamp-converter.utc-time" }}</label>
+                            <div class="output-with-copy">
+                                <input type="text" id="ts-out-utc" class="tool-input" readonly>
+                                <button class="btn-icon" onclick="copyText('ts-out-utc')" title="{{ tr "tools.copy" }}">📋</button>
+                            </div>
+
+                            <label>{{ tr "tools.timestamp-converter.iso-8601" }}</label>
+                            <div class="output-with-copy">
+                                <input type="text" id="ts-out-iso" class="tool-input" readonly>
+                                <button class="btn-icon" onclick="copyText('ts-out-iso')" title="{{ tr "tools.copy" }}">📋</button>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Date to Timestamp -->
+                    <div class="panel">
+                        <h2>{{ tr "tools.timestamp-converter.date-to-ts" }}</h2>
+                        <label for="date-input">{{ tr "tools.timestamp-converter.date-string" }}</label>
+                        <input type="text" id="date-input" class="tool-input" placeholder="e.g., 2023-01-01T12:00:00Z">
+                        
+                        <div class="actions">
+                            <button type="button" id="btn-date-to-ts" class="btn-primary">{{ tr "tools.timestamp-converter.convert" }}</button>
+                            <button type="button" id="btn-clear-date" class="btn-secondary">{{ tr "tools.clear" }}</button>
+                        </div>
+
+                        <div class="output-group">
+                            <label>{{ tr "tools.timestamp-converter.seconds" }}</label>
+                            <div class="output-with-copy">
+                                <input type="text" id="date-out-sec" class="tool-input" readonly>
+                                <button class="btn-icon" onclick="copyText('date-out-sec')" title="{{ tr "tools.copy" }}">📋</button>
+                            </div>
+                            
+                            <label>{{ tr "tools.timestamp-converter.milliseconds" }}</label>
+                            <div class="output-with-copy">
+                                <input type="text" id="date-out-ms" class="tool-input" readonly>
+                                <button class="btn-icon" onclick="copyText('date-out-ms')" title="{{ tr "tools.copy" }}">📋</button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </main>
+
+    <style>
+        .current-timestamp-section {
+            background: var(--card-bg);
+            border: 1px solid var(--border-color);
+            border-radius: 8px;
+            padding: 20px;
+            margin-bottom: 24px;
+        }
+        .current-timestamp-section h2 {
+            margin-top: 0;
+            margin-bottom: 16px;
+            font-size: 1.2rem;
+        }
+        .current-timestamp-display {
+            display: flex;
+            align-items: center;
+            gap: 20px;
+            flex-wrap: wrap;
+        }
+        .timestamp-box {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            background: var(--bg-color);
+            padding: 8px 16px;
+            border-radius: 6px;
+            border: 1px solid var(--border-color);
+        }
+        .timestamp-box .label {
+            font-size: 0.9rem;
+            color: var(--text-secondary);
+        }
+        .timestamp-box code {
+            font-size: 1.1rem;
+            font-weight: bold;
+            color: var(--primary-color);
+        }
+        .tool-input {
+            width: 100%;
+            padding: 10px;
+            border: 1px solid var(--border-color);
+            border-radius: 6px;
+            background: var(--bg-color);
+            color: var(--text-primary);
+            font-family: monospace;
+            margin-bottom: 16px;
+        }
+        .output-group {
+            margin-top: 24px;
+            border-top: 1px solid var(--border-color);
+            padding-top: 16px;
+        }
+        .output-with-copy {
+            display: flex;
+            gap: 8px;
+            margin-bottom: 12px;
+        }
+        .output-with-copy .tool-input {
+            margin-bottom: 0;
+        }
+        .btn-icon {
+            background: var(--bg-color);
+            border: 1px solid var(--border-color);
+            border-radius: 6px;
+            padding: 0 12px;
+            cursor: pointer;
+            transition: background 0.2s;
+        }
+        .btn-icon:hover {
+            background: var(--border-color);
+        }
+    </style>
+
+    <script>
+        // Utility to copy text
+        async function copyText(elementId) {
+            const el = document.getElementById(elementId);
+            const text = el.tagName === 'INPUT' ? el.value : el.textContent;
+            if (!text) return;
+            try {
+                await navigator.clipboard.writeText(text);
+                // Optional: show a brief tooltip or toast
+            } catch (err) {
+                console.error('Failed to copy', err);
+            }
+        }
+
+        // Current Timestamp
+        function updateCurrentTimestamp() {
+            const now = Date.now();
+            document.getElementById('current-ts-ms').textContent = now;
+            document.getElementById('current-ts-sec').textContent = Math.floor(now / 1000);
+        }
+
+        // Timestamp to Date
+        function convertTsToDate() {
+            const input = document.getElementById('ts-input').value.trim();
+            if (!input) return;
+
+            let ts = parseInt(input, 10);
+            if (isNaN(ts)) return;
+
+            // Auto-detect seconds vs milliseconds
+            // If it's less than 10000000000 (Nov 2286), assume seconds
+            if (ts < 10000000000) {
+                ts *= 1000;
+            }
+
+            const date = new Date(ts);
+            
+            if (isNaN(date.getTime())) {
+                document.getElementById('ts-out-local').value = 'Invalid Date';
+                document.getElementById('ts-out-utc').value = 'Invalid Date';
+                document.getElementById('ts-out-iso').value = 'Invalid Date';
+                return;
+            }
+
+            document.getElementById('ts-out-local').value = date.toString();
+            document.getElementById('ts-out-utc').value = date.toUTCString();
+            document.getElementById('ts-out-iso').value = date.toISOString();
+        }
+
+        // Date to Timestamp
+        function convertDateToTs() {
+            const input = document.getElementById('date-input').value.trim();
+            if (!input) return;
+
+            const date = new Date(input);
+            
+            if (isNaN(date.getTime())) {
+                document.getElementById('date-out-sec').value = 'Invalid Date';
+                document.getElementById('date-out-ms').value = 'Invalid Date';
+                return;
+            }
+
+            const ms = date.getTime();
+            document.getElementById('date-out-ms').value = ms;
+            document.getElementById('date-out-sec').value = Math.floor(ms / 1000);
+        }
+
+        // Event Listeners
+        document.getElementById('btn-ts-to-date').addEventListener('click', convertTsToDate);
+        document.getElementById('ts-input').addEventListener('keypress', (e) => {
+            if (e.key === 'Enter') convertTsToDate();
+        });
+        document.getElementById('btn-clear-ts').addEventListener('click', () => {
+            document.getElementById('ts-input').value = '';
+            document.getElementById('ts-out-local').value = '';
+            document.getElementById('ts-out-utc').value = '';
+            document.getElementById('ts-out-iso').value = '';
+        });
+
+        document.getElementById('btn-date-to-ts').addEventListener('click', convertDateToTs);
+        document.getElementById('date-input').addEventListener('keypress', (e) => {
+            if (e.key === 'Enter') convertDateToTs();
+        });
+        document.getElementById('btn-clear-date').addEventListener('click', () => {
+            document.getElementById('date-input').value = '';
+            document.getElementById('date-out-sec').value = '';
+            document.getElementById('date-out-ms').value = '';
+        });
+
+        // Initialize
+        updateCurrentTimestamp();
+        setInterval(updateCurrentTimestamp, 1000); // Update every second
+    </script>
+</body>
+</html>

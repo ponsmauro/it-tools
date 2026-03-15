@@ -149,6 +149,23 @@ const (
 	KeyToolsJwtDecoderInvalid     = "tools.jwt-decoder.invalid"
 	KeyToolsJwtDecoderPlaceholder = "tools.jwt-decoder.placeholder"
 
+	// Timestamp Converter Tool
+	KeyToolsTimestampConverter             = "tools.timestamp-converter"
+	KeyToolsTimestampConverterTitle        = "tools.timestamp-converter.title"
+	KeyToolsTimestampConverterDesc         = "tools.timestamp-converter.desc"
+	KeyToolsTimestampConverterCurrent      = "tools.timestamp-converter.current"
+	KeyToolsTimestampConverterRefresh      = "tools.timestamp-converter.refresh"
+	KeyToolsTimestampConverterTsToDate     = "tools.timestamp-converter.ts-to-date"
+	KeyToolsTimestampConverterDateToTs     = "tools.timestamp-converter.date-to-ts"
+	KeyToolsTimestampConverterTimestamp    = "tools.timestamp-converter.timestamp"
+	KeyToolsTimestampConverterDateString   = "tools.timestamp-converter.date-string"
+	KeyToolsTimestampConverterLocalTime    = "tools.timestamp-converter.local-time"
+	KeyToolsTimestampConverterUtcTime      = "tools.timestamp-converter.utc-time"
+	KeyToolsTimestampConverterIso8601      = "tools.timestamp-converter.iso-8601"
+	KeyToolsTimestampConverterSeconds      = "tools.timestamp-converter.seconds"
+	KeyToolsTimestampConverterMilliseconds = "tools.timestamp-converter.milliseconds"
+	KeyToolsTimestampConverterConvert      = "tools.timestamp-converter.convert"
+
 	// Password Generator Tool
 	KeyToolsPasswordGenerator                       = "tools.password-generator"
 	KeyToolsPasswordGeneratorTitle                  = "tools.password-generator.title"
@@ -380,6 +397,23 @@ func (t *Translator) InitDefaultTranslations() {
 	t.AddTranslation(config.SupportedLangEN, KeyToolsJwtDecoderInvalid, "Invalid JWT format")
 	t.AddTranslation(config.SupportedLangEN, KeyToolsJwtDecoderPlaceholder, "Paste your JWT here (ey...)")
 
+	// Timestamp Converter Tool
+	t.AddTranslation(config.SupportedLangEN, KeyToolsTimestampConverter, "Timestamp Converter")
+	t.AddTranslation(config.SupportedLangEN, KeyToolsTimestampConverterTitle, "Timestamp Converter")
+	t.AddTranslation(config.SupportedLangEN, KeyToolsTimestampConverterDesc, "Convert Unix timestamps to dates and vice versa.")
+	t.AddTranslation(config.SupportedLangEN, KeyToolsTimestampConverterCurrent, "Current Timestamp")
+	t.AddTranslation(config.SupportedLangEN, KeyToolsTimestampConverterRefresh, "Refresh")
+	t.AddTranslation(config.SupportedLangEN, KeyToolsTimestampConverterTsToDate, "Timestamp to Date")
+	t.AddTranslation(config.SupportedLangEN, KeyToolsTimestampConverterDateToTs, "Date to Timestamp")
+	t.AddTranslation(config.SupportedLangEN, KeyToolsTimestampConverterTimestamp, "Timestamp")
+	t.AddTranslation(config.SupportedLangEN, KeyToolsTimestampConverterDateString, "Date String (e.g., 2023-01-01T12:00:00Z)")
+	t.AddTranslation(config.SupportedLangEN, KeyToolsTimestampConverterLocalTime, "Local Time")
+	t.AddTranslation(config.SupportedLangEN, KeyToolsTimestampConverterUtcTime, "UTC Time")
+	t.AddTranslation(config.SupportedLangEN, KeyToolsTimestampConverterIso8601, "ISO 8601")
+	t.AddTranslation(config.SupportedLangEN, KeyToolsTimestampConverterSeconds, "Seconds")
+	t.AddTranslation(config.SupportedLangEN, KeyToolsTimestampConverterMilliseconds, "Milliseconds")
+	t.AddTranslation(config.SupportedLangEN, KeyToolsTimestampConverterConvert, "Convert")
+
 	// Password Generator Tool
 	t.AddTranslation(config.SupportedLangEN, KeyToolsPasswordGenerator, "Password Generator")
 	t.AddTranslation(config.SupportedLangEN, KeyToolsPasswordGeneratorTitle, "🔐 Password Generator")
@@ -555,6 +589,23 @@ func (t *Translator) InitDefaultTranslations() {
 	t.AddTranslation(config.SupportedLangES, KeyToolsJwtDecoderSignature, "Firma")
 	t.AddTranslation(config.SupportedLangES, KeyToolsJwtDecoderInvalid, "Formato JWT inválido")
 	t.AddTranslation(config.SupportedLangES, KeyToolsJwtDecoderPlaceholder, "Pega tu JWT aquí (ey...)")
+
+	// Timestamp Converter Tool
+	t.AddTranslation(config.SupportedLangES, KeyToolsTimestampConverter, "Convertidor de Timestamp")
+	t.AddTranslation(config.SupportedLangES, KeyToolsTimestampConverterTitle, "Convertidor de Timestamp")
+	t.AddTranslation(config.SupportedLangES, KeyToolsTimestampConverterDesc, "Convierte timestamps de Unix a fechas y viceversa.")
+	t.AddTranslation(config.SupportedLangES, KeyToolsTimestampConverterCurrent, "Timestamp Actual")
+	t.AddTranslation(config.SupportedLangES, KeyToolsTimestampConverterRefresh, "Actualizar")
+	t.AddTranslation(config.SupportedLangES, KeyToolsTimestampConverterTsToDate, "Timestamp a Fecha")
+	t.AddTranslation(config.SupportedLangES, KeyToolsTimestampConverterDateToTs, "Fecha a Timestamp")
+	t.AddTranslation(config.SupportedLangES, KeyToolsTimestampConverterTimestamp, "Timestamp")
+	t.AddTranslation(config.SupportedLangES, KeyToolsTimestampConverterDateString, "Cadena de Fecha (ej. 2023-01-01T12:00:00Z)")
+	t.AddTranslation(config.SupportedLangES, KeyToolsTimestampConverterLocalTime, "Hora Local")
+	t.AddTranslation(config.SupportedLangES, KeyToolsTimestampConverterUtcTime, "Hora UTC")
+	t.AddTranslation(config.SupportedLangES, KeyToolsTimestampConverterIso8601, "ISO 8601")
+	t.AddTranslation(config.SupportedLangES, KeyToolsTimestampConverterSeconds, "Segundos")
+	t.AddTranslation(config.SupportedLangES, KeyToolsTimestampConverterMilliseconds, "Milisegundos")
+	t.AddTranslation(config.SupportedLangES, KeyToolsTimestampConverterConvert, "Convertir")
 
 	// Password Generator Tool
 	t.AddTranslation(config.SupportedLangES, KeyToolsPasswordGenerator, "Generador de Contraseñas")
