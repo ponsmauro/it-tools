@@ -20,7 +20,7 @@
       <label for="input-text">Input text</label>
       <textarea id="input-text" class="tool-textarea" rows="8" placeholder="Paste text here..."></textarea>
       <div class="actions">
-        <button type="button" id="clear-btn">Clear</button>
+        <button type="button" id="clear-btn" class="btn-secondary">Clear</button>
       </div>
     </div>
 
@@ -30,43 +30,43 @@
       <div class="output-row">
         <label for="camel-output">camelCase</label>
         <textarea id="camel-output" class="tool-textarea" rows="2" readonly></textarea>
-        <button type="button" data-copy-target="camel-output">Copy</button>
+        <button type="button" class="btn-primary" data-copy-target="camel-output">Copy</button>
       </div>
 
       <div class="output-row">
         <label for="pascal-output">PascalCase</label>
         <textarea id="pascal-output" class="tool-textarea" rows="2" readonly></textarea>
-        <button type="button" data-copy-target="pascal-output">Copy</button>
+        <button type="button" class="btn-primary" data-copy-target="pascal-output">Copy</button>
       </div>
 
       <div class="output-row">
         <label for="snake-output">snake_case</label>
         <textarea id="snake-output" class="tool-textarea" rows="2" readonly></textarea>
-        <button type="button" data-copy-target="snake-output">Copy</button>
+        <button type="button" class="btn-primary" data-copy-target="snake-output">Copy</button>
       </div>
 
       <div class="output-row">
         <label for="kebab-output">kebab-case</label>
         <textarea id="kebab-output" class="tool-textarea" rows="2" readonly></textarea>
-        <button type="button" data-copy-target="kebab-output">Copy</button>
+        <button type="button" class="btn-primary" data-copy-target="kebab-output">Copy</button>
       </div>
 
       <div class="output-row">
         <label for="constant-output">CONSTANT_CASE</label>
         <textarea id="constant-output" class="tool-textarea" rows="2" readonly></textarea>
-        <button type="button" data-copy-target="constant-output">Copy</button>
+        <button type="button" class="btn-primary" data-copy-target="constant-output">Copy</button>
       </div>
 
       <div class="output-row">
         <label for="sentence-output">Sentence case</label>
         <textarea id="sentence-output" class="tool-textarea" rows="2" readonly></textarea>
-        <button type="button" data-copy-target="sentence-output">Copy</button>
+        <button type="button" class="btn-primary" data-copy-target="sentence-output">Copy</button>
       </div>
 
       <div class="output-row">
         <label for="title-output">Title Case</label>
         <textarea id="title-output" class="tool-textarea" rows="2" readonly></textarea>
-        <button type="button" data-copy-target="title-output">Copy</button>
+        <button type="button" class="btn-primary" data-copy-target="title-output">Copy</button>
       </div>
     </div>
   </div>
@@ -82,8 +82,7 @@
   .panel { border: 1px solid var(--border-color); border-radius: 6px; padding: 12px; background: var(--card-bg); }
   .tool-textarea { width: 100%; resize: vertical; border-radius: 6px; border: 1px solid var(--border-color); background: var(--bg-color); color: var(--text-primary); padding: 10px; font-family: ui-monospace, monospace; font-size: 13px; margin-top: 6px; min-height: 80px; }
   .output-row { margin-bottom: 10px; }
-  .output-row button, .actions button { margin-top: 6px; border: none; border-radius: 6px; background: var(--primary-color); color: var(--text-primary); padding: 8px 12px; cursor: pointer; font-weight: 500; font-size: 12px; }
-  .output-row button:hover, .actions button:hover { background: var(--primary-hover); }
+  .output-row button, .actions button { margin-top: 6px; }
   .status { color: var(--text-secondary); min-height: 16px; font-size: 12px; }
   .tool-page h1 { font-size: 20px; margin: 0 0 4px 0; }
   .tool-page > p { color: var(--text-secondary); font-size: 13px; margin: 0 0 12px 0; }

@@ -22,7 +22,7 @@
                     <div class="output-section">
                         <label>{{ tr "tools.output" }}</label>
                         <textarea id="output-text" readonly rows="12"></textarea>
-                        <button onclick="copyOutput()" class="btn-copy-output">{{ tr "tools.copy-output" }}</button>
+                        <button onclick="copyOutput()" class="btn-primary btn-copy-output">{{ tr "tools.copy-output" }}</button>
                     </div>
                 </div>
                 
@@ -267,7 +267,7 @@
         label { font-weight: 500; margin-bottom: 4px; color: var(--text-secondary); }
         textarea { width: 100%; padding: 10px; border: 1px solid var(--border-color); border-radius: 6px; font-family: ui-monospace, monospace; font-size: 13px; resize: vertical; line-height: 1.4; background: var(--bg-color); color: var(--text-primary); }
         textarea:focus { outline: none; border-color: var(--primary-color); }
-        .btn-copy-output { margin-top: 6px; padding: 8px 14px; background: var(--primary-color); color: white; border: none; border-radius: 6px; cursor: pointer; font-size: 13px; align-self: flex-end; }
+        .btn-copy-output { margin-top: 6px; align-self: flex-end; }
         .stats-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(120px, 1fr)); gap: 12px; margin: 16px 0; }
         .stat-card { padding: 12px; background: var(--card-bg); border: 1px solid var(--border-color); border-radius: 6px; text-align: center; }
         .stat-number { display: block; font-size: 1.4rem; font-weight: bold; color: var(--text-primary); font-family: ui-monospace, monospace; }
@@ -280,10 +280,6 @@
         .find-replace-row { display: flex; gap: 8px; }
         .find-replace-input { flex: 1; padding: 8px; border: 1px solid var(--border-color); border-radius: 6px; font-size: 13px; background: var(--bg-color); color: var(--text-primary); }
         .checkbox-label { display: flex; align-items: center; gap: 6px; font-size: 12px; color: var(--text-secondary); margin-top: 8px; }
-        .btn-primary { padding: 10px 16px; background: var(--primary-color); color: white; border: none; border-radius: 6px; cursor: pointer; font-weight: 500; font-size: 13px; }
-        .btn-primary:hover { background: var(--primary-hover); }
-        .btn-secondary { padding: 10px 16px; background: var(--card-bg); color: var(--text-secondary); border: 1px solid var(--border-color); border-radius: 6px; cursor: pointer; font-weight: 500; font-size: 13px; }
-        .btn-secondary:hover { background: var(--border-color); color: var(--text-primary); }
         .tool-container h1 { font-size: 18px; margin-bottom: 4px; }
         .tool-container p { color: var(--text-secondary); font-size: 12px; margin-bottom: 8px; }
         @media (max-width: 1024px) {

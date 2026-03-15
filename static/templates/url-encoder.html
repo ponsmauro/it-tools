@@ -9,10 +9,10 @@
         </div>
 
         <div class="panel actions">
-            <button type="button" id="btn-url-encode">Encode</button>
-            <button type="button" id="btn-url-decode">Decode</button>
-            <button type="button" id="btn-url-clear">Clear</button>
-            <button type="button" id="btn-url-copy">Copy Output</button>
+            <button type="button" id="btn-url-encode" class="btn-primary">Encode</button>
+            <button type="button" id="btn-url-decode" class="btn-primary">Decode</button>
+            <button type="button" id="btn-url-clear" class="btn-secondary">Clear</button>
+            <button type="button" id="btn-url-copy" class="btn-primary">Copy Output</button>
         </div>
 
         <div class="panel">
@@ -56,20 +56,6 @@
         flex-direction: row;
         gap: 8px;
         overflow-x: auto;
-    }
-
-    .panel.actions button {
-        border: 1px solid var(--border-color);
-        border-radius: 8px;
-        background: var(--card-bg);
-        color: var(--text-primary);
-        padding: 10px 14px;
-        cursor: pointer;
-        white-space: nowrap;
-    }
-
-    .panel.actions button:hover {
-        background: var(--border-color);
     }
 
     .tool-textarea {
