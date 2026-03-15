@@ -4,6 +4,8 @@ import (
 	"fmt"
 	"log"
 	"net/http"
+	"os"
+	"path/filepath"
 
 	"it-tools/internal/application/usecases"
 	"it-tools/internal/config"
@@ -14,6 +16,12 @@ import (
 )
 
 func main() {
+	// Get working directory
+	wd, err := os.Getwd()
+	if err != nil {
+		log.Fatalf("Error getting working directory: %v", err)
+	}
+
 	// Initialize repository
 	toolRepo := repositories.NewToolRepository()
 
@@ -24,7 +32,7 @@ func main() {
 	templateHelp := templates.NewTemplateHelper()
 
 	// Load templates
-	templatePath := "./static/templates/*.html"
+	templatePath := filepath.Join(wd, "static/templates/*.html")
 	tmpl, err := templateHelp.ParseGlob(templatePath)
 	if err != nil {
 		log.Fatalf("Error loading templates: %v", err)
@@ -35,7 +43,8 @@ func main() {
 	handler := handlers.NewHandler(tmpl, toolUC, templateHelp)
 
 	// Static files
-	fs := http.FileServer(http.Dir("./static"))
+	staticPath := filepath.Join(wd, "static")
+	fs := http.FileServer(http.Dir(staticPath))
 	http.Handle("/static/", http.StripPrefix("/static/", fs))
 
 	// Init kill-port registry

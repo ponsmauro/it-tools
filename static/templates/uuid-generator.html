@@ -1,32 +1,50 @@
 <!DOCTYPE html>
-<html lang=\"{{ .Lang }}\">
+<html lang="{{ .Lang }}">
 <head>
-    <meta charset=\"UTF-8\">
-    <meta name=\"viewport\" content=\"width=device-width, initial-scale=1.0\">
-    <title>{{ tr \"app.title\" }} - {{ tr \"tools.uuid-generator\" | default \"UUID Generator\" }}</title>
-    <link rel=\"stylesheet\" href=\"/static/css/style.css\">
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>{{ tr "app.title" }} - {{ tr "tools.uuid-generator" }}</title>
+    <link rel="stylesheet" href="/static/css/style.css">
 </head>
 <body>
-    <div class=\"tabs\">
-        <a href=\"/\" class=\"tab active\">{{ tr \"nav.it-tools\" }}</a>
-    </div>
-
-    <main class=\"main\">
-        <div class=\"container\">
-            <div class=\"uuid-tool tool-container\">
-                <h1>{{ tr \"tools.uuid-generator.title\" | default \"UUID v4 Generator\" }}</h1>
-                <p>{{ tr \"tools.uuid-generator.desc\" | default \"Generate RFC 4122 v4 UUIDs offline\" }}</p>
+    <main class="main">
+        <div class="container">
+            <div class="uuid-tool tool-container">
+                <h1>{{ tr "tools.uuid-generator.title" }}</h1>
+                <p>{{ tr "tools.uuid-generator.desc" }}</p>
                 
-                <div class=\"controls\">
-                    <button onclick=\"generate()\" class=\"btn-primary\">{{ tr \"tools.generate\" | default \"Generate 10\" }}</button>
-                    <button onclick=\"copyAll()\" id=\"copy-btn\" disabled class=\"btn-secondary\">{{ tr \"tools.copy-all\" | default \"Copy All\" }}</button>
-                    <button onclick=\"clearList()\" class=\"btn-secondary\">{{ tr \"tools.clear\" | default \"Clear\" }}</button>
+                <div class="format-options">
+                    <div class="option-group">
+                        <label>{{ tr "tools.uuid-generator.count" }}: <span id="count-value">10</span></label>
+                        <input type="range" id="count-slider" min="1" max="50" value="10" class="slider" oninput="updateCountValue()">
+                    </div>
+                    
+                    <div class="option-group checkboxes">
+                        <label>
+                            <input type="checkbox" id="uppercase" checked>
+                            {{ tr "tools.uuid-generator.uppercase" }}
+                        </label>
+                        <label>
+                            <input type="checkbox" id="hyphens" checked>
+                            {{ tr "tools.uuid-generator.hyphens" }}
+                        </label>
+                        <label>
+                            <input type="checkbox" id="braces">
+                            {{ tr "tools.uuid-generator.braces" }}
+                        </label>
+                    </div>
                 </div>
                 
-                <div id=\"uuid-list\" class=\"uuid-list\"></div>
+                <div class="controls">
+                    <button onclick="generate()" class="btn-primary">{{ tr "tools.generate" }}</button>
+                    <button onclick="copyAll()" id="copy-btn" disabled class="btn-secondary">{{ tr "tools.copy-all" }}</button>
+                    <button onclick="clearList()" class="btn-secondary">{{ tr "tools.clear" }}</button>
+                </div>
                 
-                <div class=\"stats\" id=\"stats\" style=\"display: none;\">
-                    {{ tr \"tools.stats.generated\" | default \"Generated\" }} <span id=\"count\">0</span> UUIDs
+                <div id="uuid-list" class="uuid-list"></div>
+                
+                <div class="stats" id="stats" style="display: none;">
+                    {{ tr "tools.stats.generated" }} <span id="count">0</span> UUIDs
                 </div>
             </div>
         </div>
@@ -34,14 +52,56 @@
 
     <script>
         let uuids = [];
-        const maxUUIDs = 10;
+        
+        function updateCountValue() {
+            const countValue = document.getElementById('count-slider').value;
+            document.getElementById('count-value').textContent = countValue;
+        }
+        
+        function formatUUID(uuid) {
+            const uppercase = document.getElementById('uppercase').checked;
+            const hyphens = document.getElementById('hyphens').checked;
+            const braces = document.getElementById('braces').checked;
+            
+            // Start with the raw UUID
+            let formattedUUID = uuid;
+            
+            // First handle case (uppercase/lowercase)
+            if (uppercase) {
+                formattedUUID = formattedUUID.toUpperCase();
+            } else {
+                formattedUUID = formattedUUID.toLowerCase();
+            }
+            
+            // Then handle hyphens (remove if not wanted)
+            if (!hyphens) {
+                formattedUUID = formattedUUID.replace(/-/g, '');
+            }
+            
+            // Finally add braces if wanted
+            if (braces) {
+                formattedUUID = '{' + formattedUUID + '}';
+            }
+            
+            return formattedUUID;
+        }
         
         function generate() {
-            for (let i = 0; i < maxUUIDs; i++) {
-                const uuid = crypto.randomUUID();
-                uuids.unshift(uuid);
+            // Ensure count is between 1 and 50
+            const count = Math.max(1, Math.min(50, parseInt(document.getElementById('count-slider').value) || 1));
+            
+            // Update slider value if it was out of bounds
+            document.getElementById('count-slider').value = count;
+            document.getElementById('count-value').textContent = count;
+            
+            uuids = [];
+            
+            for (let i = 0; i < count; i++) {
+                const rawUUID = crypto.randomUUID();
+                const formattedUUID = formatUUID(rawUUID);
+                uuids.unshift(formattedUUID);
             }
-            uuids = uuids.slice(0, maxUUIDs);
+            
             renderList();
             updateStats();
             document.getElementById('copy-btn').disabled = false;
@@ -57,29 +117,66 @@
         }
         
         function copyUUID(index) {
-            navigator.clipboard.writeText(uuids[index]).then(() => {
-                const item = event.currentTarget;
-                item.style.background = '#d1fae5';
-                item.title = 'Copied!';
-                setTimeout(() => {
-                    item.style.background = '';
-                    item.title = 'Click to copy';
-                }, 1500);
-            });
+            try {
+                navigator.clipboard.writeText(uuids[index]).then(() => {
+                    const item = event.currentTarget;
+                    item.style.background = '#d1fae5';
+                    item.title = 'Copied!';
+                    setTimeout(() => {
+                        item.style.background = '';
+                        item.title = 'Click to copy';
+                    }, 1500);
+                }).catch(err => {
+                    console.error('Failed to copy: ', err);
+                    // Fallback for browsers without clipboard API
+                    copyToClipboardFallback(uuids[index]);
+                });
+            } catch (err) {
+                console.error('Error accessing clipboard: ', err);
+                copyToClipboardFallback(uuids[index]);
+            }
         }
         
         function copyAll() {
-            const text = uuids.join('\\n');
-            navigator.clipboard.writeText(text).then(() => {
-                const btn = document.getElementById('copy-btn');
-                const original = btn.textContent;
-                btn.textContent = '✅ Copied!';
-                btn.style.background = '#10b981';
-                setTimeout(() => {
-                    btn.textContent = original;
-                    btn.style.background = '';
-                }, 1500);
-            });
+            const text = uuids.join('\n');
+            try {
+                navigator.clipboard.writeText(text).then(() => {
+                    const btn = document.getElementById('copy-btn');
+                    const original = btn.textContent;
+                    btn.textContent = '✅ Copied!';
+                    btn.style.background = '#10b981';
+                    setTimeout(() => {
+                        btn.textContent = original;
+                        btn.style.background = '';
+                    }, 1500);
+                }).catch(err => {
+                    console.error('Failed to copy all: ', err);
+                    copyToClipboardFallback(text);
+                });
+            } catch (err) {
+                console.error('Error accessing clipboard: ', err);
+                copyToClipboardFallback(text);
+            }
+        }
+        
+        // Fallback method for browsers without clipboard API
+        function copyToClipboardFallback(text) {
+            const textArea = document.createElement('textarea');
+            textArea.value = text;
+            textArea.style.position = 'fixed';  // Avoid scrolling to bottom
+            document.body.appendChild(textArea);
+            textArea.focus();
+            textArea.select();
+            
+            try {
+                const successful = document.execCommand('copy');
+                const msg = successful ? 'Copied!' : 'Failed to copy';
+                console.log(msg);
+            } catch (err) {
+                console.error('Fallback: Could not copy text: ', err);
+            }
+            
+            document.body.removeChild(textArea);
         }
         
         function clearList() {
@@ -96,57 +193,25 @@
     </script>
 
     <style>
-        .uuid-tool {
-            max-width: 100%;
-            padding: 0 20px;
-        }
-        .controls {
-            display: flex;
-            gap: 12px;
-            margin: 24px 0;
-            flex-wrap: wrap;
-        }
-        .btn-primary, .btn-secondary {
-            padding: 12px 24px;
-            border: none;
-            border-radius: 6px;
-            cursor: pointer;
-            font-weight: 500;
-            font-size: 16px;
-            transition: all 0.2s;
-        }
-        .btn-primary {
-            background: var(--primary-color, #2563eb);
-            color: white;
-        }
-        .btn-secondary {
-            background: #6b7280;
-            color: white;
-        }
-        .btn-primary:hover, .btn-secondary:hover:not(:disabled) {
-            opacity: 0.9;
-            transform: translateY(-1px);
-        }
-        .uuid-list {
-            display: flex;
-            flex-direction: column;
-            gap: 8px;
-            margin: 24px 0;
-            max-height: 60vh;
-            overflow-y: auto;
-        }
-        .uuid-item {
-            padding: 16px;
-            background: white;
-            border: 1px solid #e2e8f0;
-            border-radius: 8px;
-            cursor: pointer;
-            transition: all 0.2s;
-            user-select: none;
-        }
-        .uuid-item:hover {
-            background: #f8fafc;
-            border-color: #cbd5e1;
+        .uuid-tool { max-width: 100%; padding: 0 16px; }
+        .format-options { background: #1e293b; border: 1px solid #334155; border-radius: 6px; padding: 14px; margin: 16px 0; }
+        .option-group { margin-bottom: 12px; color: #94a3b8; font-size: 13px; }
+        .option-group:last-child { margin-bottom: 0; }
+        .option-group.checkboxes { display: flex; flex-wrap: wrap; gap: 12px; }
+        .slider { width: 100%; margin: 8px 0; }
+        .controls { display: flex; gap: 8px; margin: 16px 0; flex-wrap: wrap; }
+        .btn-primary, .btn-secondary { padding: 10px 18px; border: none; border-radius: 6px; cursor: pointer; font-weight: 500; font-size: 13px; }
+        .btn-primary { background: #3b82f6; color: white; }
+        .btn-secondary { background: #1e293b; color: #94a3b8; border: 1px solid #334155; }
+        .btn-primary:hover, .btn-secondary:hover:not(:disabled) { opacity: 0.9; }
+        .uuid-list { display: flex; flex-direction: column; gap: 6px; margin: 16px 0; max-height: 50vh; overflow-y: auto; }
+        .uuid-item { padding: 12px; background: #1e293b; border: 1px solid #334155; border-radius: 6px; cursor: pointer; font-size: 13px; font-family: ui-monospace, monospace; color: #f1f5f9; }
+        .uuid-item:hover { background: #0f172a; border-color: #475569; }
+        .uuid-item.selected { background: #1e3a5f; border-color: #3b82f6; }
+        .stats { display: flex; gap: 16px; font-size: 13px; color: #64748b; margin-bottom: 12px; }
+        .uuid-tool h1 { font-size: 20px; margin: 0 0 6px 0; }
+        .uuid-tool p { color: #64748b; font-size: 13px; margin: 0 0 12px 0; }
+    </style>
             transform: translateX(4px);
         }
         .uuid-item code {
@@ -155,14 +220,15 @@
             letter-spacing: -0.02em;
             word-break: break-all;
             display: block;
+            color: #f1f5f9;
         }
         .stats {
             padding: 16px;
-            background: #f0fdf4;
-            border: 1px solid #bbf7d0;
+            background: #052e16;
+            border: 1px solid #166534;
             border-radius: 8px;
             font-weight: 500;
-            color: #166534;
+            color: #4ade80;
         }
         @media (max-width: 768px) {
             .controls {
@@ -173,6 +239,13 @@
             }
             .uuid-tool {
                 padding: 0 12px;
+            }
+            .option-group.checkboxes {
+                flex-direction: column;
+                gap: 12px;
+            }
+            .format-options {
+                padding: 16px;
             }
         }
     </style>

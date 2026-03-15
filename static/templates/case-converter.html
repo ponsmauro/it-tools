@@ -69,33 +69,17 @@
 </section>
 
 <style>
-  .tool-page { display: flex; flex-direction: column; gap: 1rem; }
-  .tool-grid { display: grid; gap: 1rem; grid-template-columns: repeat(auto-fit, minmax(320px, 1fr)); }
-  .panel { border: 1px solid #374151; border-radius: 10px; padding: 1rem; background: #111827; }
-  .tool-textarea {
-    width: 100%;
-    resize: vertical;
-    border-radius: 8px;
-    border: 1px solid #4b5563;
-    background: #0b1220;
-    color: #e5e7eb;
-    padding: 0.75rem;
-    font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, "Liberation Mono", monospace;
-    margin-top: 0.35rem;
-  }
-  .output-row { margin-bottom: 0.85rem; }
-  .output-row button, .actions button {
-    margin-top: 0.4rem;
-    border: none;
-    border-radius: 8px;
-    background: #2563eb;
-    color: #fff;
-    padding: 0.45rem 0.75rem;
-    cursor: pointer;
-    font-weight: 600;
-  }
-  .output-row button:hover, .actions button:hover { background: #1d4ed8; }
-  .status { color: #93c5fd; min-height: 1.2rem; }
+  .tool-page { display: flex; flex-direction: column; gap: 12px; }
+  .tool-grid { display: grid; gap: 12px; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); }
+  .panel { border: 1px solid #334155; border-radius: 6px; padding: 12px; background: #1e293b; }
+  .tool-textarea { width: 100%; resize: vertical; border-radius: 6px; border: 1px solid #334155; background: #0f172a; color: #f1f5f9; padding: 10px; font-family: ui-monospace, monospace; font-size: 13px; margin-top: 6px; min-height: 80px; }
+  .output-row { margin-bottom: 10px; }
+  .output-row button, .actions button { margin-top: 6px; border: none; border-radius: 6px; background: #3b82f6; color: #fff; padding: 8px 12px; cursor: pointer; font-weight: 500; font-size: 12px; }
+  .output-row button:hover, .actions button:hover { background: #2563eb; }
+  .status { color: #64748b; min-height: 16px; font-size: 12px; }
+  .tool-page h1 { font-size: 20px; margin: 0 0 4px 0; }
+  .tool-page > p { color: #64748b; font-size: 13px; margin: 0 0 12px 0; }
+  label { font-size: 13px; color: #94a3b8; font-weight: 500; }
 </style>
 
 <script>

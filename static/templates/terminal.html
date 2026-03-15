@@ -1,9 +1,9 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="{{ .Lang }}">
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Web Terminal - IT Tools</title>
+  <title>{{ tr "app.title" }} - {{ tr "tools.terminal" }}</title>
   <link rel="stylesheet" href="/static/css/style.css">
   <style>
     .terminal-container { 
@@ -29,20 +29,17 @@
   </style>
 </head>
 <body>
-  <div class="tabs">
-    <a href="/" class="tab active">IT Tools</a>
-  </div>
   <main class="main">
     <div class="container">
-      <h1>💻 Web Terminal</h1>
-      <p>Mock PC terminal emulator (frontend JS shell)</p>
+      <h1>{{ tr "tools.terminal.title" }}</h1>
+      <p>{{ tr "tools.terminal.desc" }}</p>
       <div class="terminal-container" id="terminal">
-        <div>Welcome to mock shell v1.0</div>
+        <div>{{ tr "tools.terminal.welcome" }}</div>
         <div>pwd: /home/user</div>
         <div>ls: dir1 docs image.png</div>
         <div class="prompt">$ </div>
       </div>
-      <textarea class="terminal-input" id="input" placeholder="Type commands: ls, cd dir1, pwd, cat file1.txt, clear..." autofocus></textarea>
+      <textarea class="terminal-input" id="input" placeholder="{{ tr "tools.terminal.placeholder" }}" autofocus></textarea>
     </div>
   </main>
   <script>
@@ -69,11 +66,11 @@
           line.textContent = `pwd: ${cwd}`;
           term.appendChild(line);
         } else if (cmd === 'clear') {
-          term.innerHTML = '<div>Terminal cleared</div><div class="prompt">$ </div>';
+          term.innerHTML = '<div>{{ tr "tools.terminal.cleared" }}</div><div class="prompt">$ </div>';
           return;
         } else {
           line = document.createElement('div');
-          line.textContent = `command not found: ${cmd}`;
+          line.textContent = `{{ tr "tools.terminal.command-not-found" }}: ${cmd}`;
           term.appendChild(line);
         }
         line = document.createElement('div');

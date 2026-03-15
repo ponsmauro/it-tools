@@ -1,59 +1,94 @@
 <!DOCTYPE html>
-<html lang=\"{{ .Lang }}\">
+<html lang="{{ .Lang }}">
 <head>
-    <meta charset=\"UTF-8\">
-    <meta name=\"viewport\" content=\"width=device-width, initial-scale=1.0\">
-    <title>{{ tr \"app.title\" }} - {{ tr \"tools.text-utils\" | default \"Text Utils\" }}</title>
-    <link rel=\"stylesheet\" href=\"/static/css/style.css\">
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>{{ tr "app.title" }} - {{ tr "tools.text-utils" }}</title>
+    <link rel="stylesheet" href="/static/css/style.css">
 </head>
 <body>
-    <div class=\"tabs\">
-        <a href=\"/\" class=\"tab active\">{{ tr \"nav.it-tools\" }}</a>
-    </div>
-
-    <main class=\"main\">
-        <div class=\"container\">
-            <div class=\"text-utils tool-container\">
-                <h1>{{ tr \"tools.text-utils.title\" | default \"Text Utilities\" }}</h1>
-                <p>{{ tr \"tools.text-utils.desc\" | default \"Live text statistics and transformations\" }}</p>
+    <main class="main">
+        <div class="container">
+            <div class="text-utils tool-container">
+                <h1>{{ tr "tools.text-utils.title" }}</h1>
+                <p>{{ tr "tools.text-utils.desc" }}</p>
                 
-                <div class=\"input-output\">
-                    <div class=\"input-section\">
-                        <label>{{ tr \"tools.input\" | default \"Input\" }}</label>
-                        <textarea id=\"input-text\" placeholder=\"Paste your text here...\" rows=\"12\"></textarea>
+                <div class="input-output">
+                    <div class="input-section">
+                        <label>{{ tr "tools.input" }}</label>
+                        <textarea id="input-text" placeholder="Paste your text here..." rows="12"></textarea>
                     </div>
                     
-                    <div class=\"output-section\">
-                        <label>{{ tr \"tools.output\" | default \"Output\" }}</label>
-                        <textarea id=\"output-text\" readonly rows=\"12\"></textarea>
-                        <button onclick=\"copyOutput()\" class=\"btn-copy-output\">{{ tr \"tools.copy-output\" | default \"Copy Output\" }}</button>
+                    <div class="output-section">
+                        <label>{{ tr "tools.output" }}</label>
+                        <textarea id="output-text" readonly rows="12"></textarea>
+                        <button onclick="copyOutput()" class="btn-copy-output">{{ tr "tools.copy-output" }}</button>
                     </div>
                 </div>
                 
-                <div class=\"stats-grid\">
-                    <div class=\"stat-card\">
-                        <span class=\"stat-number\" id=\"chars\">0</span>
-                        <span class=\"stat-label\">{{ tr \"tools.chars\" | default \"Chars\" }}</span>
+                <div class="stats-grid">
+                    <div class="stat-card">
+                        <span class="stat-number" id="chars">0</span>
+                        <span class="stat-label">{{ tr "tools.chars" }}</span>
                     </div>
-                    <div class=\"stat-card\">
-                        <span class=\"stat-number\" id=\"words\">0</span>
-                        <span class=\"stat-label\">{{ tr \"tools.words\" | default \"Words\" }}</span>
+                    <div class="stat-card">
+                        <span class="stat-number" id="words">0</span>
+                        <span class="stat-label">{{ tr "tools.words" }}</span>
                     </div>
-                    <div class=\"stat-card\">
-                        <span class=\"stat-number\" id=\"lines\">0</span>
-                        <span class=\"stat-label\">{{ tr \"tools.lines\" | default \"Lines\" }}</span>
+                    <div class="stat-card">
+                        <span class="stat-number" id="lines">0</span>
+                        <span class="stat-label">{{ tr "tools.lines" }}</span>
                     </div>
-                    <div class=\"stat-card\">
-                        <span class=\"stat-number\" id=\"empty-lines\">0</span>
-                        <span class=\"stat-label\">{{ tr \"tools.empty-lines\" | default \"Empty Lines\" }}</span>
+                    <div class="stat-card">
+                        <span class="stat-number" id="empty-lines">0</span>
+                        <span class="stat-label">{{ tr "tools.empty-lines" }}</span>
                     </div>
                 </div>
                 
-                <div class=\"controls-grid\">
-                    <button onclick=\"reverseLines()\" class=\"btn-primary\">{{ tr \"tools.reverse-lines\" | default \"Reverse Lines\" }}</button>
-                    <button onclick=\"sortLines()\" class=\"btn-primary\">{{ tr \"tools.sort-lines\" | default \"Sort Lines\" }}</button>
-                    <button onclick=\"uniqueLines()\" class=\"btn-primary\">{{ tr \"tools.unique-lines\" | default \"Unique Lines\" }}</button>
-                    <button onclick=\"clearText()\" class=\"btn-secondary\">{{ tr \"tools.clear-all\" | default \"Clear All\" }}</button>
+                <div class="transform-sections">
+                    <div class="transform-section">
+                        <h3>{{ tr "tools.text-utils.line-operations" }}</h3>
+                        <div class="controls-grid">
+                            <button onclick="reverseLines()" class="btn-primary">{{ tr "tools.reverse-lines" }}</button>
+                            <button onclick="sortLines()" class="btn-primary">{{ tr "tools.sort-lines" }}</button>
+                            <button onclick="uniqueLines()" class="btn-primary">{{ tr "tools.unique-lines" }}</button>
+                            <button onclick="addLineNumbers()" class="btn-primary">{{ tr "tools.add-line-numbers" }}</button>
+                        </div>
+                    </div>
+                    
+                    <div class="transform-section">
+                        <h3>{{ tr "tools.text-utils.case-operations" }}</h3>
+                        <div class="controls-grid">
+                            <button onclick="transformCase('upper')" class="btn-primary">{{ tr "tools.uppercase" }}</button>
+                            <button onclick="transformCase('lower')" class="btn-primary">{{ tr "tools.lowercase" }}</button>
+                            <button onclick="transformCase('title')" class="btn-primary">{{ tr "tools.title-case" }}</button>
+                            <button onclick="transformCase('sentence')" class="btn-primary">{{ tr "tools.sentence-case" }}</button>
+                        </div>
+                    </div>
+                    
+                    <div class="transform-section">
+                        <h3>{{ tr "tools.text-utils.whitespace" }}</h3>
+                        <div class="controls-grid">
+                            <button onclick="trimWhitespace('start')" class="btn-primary">{{ tr "tools.trim-start" }}</button>
+                            <button onclick="trimWhitespace('end')" class="btn-primary">{{ tr "tools.trim-end" }}</button>
+                            <button onclick="trimWhitespace('both')" class="btn-primary">{{ tr "tools.trim-both" }}</button>
+                            <button onclick="clearText()" class="btn-secondary">{{ tr "tools.clear-all" }}</button>
+                        </div>
+                    </div>
+                    
+                    <div class="transform-section">
+                        <h3>{{ tr "tools.text-utils.find-replace" }}</h3>
+                        <div class="find-replace-controls">
+                            <div class="find-replace-row">
+                                <input type="text" id="find-text" placeholder="{{ tr "tools.text-utils.find-placeholder" }}" class="find-replace-input">
+                                <input type="text" id="replace-text" placeholder="{{ tr "tools.text-utils.replace-placeholder" }}" class="find-replace-input">
+                                <button onclick="findAndReplace()" class="btn-primary">{{ tr "tools.replace" }}</button>
+                            </div>
+                            <label class="checkbox-label">
+                                <input type="checkbox" id="case-sensitive"> {{ tr "tools.text-utils.case-sensitive" }}
+                            </label>
+                        </div>
+                    </div>
                 </div>
             </div>
         </div>
@@ -72,8 +107,8 @@
         
         function updateStats() {
             const text = input.value;
-            const lines = text.split('\\n');
-            const words = text.trim().split(/\\s+/).filter(w => w.length > 0);
+            const lines = text.split('\n');
+            const words = text.trim().split(/\s+/).filter(w => w.length > 0);
             
             document.getElementById('chars').textContent = text.length;
             document.getElementById('words').textContent = words.length;
@@ -82,21 +117,21 @@
         }
         
         function reverseLines() {
-            const lines = input.value.split('\\n').reverse().join('\\n');
+            const lines = input.value.split('\n').reverse().join('\n');
             input.value = lines;
             updateLive();
         }
         
         function sortLines() {
-            const lines = input.value.split('\\n').sort().join('\\n');
+            const lines = input.value.split('\n').sort().join('\n');
             input.value = lines;
             updateLive();
         }
         
         function uniqueLines() {
-            const lines = input.value.split('\\n').filter((line, index, self) => 
+            const lines = input.value.split('\n').filter((line, index, self) => 
                 self.findIndex(l => l === line) === index
-            ).join('\\n');
+            ).join('\n');
             input.value = lines;
             updateLive();
         }
@@ -107,94 +142,160 @@
             updateStats();
         }
         
+        function transformCase(type) {
+            let result = input.value;
+            
+            switch(type) {
+                case 'upper':
+                    result = result.toUpperCase();
+                    break;
+                case 'lower':
+                    result = result.toLowerCase();
+                    break;
+                case 'title':
+                    result = result.replace(/\w\S*/g, txt => 
+                        txt.charAt(0).toUpperCase() + txt.substr(1).toLowerCase()
+                    );
+                    break;
+                case 'sentence':
+                    result = result.toLowerCase().replace(/(^\s*\w|[.!?]\s*\w)/g, c => 
+                        c.toUpperCase()
+                    );
+                    break;
+            }
+            
+            input.value = result;
+            updateLive();
+        }
+        
+        function trimWhitespace(type) {
+            let result = input.value;
+            
+            switch(type) {
+                case 'start':
+                    result = result.replace(/^\s+/gm, '');
+                    break;
+                case 'end':
+                    result = result.replace(/\s+$/gm, '');
+                    break;
+                case 'both':
+                    result = result.replace(/^\s+|\s+$/gm, '');
+                    break;
+            }
+            
+            input.value = result;
+            updateLive();
+        }
+        
+        function findAndReplace() {
+            const findText = document.getElementById('find-text').value;
+            const replaceText = document.getElementById('replace-text').value;
+            const caseSensitive = document.getElementById('case-sensitive').checked;
+            
+            if (!findText) return;
+            
+            let result = input.value;
+            let flags = 'g';
+            if (!caseSensitive) flags += 'i';
+            
+            const regex = new RegExp(escapeRegExp(findText), flags);
+            result = result.replace(regex, replaceText);
+            
+            input.value = result;
+            updateLive();
+        }
+        
+        function escapeRegExp(string) {
+            return string.replace(/[.*+?^${}()|[\]\\]/g, '\\$&');
+        }
+        
+        function addLineNumbers() {
+            const lines = input.value.split('\n');
+            const numberedLines = lines.map((line, index) => 
+                `${index + 1}. ${line}`
+            );
+            
+            input.value = numberedLines.join('\n');
+            updateLive();
+        }
+        
         function copyOutput() {
-            navigator.clipboard.writeText(output.value).then(() => {
-                const btn = event.target;
-                const original = btn.textContent;
-                btn.textContent = '✅ Copied!';
-                btn.style.background = '#10b981';
-                setTimeout(() => {
-                    btn.textContent = original;
-                    btn.style.background = '';
-                }, 1500);
-            });
+            try {
+                navigator.clipboard.writeText(output.value).then(() => {
+                    const btn = event.target;
+                    const original = btn.textContent;
+                    btn.textContent = '✅ Copied!';
+                    btn.style.background = '#10b981';
+                    setTimeout(() => {
+                        btn.textContent = original;
+                        btn.style.background = '';
+                    }, 1500);
+                }).catch(err => {
+                    console.error('Failed to copy: ', err);
+                    copyToClipboardFallback(output.value);
+                });
+            } catch (err) {
+                console.error('Error accessing clipboard: ', err);
+                copyToClipboardFallback(output.value);
+            }
+        }
+        
+        function copyToClipboardFallback(text) {
+            const textArea = document.createElement('textarea');
+            textArea.value = text;
+            textArea.style.position = 'fixed';
+            document.body.appendChild(textArea);
+            textArea.focus();
+            textArea.select();
+            
+            try {
+                const successful = document.execCommand('copy');
+                const msg = successful ? 'Copied!' : 'Failed to copy';
+                console.log(msg);
+            } catch (err) {
+                console.error('Fallback: Could not copy text: ', err);
+            }
+            
+            document.body.removeChild(textArea);
         }
     </script>
 
     <style>
-        .text-utils {
-            max-width: 100%;
-        }
-        .input-output {
-            display: grid;
-            grid-template-columns: 1fr 1fr;
-            gap: 24px;
-            margin: 32px 0;
-        }
-        .input-section, .output-section {
+        .text-utils { max-width: 100%; }
+        .input-output { display: grid; grid-template-columns: 1fr 1fr; gap: 16px; margin: 16px 0; }
+        .input-section, .output-section { display: flex; flex-direction: column; gap: 6px; }
+        label { font-weight: 500; margin-bottom: 4px; color: #94a3b8; }
+        textarea { width: 100%; padding: 10px; border: 1px solid #334155; border-radius: 6px; font-family: ui-monospace, monospace; font-size: 13px; resize: vertical; line-height: 1.4; background: #0f172a; color: #f1f5f9; }
+        textarea:focus { outline: none; border-color: #3b82f6; }
+        .btn-copy-output { margin-top: 6px; padding: 8px 14px; background: #3b82f6; color: white; border: none; border-radius: 6px; cursor: pointer; font-size: 13px; align-self: flex-end; }
+        .stats-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(120px, 1fr)); gap: 12px; margin: 16px 0; }
+        .stat-card { padding: 12px; background: #1e293b; border: 1px solid #334155; border-radius: 6px; text-align: center; }
+        .stat-number { display: block; font-size: 1.4rem; font-weight: bold; color: #f1f5f9; font-family: ui-monospace, monospace; }
+        .stat-label { font-size: 11px; color: #64748b; }
+        .transform-sections { margin: 16px 0; }
+        .transform-section { margin-bottom: 12px; padding: 12px; background: #1e293b; border: 1px solid #334155; border-radius: 6px; }
+        .transform-section h3 { margin: 0 0 10px 0; color: #f1f5f9; font-size: 14px; }
+        .controls-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(140px, 1fr)); gap: 8px; }
+        .find-replace-controls { display: flex; flex-direction: column; gap: 8px; }
+        .find-replace-row { display: flex; gap: 8px; }
+        .find-replace-input { flex: 1; padding: 8px; border: 1px solid #334155; border-radius: 6px; font-size: 13px; background: #0f172a; color: #f1f5f9; }
+        .checkbox-label { display: flex; align-items: center; gap: 6px; font-size: 12px; color: #94a3b8; margin-top: 8px; }
+        .btn-primary { padding: 10px 16px; background: #3b82f6; color: white; border: none; border-radius: 6px; cursor: pointer; font-weight: 500; font-size: 13px; }
+        .btn-primary:hover { background: #2563eb; }
+        .btn-secondary { padding: 10px 16px; background: #1e293b; color: #94a3b8; border: 1px solid #334155; border-radius: 6px; cursor: pointer; font-weight: 500; font-size: 13px; }
+        .btn-secondary:hover { background: #334155; color: #f1f5f9; }
+        .tool-container h1 { font-size: 20px; margin-bottom: 4px; }
+        .tool-container p { color: #64748b; font-size: 13px; margin-bottom: 8px; }
+    </style>
             display: flex;
-            flex-direction: column;
-        }
-        label {
-            font-weight: 600;
-            margin-bottom: 8px;
-            color: #374151;
-        }
-        textarea {
-            width: 100%;
-            padding: 16px;
-            border: 1px solid #d1d5db;
-            border-radius: 8px;
-            font-family: 'SF Mono', monospace;
+            align-items: center;
+            gap: 8px;
             font-size: 14px;
-            resize: vertical;
-            line-height: 1.5;
-            transition: border-color 0.2s;
-        }
-        textarea:focus {
-            outline: none;
-            border-color: #2563eb;
-            box-shadow: 0 0 0 3px rgba(37, 99, 235, 0.1);
-        }
-        .btn-copy-output {
-            margin-top: 8px;
-            padding: 12px 24px;
-            background: #3b82f6;
-            color: white;
-            border: none;
-            border-radius: 6px;
-            cursor: pointer;
-            align-self: flex-end;
-        }
-        .stats-grid {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
-            gap: 16px;
-            margin: 32px 0;
-        }
-        .stat-card {
-            padding: 20px;
-            background: #f8fafc;
-            border: 1px solid #e2e8f0;
-            border-radius: 8px;
-            text-align: center;
-        }
-        .stat-number {
-            display: block;
-            font-size: 2rem;
-            font-weight: bold;
-            color: #1f2937;
-            font-family: 'SF Mono', monospace;
-        }
-        .controls-grid {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
-            gap: 12px;
-            margin: 32px 0;
+            color: #cbd5e1;
         }
         .btn-primary {
             padding: 16px 24px;
-            background: var(--primary-color, #2563eb);
+            background: var(--primary-color, #3b82f6);
             color: white;
             border: none;
             border-radius: 8px;
@@ -205,7 +306,7 @@
         }
         .btn-secondary {
             padding: 16px 24px;
-            background: #6b7280;
+            background: #475569;
             color: white;
             border: none;
             border-radius: 8px;
@@ -215,7 +316,7 @@
             transition: all 0.2s;
         }
         .btn-primary:hover {
-            background: #1d4ed8;
+            background: #2563eb;
             transform: translateY(-1px);
         }
         @media (max-width: 1024px) {

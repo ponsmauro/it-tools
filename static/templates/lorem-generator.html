@@ -35,6 +35,17 @@
         gap: 12px;
     }
 
+    .lorem-generator-tool h2 {
+        margin-bottom: 6px;
+        font-size: 18px;
+    }
+
+    .lorem-generator-tool p {
+        margin-bottom: 12px;
+        color: #94a3b8;
+        font-size: 13px;
+    }
+
     .lorem-controls {
         display: grid;
         grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
@@ -48,65 +59,86 @@
         gap: 6px;
     }
 
+    .control-group label {
+        font-size: 13px;
+        color: #94a3b8;
+        font-weight: 500;
+    }
+
     .control-group input,
     .control-group select {
-        border: 1px solid #cbd5e1;
+        border: 1px solid #334155;
         border-radius: 8px;
         padding: 10px;
         font-size: 14px;
-        background: #fff;
+        background: #0f172a;
+        color: #f1f5f9;
     }
 
     .control-actions {
         display: flex;
+        flex-wrap: nowrap;
         gap: 8px;
-        flex-wrap: wrap;
+        overflow-x: auto;
     }
 
     .control-actions button {
-        border: 1px solid #cbd5e1;
+        border: 1px solid #334155;
         border-radius: 8px;
-        background: #fff;
+        background: #1e293b;
+        color: #f1f5f9;
         padding: 10px 14px;
         cursor: pointer;
+        font-size: 13px;
+        white-space: nowrap;
     }
 
     .control-actions button:hover {
-        background: #f8fafc;
+        background: #334155;
+    }
+
+    .lorem-generator-tool > label {
+        font-size: 13px;
+        color: #94a3b8;
+        font-weight: 500;
+        margin-top: 8px;
     }
 
     .lorem-output {
         width: 100%;
         min-height: 220px;
-        border: 1px solid #cbd5e1;
+        border: 1px solid #334155;
         border-radius: 8px;
         padding: 12px;
         resize: vertical;
         font-size: 14px;
         line-height: 1.5;
+        background: #0f172a;
+        color: #f1f5f9;
     }
 
     .lorem-status {
         min-height: 20px;
-        color: #0f766e;
+        color: #34d399;
         font-size: 14px;
     }
 
     .lorem-status.error {
-        color: #b91c1c;
+        color: #fca5a5;
     }
 </style>
 
 <script>
-    (function initLoremGenerator() {
+    (function initLoremGeneratorTool() {
         const wordPool = [
             "lorem", "ipsum", "dolor", "sit", "amet", "consectetur", "adipiscing", "elit",
             "sed", "do", "eiusmod", "tempor", "incididunt", "ut", "labore", "et", "dolore",
             "magna", "aliqua", "enim", "ad", "minim", "veniam", "quis", "nostrud", "exercitation",
-            "ullamco", "laboris", "nisi", "aliquip", "ex", "ea", "commodo", "consequat", "duis",
-            "aute", "irure", "in", "reprehenderit", "voluptate", "velit", "esse", "cillum",
-            "eu", "fugiat", "nulla", "pariatur", "excepteur", "sint", "occaecat", "cupidatat",
-            "non", "proident", "sunt", "culpa", "qui", "officia", "deserunt", "mollit", "anim", "id", "est", "laborum"
+            "ullamco", "laboris", "nisi", "aliquip", "ex", "ea", "commodo", "consequat",
+            "duis", "aute", "irure", "reprehenderit", "in", "voluptate", "velit", "esse",
+            "cillum", "eu", "fugiat", "nulla", "pariatur", "excepteur", "sint", "occaecat",
+            "cupidatat", "non", "proident", "sunt", "culpa", "qui", "officia", "deserunt",
+            "mollit", "anim", "id", "est", "laborum"
         ];
 
         const typeSelect = document.getElementById("lorem-type");
