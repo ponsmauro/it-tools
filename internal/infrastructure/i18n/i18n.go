@@ -149,6 +149,14 @@ const (
 	KeyToolsJwtDecoderInvalid     = "tools.jwt-decoder.invalid"
 	KeyToolsJwtDecoderPlaceholder = "tools.jwt-decoder.placeholder"
 
+	// Color Converter Tool
+	KeyToolsColorConverter      = "tools.color-converter"
+	KeyToolsColorConverterTitle = "tools.color-converter.title"
+	KeyToolsColorConverterDesc  = "tools.color-converter.desc"
+	KeyToolsColorConverterHex   = "tools.color-converter.hex"
+	KeyToolsColorConverterRgb   = "tools.color-converter.rgb"
+	KeyToolsColorConverterHsl   = "tools.color-converter.hsl"
+
 	// QR Generator Tool
 	KeyToolsQrGenerator         = "tools.qr-generator"
 	KeyToolsQrGeneratorTitle    = "tools.qr-generator.title"
@@ -421,6 +429,14 @@ func (t *Translator) InitDefaultTranslations() {
 	t.AddTranslation(config.SupportedLangEN, KeyToolsJwtDecoderInvalid, "Invalid JWT format")
 	t.AddTranslation(config.SupportedLangEN, KeyToolsJwtDecoderPlaceholder, "Paste your JWT here (ey...)")
 
+	// Color Converter Tool
+	t.AddTranslation(config.SupportedLangEN, KeyToolsColorConverter, "Color Converter")
+	t.AddTranslation(config.SupportedLangEN, KeyToolsColorConverterTitle, "Color Converter")
+	t.AddTranslation(config.SupportedLangEN, KeyToolsColorConverterDesc, "Convert colors between HEX, RGB, and HSL formats.")
+	t.AddTranslation(config.SupportedLangEN, KeyToolsColorConverterHex, "HEX")
+	t.AddTranslation(config.SupportedLangEN, KeyToolsColorConverterRgb, "RGB")
+	t.AddTranslation(config.SupportedLangEN, KeyToolsColorConverterHsl, "HSL")
+
 	// QR Generator Tool
 	t.AddTranslation(config.SupportedLangEN, KeyToolsQrGenerator, "QR Generator")
 	t.AddTranslation(config.SupportedLangEN, KeyToolsQrGeneratorTitle, "QR Generator")
@@ -637,6 +653,14 @@ func (t *Translator) InitDefaultTranslations() {
 	t.AddTranslation(config.SupportedLangES, KeyToolsJwtDecoderSignature, "Firma")
 	t.AddTranslation(config.SupportedLangES, KeyToolsJwtDecoderInvalid, "Formato JWT inválido")
 	t.AddTranslation(config.SupportedLangES, KeyToolsJwtDecoderPlaceholder, "Pega tu JWT aquí (ey...)")
+
+	// Color Converter Tool
+	t.AddTranslation(config.SupportedLangES, KeyToolsColorConverter, "Conversor de Color")
+	t.AddTranslation(config.SupportedLangES, KeyToolsColorConverterTitle, "Conversor de Color")
+	t.AddTranslation(config.SupportedLangES, KeyToolsColorConverterDesc, "Convierte colores entre formatos HEX, RGB y HSL.")
+	t.AddTranslation(config.SupportedLangES, KeyToolsColorConverterHex, "HEX")
+	t.AddTranslation(config.SupportedLangES, KeyToolsColorConverterRgb, "RGB")
+	t.AddTranslation(config.SupportedLangES, KeyToolsColorConverterHsl, "HSL")
 
 	// QR Generator Tool
 	t.AddTranslation(config.SupportedLangES, KeyToolsQrGenerator, "Generador de QR")
