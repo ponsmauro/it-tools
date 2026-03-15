@@ -31,7 +31,7 @@
                             <label for="out-hex">{{ tr "tools.color-converter.hex" }}</label>
                             <div class="input-with-button">
                                 <input type="text" id="out-hex" class="tool-input" readonly>
-                                <button type="button" class="btn-copy" data-target="out-hex">{{ tr "tools.copy" }}</button>
+                                <button type="button" class="btn-primary btn-copy" data-target="out-hex">{{ tr "tools.copy" }}</button>
                             </div>
                         </div>
 
@@ -39,7 +39,7 @@
                             <label for="out-rgb">{{ tr "tools.color-converter.rgb" }}</label>
                             <div class="input-with-button">
                                 <input type="text" id="out-rgb" class="tool-input" readonly>
-                                <button type="button" class="btn-copy" data-target="out-rgb">{{ tr "tools.copy" }}</button>
+                                <button type="button" class="btn-primary btn-copy" data-target="out-rgb">{{ tr "tools.copy" }}</button>
                             </div>
                         </div>
 
@@ -47,7 +47,7 @@
                             <label for="out-hsl">{{ tr "tools.color-converter.hsl" }}</label>
                             <div class="input-with-button">
                                 <input type="text" id="out-hsl" class="tool-input" readonly>
-                                <button type="button" class="btn-copy" data-target="out-hsl">{{ tr "tools.copy" }}</button>
+                                <button type="button" class="btn-primary btn-copy" data-target="out-hsl">{{ tr "tools.copy" }}</button>
                             </div>
                         </div>
                     </div>
@@ -108,19 +108,6 @@
         .input-with-button {
             display: flex;
             gap: 8px;
-        }
-        .btn-copy {
-            padding: 0 16px;
-            background: var(--primary-color);
-            color: white; /* Using white instead of hex to pass dark mode test */
-            border: none;
-            border-radius: 8px;
-            cursor: pointer;
-            font-weight: 500;
-            transition: opacity 0.2s;
-        }
-        .btn-copy:hover {
-            opacity: 0.9;
         }
     </style>
 

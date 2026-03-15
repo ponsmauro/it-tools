@@ -17,9 +17,9 @@
         </div>
 
         <div class="control-actions">
-            <button type="button" id="btn-lorem-generate">Generate</button>
-            <button type="button" id="btn-lorem-copy">Copy</button>
-            <button type="button" id="btn-lorem-clear">Clear</button>
+            <button type="button" id="btn-lorem-generate" class="btn-primary">Generate</button>
+            <button type="button" id="btn-lorem-copy" class="btn-primary">Copy</button>
+            <button type="button" id="btn-lorem-clear" class="btn-secondary">Clear</button>
         </div>
     </div>
 
@@ -80,21 +80,6 @@
         flex-wrap: nowrap;
         gap: 8px;
         overflow-x: auto;
-    }
-
-    .control-actions button {
-        border: 1px solid var(--border-color);
-        border-radius: 8px;
-        background: var(--card-bg);
-        color: var(--text-primary);
-        padding: 10px 14px;
-        cursor: pointer;
-        font-size: 13px;
-        white-space: nowrap;
-    }
-
-    .control-actions button:hover {
-        background: var(--border-color);
     }
 
     .lorem-generator-tool > label {

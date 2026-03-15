@@ -23,8 +23,8 @@ PORT=8080
 # Comment line
 DEBUG=true"></textarea>
       <div class="actions">
-        <button id="format-btn" type="button">Format</button>
-        <button id="clear-btn" type="button">Clear</button>
+        <button id="format-btn" type="button" class="btn-primary">Format</button>
+        <button id="clear-btn" type="button" class="btn-secondary">Clear</button>
       </div>
     </div>
 
@@ -32,7 +32,7 @@ DEBUG=true"></textarea>
       <label for="env-output">Formatted Output</label>
       <textarea id="env-output" class="tool-textarea" rows="14" readonly placeholder="Formatted output will appear here"></textarea>
       <div class="actions">
-        <button id="copy-btn" type="button">Copy Output</button>
+        <button id="copy-btn" type="button" class="btn-primary">Copy Output</button>
       </div>
     </div>
   </div>
@@ -54,8 +54,6 @@ DEBUG=true"></textarea>
   .panel label { display: block; margin-bottom: 6px; font-weight: 500; font-size: 13px; color: var(--text-secondary); }
   .tool-textarea { width: 100%; background: var(--bg-color); color: var(--text-primary); border: 1px solid var(--border-color); border-radius: 6px; padding: 10px; font-family: ui-monospace, monospace; font-size: 13px; resize: vertical; min-height: 120px; }
   .actions { display: flex; gap: 8px; margin-top: 8px; flex-wrap: wrap; }
-  .actions button { background: var(--primary-color); color: var(--text-primary); border: none; border-radius: 6px; padding: 8px 12px; cursor: pointer; font-weight: 500; font-size: 13px; }
-  .actions button:hover { background: var(--primary-hover); }
   .validation-list { margin: 0; padding-left: 18px; color: var(--error-text); font-size: 13px; }
   .status { margin-top: 8px; color: var(--text-secondary); min-height: 16px; font-size: 12px; }
   code { background: var(--bg-color); padding: 2px 6px; border-radius: 4px; font-size: 12px; }
