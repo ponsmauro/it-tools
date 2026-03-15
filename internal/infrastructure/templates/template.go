@@ -2,7 +2,6 @@ package templates
 
 import (
 	"html/template"
-	"sync"
 
 	"it-tools/internal/infrastructure/i18n"
 )
@@ -11,7 +10,6 @@ import (
 type TemplateHelper struct {
 	translator *i18n.Translator
 	funcMap    template.FuncMap
-	mu         sync.RWMutex
 }
 
 // NewTemplateHelper creates a new TemplateHelper
