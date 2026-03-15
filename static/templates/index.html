@@ -14,69 +14,65 @@
         body {
             font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
             height: 100vh;
-            background: #f8fafc;
+            background: #0f172a;
+            color: #f1f5f9;
+            font-size: 14px;
         }
         .app-container {
             display: flex;
             height: 100vh;
         }
         .sidebar {
-            width: 280px;
-            background: white;
-            border-right: 1px solid #e2e8f0;
-            padding: 20px 0;
+            width: 220px;
+            min-width: 220px;
+            background: #1e293b;
+            border-right: 1px solid #334155;
+            padding: 12px 0;
             transition: width 0.3s ease;
             overflow-y: auto;
         }
         .sidebar::-webkit-scrollbar {
-            width: 6px;
+            width: 4px;
         }
         .sidebar::-webkit-scrollbar-track {
-            background: #f1f5f9;
+            background: #0f172a;
         }
         .sidebar::-webkit-scrollbar-thumb {
-            background: #cbd5e1;
-            border-radius: 3px;
-        }
-        .sidebar.collapsed {
-            width: 60px;
+            background: #475569;
+            border-radius: 2px;
         }
         .search-input {
             width: 90%;
-            margin: 0 5% 20px 5%;
-            padding: 12px;
-            border: 1px solid #e2e8f0;
-            border-radius: 8px;
-            font-size: 16px;
-        }
-        .toggle-btn {
-            position: absolute;
-            top: 20px;
-            right: 20px;
-            background: #f1f5f9;
-            border: 1px solid #e2e8f0;
+            margin: 8px 5% 12px;
+            padding: 8px 10px;
+            border: 1px solid #334155;
             border-radius: 6px;
-            padding: 8px;
-            cursor: pointer;
+            font-size: 13px;
+            background: #0f172a;
+            color: #f1f5f9;
+        }
+        .search-input::placeholder {
+            color: #64748b;
         }
         .tool-link {
             display: block;
-            padding: 16px 24px;
-            color: #1e293b;
+            padding: 10px 16px;
+            color: #94a3b8;
             text-decoration: none;
-            border-left: 4px solid transparent;
-            transition: all 0.2s;
+            border-left: 3px solid transparent;
+            transition: all 0.15s;
             cursor: pointer;
         }
         .tool-link .tool-name {
             display: block;
             font-weight: 500;
+            font-size: 13px;
             line-height: 1.3;
         }
         .tool-link .tool-desc {
             display: block;
-            font-size: 13px;
-            color: #94a3b8;
+            font-size: 11px;
+            color: #64748b;
             margin-top: 2px;
             line-height: 1.3;
             word-wrap: break-word;
@@ -86,17 +82,17 @@
             max-height: 2.6em;
         }
         .tool-link:hover, .tool-link.active {
-            background: #f1f5f9;
-            border-left-color: #2563eb;
-            color: #2563eb;
+            background: #0f172a;
+            border-left-color: #3b82f6;
+            color: #f1f5f9;
         }
         .tool-name {
             font-weight: 500;
         }
         .tool-desc {
             display: block;
-            font-size: 13px;
-            color: #94a3b8;
+            font-size: 11px;
+            color: #64748b;
             margin-top: 2px;
         }
         .main-content {
@@ -108,24 +104,24 @@
         }
         .content-area {
             flex: 1;
-            padding: 40px;
+            padding: 20px;
             overflow-y: auto;
-            background: white;
+            background: #0f172a;
+            color: #f1f5f9;
         }
         .loading {
             display: flex;
             align-items: center;
             justify-content: center;
-            height: 200px;
+            height: 100px;
             color: #64748b;
-            font-size: 18px;
+            font-size: 14px;
         }
     </style>
 </head>
 <body>
     <div class="app-container">
         <aside class="sidebar" id="sidebar">
-            <button class="toggle-btn" onclick="toggleSidebar()">☰</button>
             <input type="text" id="sidebar-search" placeholder="🔍 Search tools..." class="search-input">
             <div class="tools-list">
                 {{ range .Tools }}
@@ -148,7 +144,6 @@
 
     <script>
         let activeToolLink = null;
-        let sidebarCollapsed = false;
 
         document.addEventListener('DOMContentLoaded', () => {
             const searchInput = document.getElementById('sidebar-search');
@@ -163,11 +158,7 @@
             });
         });
 
-        function toggleSidebar() {
-            const sidebar = document.getElementById('sidebar');
-            sidebar.classList.toggle('collapsed');
-            sidebarCollapsed = sidebar.classList.contains('collapsed');
-        }
+        // Toggle sidebar function removed as requested
 
         async function loadToolContent(toolId) {
             // Clear previous active

@@ -7,11 +7,6 @@
     <link rel="stylesheet" href="/static/css/style.css">
 </head>
 <body>
-    <div class="tabs">
-        <a href="/?lang={{ .Lang }}" class="tab {{ if eq .CurrentRoute "/" }}active{{ end }}">{{ .Tr "nav.it-tools" }}</a>
-
-    </div>
-
     <main class="main">
         {{ template "content" . }}
     </main>

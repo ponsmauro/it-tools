@@ -7,32 +7,27 @@
     <link rel="stylesheet" href="/static/css/style.css">
 </head>
 <body>
-    <div class="tabs">
-        <a href="/?lang={{ .Lang }}" class="tab {{ if eq .CurrentRoute "/" }}active{{ end }}">{{ tr "nav.it-tools" }}</a>
-
-    </div>
-
     <main class="main">
         <div class="container">
             <section class="about-content">
                 <div class="about-card">
                     <h3>{{ tr "about.mission" }}</h3>
-                    <p>IT Tools is a collection of online tools designed to facilitate the daily work of developers. From JSON formatting to hash generation, you will find useful tools for your workflow.</p>
+                    <p>{{ tr "about.mission.desc" }}</p>
                 </div>
 
                 <div class="about-card">
                     <h3>{{ tr "about.features" }}</h3>
                     <ul>
-                        <li>✅ Completely free</li>
-                        <li>✅ No registration required</li>
-                        <li>✅ Privacy guaranteed</li>
-                        <li>✅ Open source</li>
+                        <li>✅ {{ tr "about.features.free" }}</li>
+                        <li>✅ {{ tr "about.features.no-registration" }}</li>
+                        <li>✅ {{ tr "about.features.privacy" }}</li>
+                        <li>✅ {{ tr "about.features.open-source" }}</li>
                     </ul>
                 </div>
 
                 <div class="about-card">
                     <h3>{{ tr "about.tech" }}</h3>
-                    <p>This project is built with Go (Golang) and uses HTML templates for the frontend.</p>
+                    <p>{{ tr "about.tech.desc" }}</p>
                 </div>
             </section>
         </div>

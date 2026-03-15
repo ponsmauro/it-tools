@@ -1,9 +1,9 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="{{ .Lang }}">
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>File Commander - IT Tools</title>
+  <title>{{ tr "app.title" }} - {{ tr "tools.commander" }}</title>
   <link rel="stylesheet" href="/static/css/style.css">
   <style>
     .dual-pane { display: flex; height: 80vh; gap: 1px; background: #333; }
@@ -14,13 +14,10 @@
   </style>
 </head>
 <body>
-  <div class="tabs">
-    <a href="/" class="tab active">IT Tools</a>
-  </div>
   <main class="main">
     <div class="container">
-      <h1>🗂️ File Commander</h1>
-      <p>Dual-pane file manager (frontend demo with virtual FS)</p>
+      <h1>{{ tr "tools.commander.title" }}</h1>
+      <p>{{ tr "tools.commander.desc" }}</p>
       <div class="dual-pane">
         <div class="pane">
           <div class="path-bar" id="left-path">/home/user</div>
@@ -42,9 +39,9 @@ backup.zip
         </div>
       </div>
       <div style="margin-top: 10px;">
-        <button onclick="copySelected()">Copy</button>
-        <button onclick="moveSelected()">Move</button>
-        <button onclick="deleteSelected()">Delete</button>
+        <button onclick="copySelected()">{{ tr "tools.commander.copy" }}</button>
+        <button onclick="moveSelected()">{{ tr "tools.commander.move" }}</button>
+        <button onclick="deleteSelected()">{{ tr "tools.commander.delete" }}</button>
       </div>
     </div>
   </main>
@@ -58,9 +55,9 @@ backup.zip
         path.textContent = e.target.textContent.trim() || path.textContent;
       }
     });
-    function copySelected() { alert('Copy left → right (mock)'); }
-    function moveSelected() { alert('Move left → right (mock)'); }
-    function deleteSelected() { alert('Delete selected (mock)'); }
+    function copySelected() { alert('{{ tr "tools.commander.copy-alert" }}'); }
+    function moveSelected() { alert('{{ tr "tools.commander.move-alert" }}'); }
+    function deleteSelected() { alert('{{ tr "tools.commander.delete-alert" }}'); }
   </script>
 </body>
 </html>

@@ -36,7 +36,7 @@
 
     .url-encoder-tool p {
         margin-bottom: 16px;
-        color: #475569;
+        color: #94a3b8;
     }
 
     .tool-grid {
@@ -52,45 +52,49 @@
 
     .panel.actions {
         display: flex;
-        flex-wrap: wrap;
+        flex-wrap: nowrap;
         flex-direction: row;
         gap: 8px;
+        overflow-x: auto;
     }
 
     .panel.actions button {
-        border: 1px solid #cbd5e1;
+        border: 1px solid #334155;
         border-radius: 8px;
-        background: #ffffff;
-        color: #0f172a;
+        background: #1e293b;
+        color: #f1f5f9;
         padding: 10px 14px;
         cursor: pointer;
+        white-space: nowrap;
     }
 
     .panel.actions button:hover {
-        background: #f8fafc;
+        background: #334155;
     }
 
     .tool-textarea {
         width: 100%;
         min-height: 180px;
-        border: 1px solid #cbd5e1;
+        border: 1px solid #334155;
         border-radius: 8px;
         padding: 12px;
         font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, "Liberation Mono", "Courier New", monospace;
         font-size: 14px;
         line-height: 1.4;
         resize: vertical;
+        background: #0f172a;
+        color: #f1f5f9;
     }
 
     .status {
         margin-top: 8px;
         min-height: 24px;
         font-size: 14px;
-        color: #0f766e;
+        color: #34d399;
     }
 
     .status.error {
-        color: #b91c1c;
+        color: #fca5a5;
     }
 </style>
 

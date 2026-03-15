@@ -39,35 +39,19 @@ DEBUG=true"></textarea>
 </section>
 
 <style>
-  .tool-page { display: flex; flex-direction: column; gap: 1rem; }
-  .tool-header h1 { margin-bottom: 0.25rem; }
-  .tool-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(320px, 1fr)); gap: 1rem; }
-  .panel { background: #111827; border: 1px solid #374151; border-radius: 10px; padding: 1rem; }
-  .panel label { display: block; margin-bottom: 0.5rem; font-weight: 600; }
-  .tool-textarea {
-    width: 100%;
-    background: #0b1220;
-    color: #e5e7eb;
-    border: 1px solid #4b5563;
-    border-radius: 8px;
-    padding: 0.75rem;
-    font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, "Liberation Mono", monospace;
-    resize: vertical;
-  }
-  .actions { display: flex; gap: 0.5rem; margin-top: 0.75rem; flex-wrap: wrap; }
-  .actions button {
-    background: #2563eb;
-    color: #fff;
-    border: none;
-    border-radius: 8px;
-    padding: 0.55rem 0.9rem;
-    cursor: pointer;
-    font-weight: 600;
-  }
-  .actions button:hover { background: #1d4ed8; }
-  .validation-list { margin: 0; padding-left: 1.1rem; color: #fca5a5; }
-  .status { margin-top: 0.5rem; color: #93c5fd; min-height: 1.2rem; }
-  code { background: #1f2937; padding: 0.1rem 0.35rem; border-radius: 6px; }
+  .tool-page { display: flex; flex-direction: column; gap: 12px; }
+  .tool-header h1 { margin-bottom: 4px; font-size: 18px; }
+  .tool-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: 12px; }
+  .panel { background: #1e293b; border: 1px solid #334155; border-radius: 6px; padding: 12px; }
+  .panel label { display: block; margin-bottom: 6px; font-weight: 500; font-size: 13px; color: #94a3b8; }
+  .tool-textarea { width: 100%; background: #0f172a; color: #f1f5f9; border: 1px solid #334155; border-radius: 6px; padding: 10px; font-family: ui-monospace, monospace; font-size: 13px; resize: vertical; min-height: 120px; }
+  .actions { display: flex; gap: 8px; margin-top: 8px; flex-wrap: wrap; }
+  .actions button { background: #3b82f6; color: #fff; border: none; border-radius: 6px; padding: 8px 12px; cursor: pointer; font-weight: 500; font-size: 13px; }
+  .actions button:hover { background: #2563eb; }
+  .validation-list { margin: 0; padding-left: 18px; color: #fca5a5; font-size: 13px; }
+  .status { margin-top: 8px; color: #64748b; min-height: 16px; font-size: 12px; }
+  code { background: #0f172a; padding: 2px 6px; border-radius: 4px; font-size: 12px; }
+  .tool-page > p { color: #64748b; font-size: 13px; margin: 0; }
 </style>
 
 <script>
