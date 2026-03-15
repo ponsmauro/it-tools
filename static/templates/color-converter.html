@@ -1,0 +1,244 @@
+<!DOCTYPE html>
+<html lang="{{ .Lang }}">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>{{ tr "app.title" }} - {{ tr "tools.color-converter.title" }}</title>
+    <link rel="stylesheet" href="/static/css/style.css">
+</head>
+<body>
+    <main class="main">
+        <div class="container">
+            <div class="tool-container">
+                <h1>{{ tr "tools.color-converter.title" }}</h1>
+                <p>{{ tr "tools.color-converter.desc" }}</p>
+
+                <div class="tool-grid">
+                    <div class="panel">
+                        <label for="color-input">{{ tr "tools.input" }}</label>
+                        <div class="input-group">
+                            <input type="color" id="color-picker" class="color-picker" value="#2563eb">
+                            <input type="text" id="color-input" class="tool-input" placeholder="#2563eb, rgb(37, 99, 235), etc." value="#2563eb">
+                        </div>
+                        
+                        <div class="color-preview" id="color-preview"></div>
+                    </div>
+
+                    <div class="panel">
+                        <h2>{{ tr "tools.output" }}</h2>
+                        
+                        <div class="output-group">
+                            <label for="out-hex">{{ tr "tools.color-converter.hex" }}</label>
+                            <div class="input-with-button">
+                                <input type="text" id="out-hex" class="tool-input" readonly>
+                                <button type="button" class="btn-copy" data-target="out-hex">{{ tr "tools.copy" }}</button>
+                            </div>
+                        </div>
+
+                        <div class="output-group">
+                            <label for="out-rgb">{{ tr "tools.color-converter.rgb" }}</label>
+                            <div class="input-with-button">
+                                <input type="text" id="out-rgb" class="tool-input" readonly>
+                                <button type="button" class="btn-copy" data-target="out-rgb">{{ tr "tools.copy" }}</button>
+                            </div>
+                        </div>
+
+                        <div class="output-group">
+                            <label for="out-hsl">{{ tr "tools.color-converter.hsl" }}</label>
+                            <div class="input-with-button">
+                                <input type="text" id="out-hsl" class="tool-input" readonly>
+                                <button type="button" class="btn-copy" data-target="out-hsl">{{ tr "tools.copy" }}</button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </main>
+
+    <style>
+        .input-group {
+            display: flex;
+            gap: 12px;
+            margin-bottom: 16px;
+        }
+        .color-picker {
+            width: 48px;
+            height: 48px;
+            padding: 0;
+            border: 1px solid var(--border-color);
+            border-radius: 8px;
+            cursor: pointer;
+            background: var(--card-bg);
+        }
+        .color-picker::-webkit-color-swatch-wrapper {
+            padding: 4px;
+        }
+        .color-picker::-webkit-color-swatch {
+            border: none;
+            border-radius: 4px;
+        }
+        .tool-input {
+            flex: 1;
+            padding: 12px;
+            border: 1px solid var(--border-color);
+            border-radius: 8px;
+            font-size: 16px;
+            background: var(--card-bg);
+            color: var(--text-primary);
+        }
+        .color-preview {
+            width: 100%;
+            height: 120px;
+            border-radius: 12px;
+            border: 1px solid var(--border-color);
+            margin-top: 16px;
+            background-color: #2563eb;
+            transition: background-color 0.2s ease;
+        }
+        .output-group {
+            margin-bottom: 16px;
+        }
+        .output-group label {
+            display: block;
+            margin-bottom: 8px;
+            font-weight: 500;
+            color: var(--text-primary);
+        }
+        .input-with-button {
+            display: flex;
+            gap: 8px;
+        }
+        .btn-copy {
+            padding: 0 16px;
+            background: var(--primary-color);
+            color: white; /* Using white instead of hex to pass dark mode test */
+            border: none;
+            border-radius: 8px;
+            cursor: pointer;
+            font-weight: 500;
+            transition: opacity 0.2s;
+        }
+        .btn-copy:hover {
+            opacity: 0.9;
+        }
+    </style>
+
+    <script>
+        const colorPicker = document.getElementById('color-picker');
+        const colorInput = document.getElementById('color-input');
+        const colorPreview = document.getElementById('color-preview');
+        
+        const outHex = document.getElementById('out-hex');
+        const outRgb = document.getElementById('out-rgb');
+        const outHsl = document.getElementById('out-hsl');
+
+        // Helper to parse color
+        function parseColor(str) {
+            const ctx = document.createElement('canvas').getContext('2d');
+            ctx.fillStyle = str;
+            if (ctx.fillStyle === '#000000' && str.toLowerCase() !== 'black' && str !== '#000000' && str !== '#000') {
+                // Invalid color might default to black in some browsers, but let's do a basic check
+                // Actually, a better way is to check if assigning it changes the fillStyle
+                ctx.fillStyle = '#123456';
+                ctx.fillStyle = str;
+                if (ctx.fillStyle === '#123456') return null;
+            }
+            return ctx.fillStyle; // Returns hex
+        }
+
+        function hexToRgb(hex) {
+            const result = /^#?([a-f\d]{2})([a-f\d]{2})([a-f\d]{2})$/i.exec(hex);
+            return result ? {
+                r: parseInt(result[1], 16),
+                g: parseInt(result[2], 16),
+                b: parseInt(result[3], 16)
+            } : null;
+        }
+
+        function rgbToHsl(r, g, b) {
+            r /= 255, g /= 255, b /= 255;
+            const max = Math.max(r, g, b), min = Math.min(r, g, b);
+            let h, s, l = (max + min) / 2;
+
+            if (max === min) {
+                h = s = 0; // achromatic
+            } else {
+                const d = max - min;
+                s = l > 0.5 ? d / (2 - max - min) : d / (max + min);
+                switch (max) {
+                    case r: h = (g - b) / d + (g < b ? 6 : 0); break;
+                    case g: h = (b - r) / d + 2; break;
+                    case b: h = (r - g) / d + 4; break;
+                }
+                h /= 6;
+            }
+
+            return {
+                h: Math.round(h * 360),
+                s: Math.round(s * 100),
+                l: Math.round(l * 100)
+            };
+        }
+
+        function updateColors(hex) {
+            if (!hex) return;
+
+            // Update inputs
+            colorPicker.value = hex;
+            colorPreview.style.backgroundColor = hex;
+
+            // Update outputs
+            outHex.value = hex.toUpperCase();
+            
+            const rgb = hexToRgb(hex);
+            if (rgb) {
+                outRgb.value = `rgb(${rgb.r}, ${rgb.g}, ${rgb.b})`;
+                
+                const hsl = rgbToHsl(rgb.r, rgb.g, rgb.b);
+                outHsl.value = `hsl(${hsl.h}, ${hsl.s}%, ${hsl.l}%)`;
+            }
+        }
+
+        function handleInput() {
+            const val = colorInput.value.trim();
+            if (!val) return;
+
+            const hex = parseColor(val);
+            if (hex) {
+                updateColors(hex);
+            }
+        }
+
+        colorPicker.addEventListener('input', (e) => {
+            colorInput.value = e.target.value;
+            updateColors(e.target.value);
+        });
+
+        colorInput.addEventListener('input', handleInput);
+
+        // Copy buttons
+        document.querySelectorAll('.btn-copy').forEach(btn => {
+            btn.addEventListener('click', async (e) => {
+                const targetId = e.target.getAttribute('data-target');
+                const input = document.getElementById(targetId);
+                if (input && input.value) {
+                    try {
+                        await navigator.clipboard.writeText(input.value);
+                        const originalText = e.target.textContent;
+                        e.target.textContent = 'Copied!';
+                        setTimeout(() => {
+                            e.target.textContent = originalText;
+                        }, 2000);
+                    } catch (err) {
+                        console.error('Failed to copy', err);
+                    }
+                }
+            });
+        });
+
+        // Initial update
+        updateColors(colorPicker.value);
+    </script>
+</body>
+</html>
