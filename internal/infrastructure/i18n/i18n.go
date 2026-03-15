@@ -149,6 +149,18 @@ const (
 	KeyToolsJwtDecoderInvalid     = "tools.jwt-decoder.invalid"
 	KeyToolsJwtDecoderPlaceholder = "tools.jwt-decoder.placeholder"
 
+	// JSON Formatter Tool
+	KeyToolsJsonFormatter        = "tools.json-formatter"
+	KeyToolsJsonFormatterTitle   = "tools.json-formatter.title"
+	KeyToolsJsonFormatterDesc    = "tools.json-formatter.desc"
+	KeyToolsJsonFormatterFormat  = "tools.json-formatter.format"
+	KeyToolsJsonFormatterMinify  = "tools.json-formatter.minify"
+	KeyToolsJsonFormatterIndent  = "tools.json-formatter.indent"
+	KeyToolsJsonFormatterSpaces2 = "tools.json-formatter.spaces2"
+	KeyToolsJsonFormatterSpaces4 = "tools.json-formatter.spaces4"
+	KeyToolsJsonFormatterTabs    = "tools.json-formatter.tabs"
+	KeyToolsJsonFormatterInvalid = "tools.json-formatter.invalid"
+
 	// Hash Generator Tool
 	KeyToolsHashGenerator          = "tools.hash-generator"
 	KeyToolsHashGeneratorTitle     = "tools.hash-generator.title"
@@ -403,6 +415,18 @@ func (t *Translator) InitDefaultTranslations() {
 	t.AddTranslation(config.SupportedLangEN, KeyToolsJwtDecoderInvalid, "Invalid JWT format")
 	t.AddTranslation(config.SupportedLangEN, KeyToolsJwtDecoderPlaceholder, "Paste your JWT here (ey...)")
 
+	// JSON Formatter Tool
+	t.AddTranslation(config.SupportedLangEN, KeyToolsJsonFormatter, "JSON Formatter")
+	t.AddTranslation(config.SupportedLangEN, KeyToolsJsonFormatterTitle, "JSON Formatter")
+	t.AddTranslation(config.SupportedLangEN, KeyToolsJsonFormatterDesc, "Format, minify, and validate JSON strings.")
+	t.AddTranslation(config.SupportedLangEN, KeyToolsJsonFormatterFormat, "Format")
+	t.AddTranslation(config.SupportedLangEN, KeyToolsJsonFormatterMinify, "Minify")
+	t.AddTranslation(config.SupportedLangEN, KeyToolsJsonFormatterIndent, "Indentation")
+	t.AddTranslation(config.SupportedLangEN, KeyToolsJsonFormatterSpaces2, "2 Spaces")
+	t.AddTranslation(config.SupportedLangEN, KeyToolsJsonFormatterSpaces4, "4 Spaces")
+	t.AddTranslation(config.SupportedLangEN, KeyToolsJsonFormatterTabs, "Tabs")
+	t.AddTranslation(config.SupportedLangEN, KeyToolsJsonFormatterInvalid, "Invalid JSON")
+
 	// Hash Generator Tool
 	t.AddTranslation(config.SupportedLangEN, KeyToolsHashGenerator, "Hash Generator")
 	t.AddTranslation(config.SupportedLangEN, KeyToolsHashGeneratorTitle, "Hash Generator")
@@ -601,6 +625,18 @@ func (t *Translator) InitDefaultTranslations() {
 	t.AddTranslation(config.SupportedLangES, KeyToolsJwtDecoderSignature, "Firma")
 	t.AddTranslation(config.SupportedLangES, KeyToolsJwtDecoderInvalid, "Formato JWT inválido")
 	t.AddTranslation(config.SupportedLangES, KeyToolsJwtDecoderPlaceholder, "Pega tu JWT aquí (ey...)")
+
+	// JSON Formatter Tool
+	t.AddTranslation(config.SupportedLangES, KeyToolsJsonFormatter, "Formateador JSON")
+	t.AddTranslation(config.SupportedLangES, KeyToolsJsonFormatterTitle, "Formateador JSON")
+	t.AddTranslation(config.SupportedLangES, KeyToolsJsonFormatterDesc, "Formatea, minifica y valida cadenas JSON.")
+	t.AddTranslation(config.SupportedLangES, KeyToolsJsonFormatterFormat, "Formatear")
+	t.AddTranslation(config.SupportedLangES, KeyToolsJsonFormatterMinify, "Minificar")
+	t.AddTranslation(config.SupportedLangES, KeyToolsJsonFormatterIndent, "Indentación")
+	t.AddTranslation(config.SupportedLangES, KeyToolsJsonFormatterSpaces2, "2 Espacios")
+	t.AddTranslation(config.SupportedLangES, KeyToolsJsonFormatterSpaces4, "4 Espacios")
+	t.AddTranslation(config.SupportedLangES, KeyToolsJsonFormatterTabs, "Tabulaciones")
+	t.AddTranslation(config.SupportedLangES, KeyToolsJsonFormatterInvalid, "JSON Inválido")
 
 	// Hash Generator Tool
 	t.AddTranslation(config.SupportedLangES, KeyToolsHashGenerator, "Generador de Hash")
