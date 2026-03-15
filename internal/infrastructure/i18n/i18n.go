@@ -139,6 +139,16 @@ const (
 	KeyToolsBase64FileError         = "tools.base64.file-error"
 	KeyToolsBase64FileReadError     = "tools.base64.file-read-error"
 
+	// JWT Decoder Tool
+	KeyToolsJwtDecoder            = "tools.jwt-decoder"
+	KeyToolsJwtDecoderTitle       = "tools.jwt-decoder.title"
+	KeyToolsJwtDecoderDesc        = "tools.jwt-decoder.desc"
+	KeyToolsJwtDecoderHeader      = "tools.jwt-decoder.header"
+	KeyToolsJwtDecoderPayload     = "tools.jwt-decoder.payload"
+	KeyToolsJwtDecoderSignature   = "tools.jwt-decoder.signature"
+	KeyToolsJwtDecoderInvalid     = "tools.jwt-decoder.invalid"
+	KeyToolsJwtDecoderPlaceholder = "tools.jwt-decoder.placeholder"
+
 	// Password Generator Tool
 	KeyToolsPasswordGenerator                       = "tools.password-generator"
 	KeyToolsPasswordGeneratorTitle                  = "tools.password-generator.title"
@@ -360,6 +370,16 @@ func (t *Translator) InitDefaultTranslations() {
 	t.AddTranslation(config.SupportedLangEN, KeyToolsBase64FileError, "Error processing file")
 	t.AddTranslation(config.SupportedLangEN, KeyToolsBase64FileReadError, "Error reading file")
 
+	// JWT Decoder Tool
+	t.AddTranslation(config.SupportedLangEN, KeyToolsJwtDecoder, "JWT Decoder")
+	t.AddTranslation(config.SupportedLangEN, KeyToolsJwtDecoderTitle, "JWT Decoder")
+	t.AddTranslation(config.SupportedLangEN, KeyToolsJwtDecoderDesc, "Decode JSON Web Tokens (JWT) to view their header, payload, and signature.")
+	t.AddTranslation(config.SupportedLangEN, KeyToolsJwtDecoderHeader, "Header (Algorithm & Token Type)")
+	t.AddTranslation(config.SupportedLangEN, KeyToolsJwtDecoderPayload, "Payload (Data)")
+	t.AddTranslation(config.SupportedLangEN, KeyToolsJwtDecoderSignature, "Signature")
+	t.AddTranslation(config.SupportedLangEN, KeyToolsJwtDecoderInvalid, "Invalid JWT format")
+	t.AddTranslation(config.SupportedLangEN, KeyToolsJwtDecoderPlaceholder, "Paste your JWT here (ey...)")
+
 	// Password Generator Tool
 	t.AddTranslation(config.SupportedLangEN, KeyToolsPasswordGenerator, "Password Generator")
 	t.AddTranslation(config.SupportedLangEN, KeyToolsPasswordGeneratorTitle, "🔐 Password Generator")
@@ -525,6 +545,16 @@ func (t *Translator) InitDefaultTranslations() {
 	t.AddTranslation(config.SupportedLangES, KeyToolsBase64FileEncoded, "¡Archivo codificado exitosamente!")
 	t.AddTranslation(config.SupportedLangES, KeyToolsBase64FileError, "Error al procesar archivo")
 	t.AddTranslation(config.SupportedLangES, KeyToolsBase64FileReadError, "Error al leer archivo")
+
+	// JWT Decoder Tool
+	t.AddTranslation(config.SupportedLangES, KeyToolsJwtDecoder, "Decodificador JWT")
+	t.AddTranslation(config.SupportedLangES, KeyToolsJwtDecoderTitle, "Decodificador JWT")
+	t.AddTranslation(config.SupportedLangES, KeyToolsJwtDecoderDesc, "Decodifica JSON Web Tokens (JWT) para ver su encabezado, carga útil y firma.")
+	t.AddTranslation(config.SupportedLangES, KeyToolsJwtDecoderHeader, "Encabezado (Algoritmo y Tipo)")
+	t.AddTranslation(config.SupportedLangES, KeyToolsJwtDecoderPayload, "Carga Útil (Datos)")
+	t.AddTranslation(config.SupportedLangES, KeyToolsJwtDecoderSignature, "Firma")
+	t.AddTranslation(config.SupportedLangES, KeyToolsJwtDecoderInvalid, "Formato JWT inválido")
+	t.AddTranslation(config.SupportedLangES, KeyToolsJwtDecoderPlaceholder, "Pega tu JWT aquí (ey...)")
 
 	// Password Generator Tool
 	t.AddTranslation(config.SupportedLangES, KeyToolsPasswordGenerator, "Generador de Contraseñas")
