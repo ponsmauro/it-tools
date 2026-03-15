@@ -30,12 +30,12 @@ def analyze_backend():
     
     recommendations = []
     if coverage < 80:
-        recommendations.append(f"Test coverage is low ({coverage}%). Aim for at least 80% by writing more unit tests for your Go packages.")
+        recommendations.append(f"<strong>Test coverage is low ({coverage}%).</strong><br>Aim for at least 80% by writing more unit tests for your Go packages.")
     if vet_issues_count > 0:
-        recommendations.append(f"Found {vet_issues_count} issues with 'go vet'. Run 'go vet ./...' and fix the reported warnings to ensure code correctness.")
+        recommendations.append(f"<strong>Found {vet_issues_count} issues with 'go vet'.</strong><br>Run 'go vet ./...' and fix the reported warnings to ensure code correctness.")
         recommendations.append(f"Vet Output:\n{vet_out}")
     if score == 100:
-        recommendations.append("Backend code looks great! Keep up the good work.")
+        recommendations.append("<strong>Backend code looks great!</strong> Keep up the good work.")
 
     return {
         "files": int(go_files),
@@ -74,18 +74,21 @@ def analyze_frontend():
     recommendations = []
     if inline_styles_count > 0:
         files = [f.replace('static/templates/', '') for f in inline_styles_files.split('\n') if f]
-        recommendations.append(f"Found {inline_styles_count} inline styles (style=\"...\"). Inline styles make CSS hard to maintain and override. Move these to static/css/style.css using utility classes. Affected files: {', '.join(files)}")
+        files_html = "".join([f"<li>{file}</li>" for file in files])
+        recommendations.append(f"<strong>Found {inline_styles_count} inline styles (style=\"...\").</strong><br>Inline styles make CSS hard to maintain and override. Move these to static/css/style.css using utility classes.<br><strong>Affected files:</strong><ul>{files_html}</ul>")
     
     if style_tags_count > 0:
         files = [f.replace('static/templates/', '') for f in style_tags_files.split('\n') if f]
-        recommendations.append(f"Found {style_tags_count} embedded <style> tags. For better caching and separation of concerns, move CSS to static/css/style.css. Affected files: {', '.join(files)}")
+        files_html = "".join([f"<li>{file}</li>" for file in files])
+        recommendations.append(f"<strong>Found {style_tags_count} embedded <style> tags.</strong><br>For better caching and separation of concerns, move CSS to static/css/style.css.<br><strong>Affected files:</strong><ul>{files_html}</ul>")
         
     if script_tags_count > 0:
         files = [f.replace('static/templates/', '') for f in script_tags_files.split('\n') if f]
-        recommendations.append(f"Found {script_tags_count} embedded <script> tags. Consider moving complex JavaScript logic to external .js files in a static/js/ directory to improve maintainability and enable Content Security Policy (CSP). Affected files: {', '.join(files)}")
+        files_html = "".join([f"<li>{file}</li>" for file in files])
+        recommendations.append(f"<strong>Found {script_tags_count} embedded <script> tags.</strong><br>Consider moving complex JavaScript logic to external .js files in a static/js/ directory to improve maintainability and enable Content Security Policy (CSP).<br><strong>Affected files:</strong><ul>{files_html}</ul>")
 
     if score == 100:
-        recommendations.append("Frontend code looks clean! Good separation of concerns.")
+        recommendations.append("<strong>Frontend code looks clean!</strong> Good separation of concerns.")
 
     return {
         "files": total_files,
@@ -198,19 +201,30 @@ def generate_html(backend_data, frontend_data):
         }}
         .recommendation-item {{
             background: rgba(255,255,255,0.05);
-            padding: 12px;
+            padding: 16px;
             border-radius: 6px;
-            margin-bottom: 12px;
+            margin-bottom: 16px;
             border-left: 4px solid var(--warning);
             font-size: 14px;
+            line-height: 1.6;
+        }}
+        .recommendation-item ul {{
+            margin-top: 8px;
+            margin-bottom: 0;
+            padding-left: 20px;
+        }}
+        .recommendation-item li {{
+            margin-bottom: 4px;
+            color: var(--text-muted);
         }}
         .recommendation-item pre {{
             background: var(--bg);
-            padding: 8px;
+            padding: 12px;
             border-radius: 4px;
             overflow-x: auto;
-            font-size: 12px;
-            margin-top: 8px;
+            font-size: 13px;
+            margin-top: 12px;
+            border: 1px solid var(--border);
         }}
     </style>
 </head>
@@ -296,10 +310,17 @@ def generate_html(backend_data, frontend_data):
             if (element) {{
                 element.classList.add('active');
             }} else {{
-                document.querySelector(`.tab[onclick="switchTab('${{tabId}}', this)"]`).classList.add('active');
+                const tab = document.querySelector(`.tab[onclick="switchTab('${{tabId}}', this)"]`);
+                if(tab) tab.classList.add('active');
             }}
-            document.getElementById(tabId).classList.add('active');
+            const panel = document.getElementById(tabId);
+            if(panel) panel.classList.add('active');
         }}
+        
+        // Initialize tabs on load
+        document.addEventListener('DOMContentLoaded', () => {{
+            switchTab('frontend', document.querySelector('.tab.active'));
+        }});
     </script>
 </body>
 </html>"""
