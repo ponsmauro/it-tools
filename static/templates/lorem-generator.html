@@ -42,7 +42,7 @@
 
     .lorem-generator-tool p {
         margin-bottom: 12px;
-        color: #94a3b8;
+        color: var(--text-secondary);
         font-size: 13px;
     }
 
@@ -61,18 +61,18 @@
 
     .control-group label {
         font-size: 13px;
-        color: #94a3b8;
+        color: var(--text-secondary);
         font-weight: 500;
     }
 
     .control-group input,
     .control-group select {
-        border: 1px solid #334155;
+        border: 1px solid var(--border-color);
         border-radius: 8px;
         padding: 10px;
         font-size: 14px;
-        background: #0f172a;
-        color: #f1f5f9;
+        background: var(--bg-color);
+        color: var(--text-primary);
     }
 
     .control-actions {
@@ -83,10 +83,10 @@
     }
 
     .control-actions button {
-        border: 1px solid #334155;
+        border: 1px solid var(--border-color);
         border-radius: 8px;
-        background: #1e293b;
-        color: #f1f5f9;
+        background: var(--card-bg);
+        color: var(--text-primary);
         padding: 10px 14px;
         cursor: pointer;
         font-size: 13px;
@@ -94,12 +94,12 @@
     }
 
     .control-actions button:hover {
-        background: #334155;
+        background: var(--border-color);
     }
 
     .lorem-generator-tool > label {
         font-size: 13px;
-        color: #94a3b8;
+        color: var(--text-secondary);
         font-weight: 500;
         margin-top: 8px;
     }
@@ -107,24 +107,24 @@
     .lorem-output {
         width: 100%;
         min-height: 220px;
-        border: 1px solid #334155;
+        border: 1px solid var(--border-color);
         border-radius: 8px;
         padding: 12px;
         resize: vertical;
         font-size: 14px;
         line-height: 1.5;
-        background: #0f172a;
-        color: #f1f5f9;
+        background: var(--bg-color);
+        color: var(--text-primary);
     }
 
     .lorem-status {
         min-height: 20px;
-        color: #34d399;
+        color: var(--success-text);
         font-size: 14px;
     }
 
     .lorem-status.error {
-        color: #fca5a5;
+        color: var(--error-text);
     }
 </style>
 

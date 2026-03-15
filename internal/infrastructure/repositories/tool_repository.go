@@ -1,6 +1,7 @@
 package repositories
 
 import (
+	"sort"
 	"time"
 
 	"it-tools/internal/domain/models"
@@ -16,7 +17,7 @@ func NewToolRepository() *ToolRepository {
 
 // GetAll returns all available tools
 func (r *ToolRepository) GetAll() []models.Tool {
-	return []models.Tool{
+	tools := []models.Tool{
 		{
 			ID:          "commander",
 			Name:        "File Commander",
@@ -235,6 +236,12 @@ func (r *ToolRepository) GetAll() []models.Tool {
 			CreatedAt:   time.Now(),
 		},
 	}
+
+	sort.Slice(tools, func(i, j int) bool {
+		return tools[i].Name < tools[j].Name
+	})
+
+	return tools
 }
 
 // GetByID returns a tool by its ID

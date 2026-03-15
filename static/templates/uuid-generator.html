@@ -194,41 +194,41 @@
 
     <style>
         .uuid-tool { max-width: 100%; padding: 0 16px; }
-        .format-options { background: #1e293b; border: 1px solid #334155; border-radius: 6px; padding: 14px; margin: 16px 0; }
-        .option-group { margin-bottom: 12px; color: #94a3b8; font-size: 13px; }
+        .format-options { background: var(--card-bg); border: 1px solid var(--border-color); border-radius: 6px; padding: 14px; margin: 16px 0; }
+        .option-group { margin-bottom: 12px; color: var(--text-secondary); font-size: 13px; }
         .option-group:last-child { margin-bottom: 0; }
         .option-group.checkboxes { display: flex; flex-wrap: wrap; gap: 12px; }
         .slider { width: 100%; margin: 8px 0; }
         .controls { display: flex; gap: 8px; margin: 16px 0; flex-wrap: wrap; }
         .btn-primary, .btn-secondary { padding: 10px 18px; border: none; border-radius: 6px; cursor: pointer; font-weight: 500; font-size: 13px; }
-        .btn-primary { background: #3b82f6; color: white; }
-        .btn-secondary { background: #1e293b; color: #94a3b8; border: 1px solid #334155; }
+        .btn-primary { background: var(--primary-color); color: white; }
+        .btn-secondary { background: var(--card-bg); color: var(--text-secondary); border: 1px solid var(--border-color); }
         .btn-primary:hover, .btn-secondary:hover:not(:disabled) { opacity: 0.9; }
         .uuid-list { display: flex; flex-direction: column; gap: 6px; margin: 16px 0; max-height: 50vh; overflow-y: auto; }
-        .uuid-item { padding: 12px; background: #1e293b; border: 1px solid #334155; border-radius: 6px; cursor: pointer; font-size: 13px; font-family: ui-monospace, monospace; color: #f1f5f9; }
-        .uuid-item:hover { background: #0f172a; border-color: #475569; }
-        .uuid-item.selected { background: #1e3a5f; border-color: #3b82f6; }
-        .stats { display: flex; gap: 16px; font-size: 13px; color: #64748b; margin-bottom: 12px; }
-        .uuid-tool h1 { font-size: 20px; margin: 0 0 6px 0; }
-        .uuid-tool p { color: #64748b; font-size: 13px; margin: 0 0 12px 0; }
-    </style>
+        .uuid-item { padding: 12px; background: var(--card-bg); border: 1px solid var(--border-color); border-radius: 6px; cursor: pointer; font-size: 13px; font-family: ui-monospace, monospace; color: var(--text-primary); }
+        .uuid-item:hover { background: var(--bg-color); border-color: var(--border-color); }
+        .uuid-item.selected { background: var(--primary-light); border-color: var(--primary-color); }
+        .stats { display: flex; gap: 16px; font-size: 13px; color: var(--text-secondary); margin-bottom: 12px; }
+        .uuid-tool h1 { font-size: 18px; margin: 0 0 6px 0; }
+        .uuid-tool p { color: var(--text-secondary); font-size: 12px; margin: 0 0 12px 0; }
+        .uuid-item:hover {
             transform: translateX(4px);
         }
         .uuid-item code {
             font-family: 'SF Mono', Monaco, 'Cascadia Code', monospace;
-            font-size: 14px;
+            font-size: 13px;
             letter-spacing: -0.02em;
             word-break: break-all;
             display: block;
-            color: #f1f5f9;
+            color: var(--text-primary);
         }
         .stats {
-            padding: 16px;
-            background: #052e16;
+            padding: 12px;
+            background: var(--success-bg);
             border: 1px solid #166534;
-            border-radius: 8px;
+            border-radius: 6px;
             font-weight: 500;
-            color: #4ade80;
+            color: var(--success-text);
         }
         @media (max-width: 768px) {
             .controls {
@@ -238,14 +238,14 @@
                 width: 100%;
             }
             .uuid-tool {
-                padding: 0 12px;
+                padding: 0 10px;
             }
             .option-group.checkboxes {
                 flex-direction: column;
-                gap: 12px;
+                gap: 10px;
             }
             .format-options {
-                padding: 16px;
+                padding: 12px;
             }
         }
     </style>

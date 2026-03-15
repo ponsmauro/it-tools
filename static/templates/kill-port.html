@@ -129,8 +129,8 @@ python  ${pid2} mpons 15u IPv4 0x456 0t0 TCP *:${port} (LISTEN)</pre>
             border: 1px solid var(--border-color);
             border-radius: 6px;
             margin-right: 10px;
-            background: #0f172a;
-            color: #f1f5f9;
+            background: var(--bg-color);
+            color: var(--text-primary);
         }
         .btn-primary {
             padding: 12px 24px;
@@ -150,16 +150,16 @@ python  ${pid2} mpons 15u IPv4 0x456 0t0 TCP *:${port} (LISTEN)</pre>
             border-radius: 8px;
         }
         .loading {
-            background: #1e3a5f;
-            color: #93c5fd;
+            background: var(--primary-light);
+            color: var(--primary-color);
         }
         .error {
-            background: #450a0a;
-            color: #fca5a5;
+            background: var(--error-bg);
+            color: var(--error-text);
         }
         .success {
-            background: #052e16;
-            color: #4ade80;
+            background: var(--success-bg);
+            color: var(--success-text);
             padding: 20px;
             border-radius: 8px;
         }
@@ -179,31 +179,31 @@ python  ${pid2} mpons 15u IPv4 0x456 0t0 TCP *:${port} (LISTEN)</pre>
         }
         .os-tab {
             border: 1px solid var(--border-color);
-            background: #1e293b;
-            color: #cbd5e1;
+            background: var(--card-bg);
+            color: var(--text-secondary);
             padding: 8px 14px;
             border-radius: 8px;
             cursor: pointer;
         }
         .os-tab.active {
             background: var(--primary-color);
-            color: #fff;
+            color: var(--text-primary);
             border-color: var(--primary-color);
         }
         .os-panel {
             display: none;
-            background: #1e293b;
+            background: var(--card-bg);
             border: 1px solid var(--border-color);
             border-radius: 8px;
             padding: 16px;
-            color: #cbd5e1;
+            color: var(--text-secondary);
         }
         .os-panel.active {
             display: block;
         }
 pre {
-            background: #0f172a;
-            color: #f1f5f9;
+            background: var(--bg-color);
+            color: var(--text-primary);
             padding: 16px;
             border-radius: 6px;
             font-size: 14px;

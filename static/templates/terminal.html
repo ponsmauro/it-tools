@@ -8,8 +8,8 @@
   <style>
     .terminal-container { 
       height: 80vh; 
-      background: #000; 
-      color: #0f0; 
+      background: var(--bg-color); 
+      color: var(--primary-color); 
       font-family: 'Courier New', monospace; 
       padding: 20px; 
       border-radius: 8px;
@@ -20,12 +20,12 @@
       width: 100%; 
       background: transparent; 
       border: none; 
-      color: #0f0; 
+      color: var(--primary-color); 
       font-family: inherit; 
       font-size: 16px;
     }
     .terminal-input:focus { outline: none; }
-    .prompt { color: #fff; }
+    .prompt { color: var(--text-primary); }
   </style>
 </head>
 <body>

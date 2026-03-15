@@ -264,61 +264,28 @@
         .text-utils { max-width: 100%; }
         .input-output { display: grid; grid-template-columns: 1fr 1fr; gap: 16px; margin: 16px 0; }
         .input-section, .output-section { display: flex; flex-direction: column; gap: 6px; }
-        label { font-weight: 500; margin-bottom: 4px; color: #94a3b8; }
-        textarea { width: 100%; padding: 10px; border: 1px solid #334155; border-radius: 6px; font-family: ui-monospace, monospace; font-size: 13px; resize: vertical; line-height: 1.4; background: #0f172a; color: #f1f5f9; }
-        textarea:focus { outline: none; border-color: #3b82f6; }
-        .btn-copy-output { margin-top: 6px; padding: 8px 14px; background: #3b82f6; color: white; border: none; border-radius: 6px; cursor: pointer; font-size: 13px; align-self: flex-end; }
+        label { font-weight: 500; margin-bottom: 4px; color: var(--text-secondary); }
+        textarea { width: 100%; padding: 10px; border: 1px solid var(--border-color); border-radius: 6px; font-family: ui-monospace, monospace; font-size: 13px; resize: vertical; line-height: 1.4; background: var(--bg-color); color: var(--text-primary); }
+        textarea:focus { outline: none; border-color: var(--primary-color); }
+        .btn-copy-output { margin-top: 6px; padding: 8px 14px; background: var(--primary-color); color: white; border: none; border-radius: 6px; cursor: pointer; font-size: 13px; align-self: flex-end; }
         .stats-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(120px, 1fr)); gap: 12px; margin: 16px 0; }
-        .stat-card { padding: 12px; background: #1e293b; border: 1px solid #334155; border-radius: 6px; text-align: center; }
-        .stat-number { display: block; font-size: 1.4rem; font-weight: bold; color: #f1f5f9; font-family: ui-monospace, monospace; }
-        .stat-label { font-size: 11px; color: #64748b; }
+        .stat-card { padding: 12px; background: var(--card-bg); border: 1px solid var(--border-color); border-radius: 6px; text-align: center; }
+        .stat-number { display: block; font-size: 1.4rem; font-weight: bold; color: var(--text-primary); font-family: ui-monospace, monospace; }
+        .stat-label { font-size: 11px; color: var(--text-secondary); }
         .transform-sections { margin: 16px 0; }
-        .transform-section { margin-bottom: 12px; padding: 12px; background: #1e293b; border: 1px solid #334155; border-radius: 6px; }
-        .transform-section h3 { margin: 0 0 10px 0; color: #f1f5f9; font-size: 14px; }
+        .transform-section { margin-bottom: 12px; padding: 12px; background: var(--card-bg); border: 1px solid var(--border-color); border-radius: 6px; }
+        .transform-section h3 { margin: 0 0 10px 0; color: var(--text-primary); font-size: 14px; }
         .controls-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(140px, 1fr)); gap: 8px; }
         .find-replace-controls { display: flex; flex-direction: column; gap: 8px; }
         .find-replace-row { display: flex; gap: 8px; }
-        .find-replace-input { flex: 1; padding: 8px; border: 1px solid #334155; border-radius: 6px; font-size: 13px; background: #0f172a; color: #f1f5f9; }
-        .checkbox-label { display: flex; align-items: center; gap: 6px; font-size: 12px; color: #94a3b8; margin-top: 8px; }
-        .btn-primary { padding: 10px 16px; background: #3b82f6; color: white; border: none; border-radius: 6px; cursor: pointer; font-weight: 500; font-size: 13px; }
-        .btn-primary:hover { background: #2563eb; }
-        .btn-secondary { padding: 10px 16px; background: #1e293b; color: #94a3b8; border: 1px solid #334155; border-radius: 6px; cursor: pointer; font-weight: 500; font-size: 13px; }
-        .btn-secondary:hover { background: #334155; color: #f1f5f9; }
-        .tool-container h1 { font-size: 20px; margin-bottom: 4px; }
-        .tool-container p { color: #64748b; font-size: 13px; margin-bottom: 8px; }
-    </style>
-            display: flex;
-            align-items: center;
-            gap: 8px;
-            font-size: 14px;
-            color: #cbd5e1;
-        }
-        .btn-primary {
-            padding: 16px 24px;
-            background: var(--primary-color, #3b82f6);
-            color: white;
-            border: none;
-            border-radius: 8px;
-            cursor: pointer;
-            font-weight: 500;
-            font-size: 15px;
-            transition: all 0.2s;
-        }
-        .btn-secondary {
-            padding: 16px 24px;
-            background: #475569;
-            color: white;
-            border: none;
-            border-radius: 8px;
-            cursor: pointer;
-            font-weight: 500;
-            font-size: 15px;
-            transition: all 0.2s;
-        }
-        .btn-primary:hover {
-            background: #2563eb;
-            transform: translateY(-1px);
-        }
+        .find-replace-input { flex: 1; padding: 8px; border: 1px solid var(--border-color); border-radius: 6px; font-size: 13px; background: var(--bg-color); color: var(--text-primary); }
+        .checkbox-label { display: flex; align-items: center; gap: 6px; font-size: 12px; color: var(--text-secondary); margin-top: 8px; }
+        .btn-primary { padding: 10px 16px; background: var(--primary-color); color: white; border: none; border-radius: 6px; cursor: pointer; font-weight: 500; font-size: 13px; }
+        .btn-primary:hover { background: var(--primary-hover); }
+        .btn-secondary { padding: 10px 16px; background: var(--card-bg); color: var(--text-secondary); border: 1px solid var(--border-color); border-radius: 6px; cursor: pointer; font-weight: 500; font-size: 13px; }
+        .btn-secondary:hover { background: var(--border-color); color: var(--text-primary); }
+        .tool-container h1 { font-size: 18px; margin-bottom: 4px; }
+        .tool-container p { color: var(--text-secondary); font-size: 12px; margin-bottom: 8px; }
         @media (max-width: 1024px) {
             .input-output {
                 grid-template-columns: 1fr;

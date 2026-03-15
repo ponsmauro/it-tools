@@ -46,19 +46,19 @@
   .tool-page { display: flex; flex-direction: column; gap: 12px; }
   .tool-header h1 { margin-bottom: 4px; font-size: 18px; }
   .tool-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: 12px; }
-  .panel { background: #1e293b; border: 1px solid #334155; border-radius: 6px; padding: 12px; }
-  .panel label { display: block; margin-bottom: 6px; font-weight: 500; font-size: 13px; color: #94a3b8; }
-  .tool-textarea { width: 100%; background: #0f172a; color: #f1f5f9; border: 1px solid #334155; border-radius: 6px; padding: 10px; font-family: ui-monospace, monospace; font-size: 13px; resize: vertical; }
+  .panel { background: var(--card-bg); border: 1px solid var(--border-color); border-radius: 6px; padding: 12px; }
+  .panel label { display: block; margin-bottom: 6px; font-weight: 500; font-size: 13px; color: var(--text-secondary); }
+  .tool-textarea { width: 100%; background: var(--bg-color); color: var(--text-primary); border: 1px solid var(--border-color); border-radius: 6px; padding: 10px; font-family: ui-monospace, monospace; font-size: 13px; resize: vertical; }
   .actions { display: flex; gap: 8px; flex-wrap: wrap; }
-  .btn-primary { background: #3b82f6; color: #fff; border: none; border-radius: 6px; padding: 8px 12px; cursor: pointer; font-weight: 500; font-size: 13px; }
-  .btn-primary:hover { background: #2563eb; }
-  .btn-secondary { background: #475569; color: #fff; border: none; border-radius: 6px; padding: 8px 12px; cursor: pointer; font-weight: 500; font-size: 13px; }
-  .btn-secondary:hover { background: #334155; }
-  .diff-output { background: #0f172a; border: 1px solid #334155; border-radius: 6px; padding: 12px; font-family: ui-monospace, monospace; font-size: 13px; min-height: 150px; white-space: pre-wrap; overflow-x: auto; }
-  .diff-placeholder { color: #64748b; font-style: italic; }
-  .diff-added { background-color: rgba(16, 185, 129, 0.2); color: #34d399; }
-  .diff-removed { background-color: rgba(239, 68, 68, 0.2); color: #fca5a5; text-decoration: line-through; }
-  .tool-page > p { color: #64748b; font-size: 13px; margin: 0; }
+  .btn-primary { background: var(--primary-color); color: var(--text-primary); border: none; border-radius: 6px; padding: 8px 12px; cursor: pointer; font-weight: 500; font-size: 13px; }
+  .btn-primary:hover { background: var(--primary-hover); }
+  .btn-secondary { background: var(--border-color); color: var(--text-primary); border: none; border-radius: 6px; padding: 8px 12px; cursor: pointer; font-weight: 500; font-size: 13px; }
+  .btn-secondary:hover { background: var(--border-color); }
+  .diff-output { background: var(--bg-color); border: 1px solid var(--border-color); border-radius: 6px; padding: 12px; font-family: ui-monospace, monospace; font-size: 13px; min-height: 150px; white-space: pre-wrap; overflow-x: auto; }
+  .diff-placeholder { color: var(--text-secondary); font-style: italic; }
+  .diff-added { background-color: rgba(16, 185, 129, 0.2); color: var(--success-text); }
+  .diff-removed { background-color: rgba(239, 68, 68, 0.2); color: var(--error-text); text-decoration: line-through; }
+  .tool-page > p { color: var(--text-secondary); font-size: 13px; margin: 0; }
 </style>
 
 <script src="https://cdnjs.cloudflare.com/ajax/libs/diff_match_patch/20121119/diff_match_patch.js"></script>
@@ -110,7 +110,7 @@
 
         outputEl.innerHTML = html || '<div class="diff-placeholder">Texts are identical</div>';
       } catch (err) {
-        outputEl.innerHTML = `<div style="color: #fca5a5;">Error: ${err.message}</div>`;
+        outputEl.innerHTML = `<div style="color: var(--error-text);">Error: ${err.message}</div>`;
       }
     }
 

@@ -17,8 +17,8 @@
                     <div class="panel">
                         <label for="color-input">{{ tr "tools.input" }}</label>
                         <div class="input-group">
-                            <input type="color" id="color-picker" class="color-picker" value="#2563eb">
-                            <input type="text" id="color-input" class="tool-input" placeholder="#2563eb, rgb(37, 99, 235), etc." value="#2563eb">
+                            <input type="color" id="color-picker" class="color-picker" value="var(--primary-hover)">
+                            <input type="text" id="color-input" class="tool-input" placeholder="var(--primary-hover), rgb(37, 99, 235), etc." value="var(--primary-hover)">
                         </div>
                         
                         <div class="color-preview" id="color-preview"></div>
@@ -93,7 +93,7 @@
             border-radius: 12px;
             border: 1px solid var(--border-color);
             margin-top: 16px;
-            background-color: #2563eb;
+            background-color: var(--primary-hover);
             transition: background-color 0.2s ease;
         }
         .output-group {
@@ -137,7 +137,7 @@
         function parseColor(str) {
             const ctx = document.createElement('canvas').getContext('2d');
             ctx.fillStyle = str;
-            if (ctx.fillStyle === '#000000' && str.toLowerCase() !== 'black' && str !== '#000000' && str !== '#000') {
+            if (ctx.fillStyle === 'var(--bg-color)000' && str.toLowerCase() !== 'black' && str !== 'var(--bg-color)000' && str !== 'var(--bg-color)') {
                 // Invalid color might default to black in some browsers, but let's do a basic check
                 // Actually, a better way is to check if assigning it changes the fillStyle
                 ctx.fillStyle = '#123456';

@@ -40,20 +40,20 @@
   .tool-page { display: flex; flex-direction: column; gap: 12px; }
   .tool-header h1 { margin-bottom: 4px; font-size: 18px; }
   .tool-grid { display: grid; grid-template-columns: 1fr; gap: 12px; }
-  .panel { background: #1e293b; border: 1px solid #334155; border-radius: 6px; padding: 12px; }
-  .panel label { display: block; margin-bottom: 6px; font-weight: 500; font-size: 13px; color: #94a3b8; }
-  .tool-textarea { width: 100%; background: #0f172a; color: #f1f5f9; border: 1px solid #334155; border-radius: 6px; padding: 10px; font-family: ui-monospace, monospace; font-size: 13px; resize: vertical; }
+  .panel { background: var(--card-bg); border: 1px solid var(--border-color); border-radius: 6px; padding: 12px; }
+  .panel label { display: block; margin-bottom: 6px; font-weight: 500; font-size: 13px; color: var(--text-secondary); }
+  .tool-textarea { width: 100%; background: var(--bg-color); color: var(--text-primary); border: 1px solid var(--border-color); border-radius: 6px; padding: 10px; font-family: ui-monospace, monospace; font-size: 13px; resize: vertical; }
   .actions { display: flex; gap: 8px; margin-top: 12px; flex-wrap: wrap; }
-  .btn-primary { background: #3b82f6; color: #fff; border: none; border-radius: 6px; padding: 8px 12px; cursor: pointer; font-weight: 500; font-size: 13px; }
-  .btn-primary:hover { background: #2563eb; }
-  .btn-secondary { background: #475569; color: #fff; border: none; border-radius: 6px; padding: 8px 12px; cursor: pointer; font-weight: 500; font-size: 13px; }
-  .btn-secondary:hover { background: #334155; }
-  .csv-placeholder { color: #64748b; font-style: italic; padding: 20px 0; text-align: center; }
+  .btn-primary { background: var(--primary-color); color: var(--text-primary); border: none; border-radius: 6px; padding: 8px 12px; cursor: pointer; font-weight: 500; font-size: 13px; }
+  .btn-primary:hover { background: var(--primary-hover); }
+  .btn-secondary { background: var(--border-color); color: var(--text-primary); border: none; border-radius: 6px; padding: 8px 12px; cursor: pointer; font-weight: 500; font-size: 13px; }
+  .btn-secondary:hover { background: var(--border-color); }
+  .csv-placeholder { color: var(--text-secondary); font-style: italic; padding: 20px 0; text-align: center; }
   .csv-table { width: 100%; border-collapse: collapse; font-size: 13px; }
-  .csv-table th, .csv-table td { border: 1px solid #334155; padding: 8px 12px; text-align: left; }
-  .csv-table th { background: #0f172a; color: #f1f5f9; font-weight: 600; }
+  .csv-table th, .csv-table td { border: 1px solid var(--border-color); padding: 8px 12px; text-align: left; }
+  .csv-table th { background: var(--bg-color); color: var(--text-primary); font-weight: 600; }
   .csv-table tr:nth-child(even) { background: rgba(15, 23, 42, 0.5); }
-  .tool-page > p { color: #64748b; font-size: 13px; margin: 0; }
+  .tool-page > p { color: var(--text-secondary); font-size: 13px; margin: 0; }
 </style>
 
 <script src="https://cdnjs.cloudflare.com/ajax/libs/PapaParse/5.3.2/papaparse.min.js"></script>
@@ -131,7 +131,7 @@
         
         tableContainer.innerHTML = html;
       } catch (err) {
-        tableContainer.innerHTML = `<div style="color: #fca5a5;">Error parsing CSV: ${err.message}</div>`;
+        tableContainer.innerHTML = `<div style="color: var(--error-text);">Error parsing CSV: ${err.message}</div>`;
       }
     }
 
