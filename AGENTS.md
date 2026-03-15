@@ -1,5 +1,10 @@
 # IT Tools - Project Context
 
+> 🚨 **CRITICAL RULE 0 FOR ALL AI AGENTS** 🚨
+> **YOU MUST READ THIS ENTIRE FILE BEFORE EXECUTING ANY COMMAND, WRITING ANY CODE, OR STARTING ANY TASK.**
+> Failure to follow the rules in this file (especially the Git Flow, PR process, and `specs/` folder creation) is a severe violation of the project's constraints.
+
+
 ## Project Overview
 
 **IT Tools** is a web application that provides a collection of useful tools for developers. The project uses:
