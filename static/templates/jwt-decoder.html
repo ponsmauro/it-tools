@@ -85,13 +85,13 @@
             overflow-x: auto;
         }
         .header-output {
-            color: #ef4444; /* Red for header */
+            color: #fca5a5; /* Red for header */
         }
         .payload-output {
-            color: #8b5cf6; /* Purple for payload */
+            color: #c4b5fd; /* Purple for payload */
         }
         .signature-output {
-            color: #0ea5e9; /* Blue for signature */
+            color: #7dd3fc; /* Blue for signature */
         }
         .btn-copy-small {
             padding: 4px 8px;
@@ -107,30 +107,12 @@
             color: var(--text-primary);
         }
         .error-message {
-            color: #dc2626;
-            background: #fee2e2;
+            color: var(--error-text);
+            background: var(--error-bg);
             padding: 12px;
             border-radius: 6px;
             margin-top: 16px;
             font-weight: 500;
-        }
-        
-        /* Dark mode specific colors for JWT parts */
-        @media (prefers-color-scheme: dark) {
-            .header-output { color: #fca5a5; }
-            .payload-output { color: #c4b5fd; }
-            .signature-output { color: #7dd3fc; }
-            .error-message {
-                background: rgba(220, 38, 38, 0.2);
-                color: #fca5a5;
-            }
-        }
-        body.dark-mode .header-output { color: #fca5a5; }
-        body.dark-mode .payload-output { color: #c4b5fd; }
-        body.dark-mode .signature-output { color: #7dd3fc; }
-        body.dark-mode .error-message {
-            background: rgba(220, 38, 38, 0.2);
-            color: #fca5a5;
         }
     </style>
 

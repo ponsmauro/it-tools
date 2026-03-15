@@ -79,15 +79,15 @@
 <style>
   .tool-page { display: flex; flex-direction: column; gap: 12px; }
   .tool-grid { display: grid; gap: 12px; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); }
-  .panel { border: 1px solid #334155; border-radius: 6px; padding: 12px; background: #1e293b; }
-  .tool-textarea { width: 100%; resize: vertical; border-radius: 6px; border: 1px solid #334155; background: #0f172a; color: #f1f5f9; padding: 10px; font-family: ui-monospace, monospace; font-size: 13px; margin-top: 6px; min-height: 80px; }
+  .panel { border: 1px solid var(--border-color); border-radius: 6px; padding: 12px; background: var(--card-bg); }
+  .tool-textarea { width: 100%; resize: vertical; border-radius: 6px; border: 1px solid var(--border-color); background: var(--bg-color); color: var(--text-primary); padding: 10px; font-family: ui-monospace, monospace; font-size: 13px; margin-top: 6px; min-height: 80px; }
   .output-row { margin-bottom: 10px; }
-  .output-row button, .actions button { margin-top: 6px; border: none; border-radius: 6px; background: #3b82f6; color: #fff; padding: 8px 12px; cursor: pointer; font-weight: 500; font-size: 12px; }
-  .output-row button:hover, .actions button:hover { background: #2563eb; }
-  .status { color: #64748b; min-height: 16px; font-size: 12px; }
+  .output-row button, .actions button { margin-top: 6px; border: none; border-radius: 6px; background: var(--primary-color); color: var(--text-primary); padding: 8px 12px; cursor: pointer; font-weight: 500; font-size: 12px; }
+  .output-row button:hover, .actions button:hover { background: var(--primary-hover); }
+  .status { color: var(--text-secondary); min-height: 16px; font-size: 12px; }
   .tool-page h1 { font-size: 20px; margin: 0 0 4px 0; }
-  .tool-page > p { color: #64748b; font-size: 13px; margin: 0 0 12px 0; }
-  label { font-size: 13px; color: #94a3b8; font-weight: 500; }
+  .tool-page > p { color: var(--text-secondary); font-size: 13px; margin: 0 0 12px 0; }
+  label { font-size: 13px; color: var(--text-secondary); font-weight: 500; }
 </style>
 
 <script>

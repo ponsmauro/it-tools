@@ -47,6 +47,10 @@ it-tools/
 
 ## Mandatory Development Rules
 
+### 0. Modifying this file
+- **NEVER modify `agents.md` without explicit authorization from the user.**
+- If you believe a rule needs to be updated or added, you must ask the user for permission first.
+
 ### 1. Language
 - **ALL code and documentation MUST be in English**
 - Variable names, function names, comments, commit messages
@@ -246,7 +250,9 @@ make lint-install
 
 ### 21. Branch Policy (MANDATORY)
 - **NEVER create blackboxai/ branches or repos**
-- Use `feature/{tool-id}` branches only
+- **Branches from `main`**: Can ONLY be `hotfix/*`, `RC/*`, or `backports/*`.
+- **Branches from `develop`**: `feature/*`, `fix/*`, `chore/*`, etc. MUST be created from `develop` unless the user explicitly says otherwise.
+- **Merging to `develop`**: All merges to `develop` MUST be done via **squash** with a short, representative message of the PR's functionality.
 
 ### 22. Go Naming Convention (MANDATORY)
 - Go struct/function names **MUST NOT** repeat package name
@@ -285,16 +291,11 @@ make lint-install
 
 ### 24. PR Naming & Commit Convention (MANDATORY)
 - **Each PR should be focused on a single tool or feature** to make reviews easier.
-- PR/commit titles MUST follow:
-  - `feat(scope): short summary`
-  - `fix(scope): short summary`
-  - `refactor(scope): short summary`
-  - `test(scope): short summary`
-  - `docs(scope): short summary`
-- Scope should match feature/tool ID when possible.
+- PR/commit titles MUST follow this exact format:
+  - `[entidad o funcionalidad] - descripcion`
 - Examples:
-  - `feat(kill-port): add localized OS guide tabs`
-  - `fix(kill-port): validate unsupported HTTP methods`
+  - `[kill-port] - add localized OS guide tabs`
+  - `[darkmode] - implement consistent dark mode and compact UI`
 - PR body minimum sections:
   1. **Summary**
   2. **Validation**
@@ -405,6 +406,11 @@ A feature is considered done only if all are true:
 6. PR title/body follow convention.
 7. PR merged to `develop`.
 8. Documentation (`BLACKBOX.md`, specs) updated accordingly.
+
+### 29. Terminal Management (MANDATORY)
+- **ALWAYS close terminals when they are no longer needed.**
+- Do not leave multiple terminals open in the background unless a long-running process (like a server) is explicitly required.
+- Use the `exit` command or equivalent to close terminals after executing one-off scripts or commands.
 
 
 ## Notes

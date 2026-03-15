@@ -80,14 +80,14 @@
 
         .base64-tool p {
             margin-bottom: 12px;
-            color: #64748b;
+            color: var(--text-secondary);
             font-size: 13px;
         }
 
         .mode-selector {
             display: flex;
             margin-bottom: 8px;
-            border-bottom: 1px solid #334155;
+            border-bottom: 1px solid var(--border-color);
         }
         
         .options-panel {
@@ -96,7 +96,7 @@
             gap: 12px;
             margin-bottom: 12px;
             padding: 10px;
-            background: #1e293b;
+            background: var(--card-bg);
             border-radius: 6px;
         }
         
@@ -105,7 +105,7 @@
             align-items: center;
             gap: 6px;
             font-size: 12px;
-            color: #64748b;
+            color: var(--text-secondary);
         }
 
         .mode-tab {
@@ -116,12 +116,12 @@
             cursor: pointer;
             font-weight: 500;
             font-size: 13px;
-            color: #64748b;
+            color: var(--text-secondary);
         }
 
         .mode-tab.active {
-            color: #3b82f6;
-            border-bottom-color: #3b82f6;
+            color: var(--primary-color);
+            border-bottom-color: var(--primary-color);
         }
 
         .tool-grid {
@@ -153,67 +153,67 @@
         }
 
         .btn-primary {
-            background: #3b82f6;
+            background: var(--primary-color);
             color: white;
             border: none;
         }
 
         .btn-secondary {
-            background: #1e293b;
-            color: #94a3b8;
-            border: 1px solid #334155;
+            background: var(--card-bg);
+            color: var(--text-secondary);
+            border: 1px solid var(--border-color);
         }
 
         .btn-primary:hover {
-            background: #2563eb;
+            background: var(--primary-hover);
         }
 
         .btn-secondary:hover {
-            background: #334155;
+            background: var(--border-color);
         }
 
         .tool-textarea {
             width: 100%;
             min-height: 120px;
-            border: 1px solid #334155;
+            border: 1px solid var(--border-color);
             border-radius: 6px;
             padding: 10px;
             font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, "Liberation Mono", "Courier New", monospace;
             font-size: 13px;
             line-height: 1.4;
             resize: vertical;
-            background: #0f172a;
-            color: #f1f5f9;
+            background: var(--bg-color);
+            color: var(--text-primary);
         }
 
         .file-upload {
             margin-top: 8px;
             padding: 10px;
-            border: 1px dashed #334155;
+            border: 1px dashed var(--border-color);
             border-radius: 6px;
-            background: #1e293b;
+            background: var(--card-bg);
         }
 
         .file-info {
             margin-top: 6px;
             font-size: 12px;
-            color: #64748b;
+            color: var(--text-secondary);
         }
 
         .status {
             margin-top: 12px;
             min-height: 20px;
             font-size: 12px;
-            color: #34d399;
+            color: var(--success-text);
             padding: 6px 10px;
             border-radius: 4px;
-            background: #064e3b;
+            background: var(--success-bg);
             display: none;
         }
 
         .status.error {
-            color: #fca5a5;
-            background: #450a0a;
+            color: var(--error-text);
+            background: var(--error-bg);
         }
 
         .status.visible {
@@ -223,9 +223,9 @@
         .info-section {
             margin-top: 24px;
             padding: 16px;
-            background: #1e293b;
+            background: var(--card-bg);
             border-radius: 6px;
-            border-left: 3px solid #3b82f6;
+            border-left: 3px solid var(--primary-color);
         }
 
         .info-section h2 {
@@ -241,7 +241,7 @@
         .info-section li {
             margin-bottom: 4px;
             font-size: 13px;
-            color: #64748b;
+            color: var(--text-secondary);
         }
 
         @media (max-width: 768px) {

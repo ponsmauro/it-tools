@@ -43,17 +43,17 @@
   .tool-page { display: flex; flex-direction: column; gap: 12px; }
   .tool-header h1 { margin-bottom: 4px; font-size: 18px; }
   .tool-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: 12px; }
-  .panel { background: #1e293b; border: 1px solid #334155; border-radius: 6px; padding: 12px; }
-  .panel label { display: block; margin-bottom: 6px; font-weight: 500; font-size: 13px; color: #94a3b8; }
-  .tool-input { width: 100%; background: #0f172a; color: #f1f5f9; border: 1px solid #334155; border-radius: 6px; padding: 10px; font-family: ui-monospace, monospace; font-size: 16px; }
+  .panel { background: var(--card-bg); border: 1px solid var(--border-color); border-radius: 6px; padding: 12px; }
+  .panel label { display: block; margin-bottom: 6px; font-weight: 500; font-size: 13px; color: var(--text-secondary); }
+  .tool-input { width: 100%; background: var(--bg-color); color: var(--text-primary); border: 1px solid var(--border-color); border-radius: 6px; padding: 10px; font-family: ui-monospace, monospace; font-size: 16px; }
   .actions { display: flex; gap: 8px; margin-top: 12px; flex-wrap: wrap; }
-  .btn-primary { background: #3b82f6; color: #fff; border: none; border-radius: 6px; padding: 8px 12px; cursor: pointer; font-weight: 500; font-size: 13px; }
-  .btn-primary:hover { background: #2563eb; }
-  .cron-explanation { font-size: 16px; font-weight: 500; color: #34d399; padding: 12px; background: #0f172a; border-radius: 6px; border: 1px solid #334155; }
+  .btn-primary { background: var(--primary-color); color: var(--text-primary); border: none; border-radius: 6px; padding: 8px 12px; cursor: pointer; font-weight: 500; font-size: 13px; }
+  .btn-primary:hover { background: var(--primary-hover); }
+  .cron-explanation { font-size: 16px; font-weight: 500; color: var(--success-text); padding: 12px; background: var(--bg-color); border-radius: 6px; border: 1px solid var(--border-color); }
   .cron-next-list { list-style: none; padding: 0; margin: 0; }
-  .cron-next-list li { padding: 8px; border-bottom: 1px solid #334155; font-family: ui-monospace, monospace; font-size: 13px; color: #cbd5e1; }
+  .cron-next-list li { padding: 8px; border-bottom: 1px solid var(--border-color); font-family: ui-monospace, monospace; font-size: 13px; color: var(--text-secondary); }
   .cron-next-list li:last-child { border-bottom: none; }
-  .tool-page > p { color: #64748b; font-size: 13px; margin: 0; }
+  .tool-page > p { color: var(--text-secondary); font-size: 13px; margin: 0; }
 </style>
 
 <script src="https://cdn.jsdelivr.net/npm/cronstrue@2.26.0/cronstrue.min.js"></script>
@@ -73,10 +73,10 @@
         if (window.cronstrue) {
           const explanation = window.cronstrue.toString(expr);
           explanationEl.textContent = explanation;
-          explanationEl.style.color = '#34d399';
+          explanationEl.style.color = 'var(--success-text)';
         } else {
           explanationEl.textContent = 'cronstrue library not loaded';
-          explanationEl.style.color = '#fca5a5';
+          explanationEl.style.color = 'var(--error-text)';
         }
         
         // Mock next occurrences for now
@@ -90,7 +90,7 @@
         
       } catch (err) {
         explanationEl.textContent = err.toString();
-        explanationEl.style.color = '#fca5a5';
+        explanationEl.style.color = 'var(--error-text)';
         nextListEl.innerHTML = '';
       }
     }

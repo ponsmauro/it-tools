@@ -49,19 +49,19 @@
   .tool-page { display: flex; flex-direction: column; gap: 12px; }
   .tool-header h1 { margin-bottom: 4px; font-size: 18px; }
   .tool-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: 12px; }
-  .panel { background: #1e293b; border: 1px solid #334155; border-radius: 6px; padding: 12px; }
-  .panel label { display: block; margin-bottom: 6px; font-weight: 500; font-size: 13px; color: #94a3b8; }
-  .tool-textarea { width: 100%; background: #0f172a; color: #f1f5f9; border: 1px solid #334155; border-radius: 6px; padding: 10px; font-family: ui-monospace, monospace; font-size: 13px; resize: vertical; }
+  .panel { background: var(--card-bg); border: 1px solid var(--border-color); border-radius: 6px; padding: 12px; }
+  .panel label { display: block; margin-bottom: 6px; font-weight: 500; font-size: 13px; color: var(--text-secondary); }
+  .tool-textarea { width: 100%; background: var(--bg-color); color: var(--text-primary); border: 1px solid var(--border-color); border-radius: 6px; padding: 10px; font-family: ui-monospace, monospace; font-size: 13px; resize: vertical; }
   .actions { display: flex; gap: 8px; margin-top: 12px; flex-wrap: wrap; }
-  .btn-primary { background: #3b82f6; color: #fff; border: none; border-radius: 6px; padding: 8px 12px; cursor: pointer; font-weight: 500; font-size: 13px; }
-  .btn-primary:hover { background: #2563eb; }
-  .btn-secondary { background: #475569; color: #fff; border: none; border-radius: 6px; padding: 8px 12px; cursor: pointer; font-weight: 500; font-size: 13px; }
-  .btn-secondary:hover { background: #334155; }
+  .btn-primary { background: var(--primary-color); color: var(--text-primary); border: none; border-radius: 6px; padding: 8px 12px; cursor: pointer; font-weight: 500; font-size: 13px; }
+  .btn-primary:hover { background: var(--primary-hover); }
+  .btn-secondary { background: var(--border-color); color: var(--text-primary); border: none; border-radius: 6px; padding: 8px 12px; cursor: pointer; font-weight: 500; font-size: 13px; }
+  .btn-secondary:hover { background: var(--border-color); }
   .mode-selector { display: flex; gap: 8px; }
-  .mode-tab { background: #1e293b; color: #94a3b8; border: 1px solid #334155; border-radius: 6px; padding: 8px 16px; cursor: pointer; font-weight: 500; font-size: 13px; }
-  .mode-tab.active { background: #3b82f6; color: #fff; border-color: #3b82f6; }
-  .stats-info { color: #34d399; font-size: 13px; font-family: ui-monospace, monospace; }
-  .tool-page > p { color: #64748b; font-size: 13px; margin: 0; }
+  .mode-tab { background: var(--card-bg); color: var(--text-secondary); border: 1px solid var(--border-color); border-radius: 6px; padding: 8px 16px; cursor: pointer; font-weight: 500; font-size: 13px; }
+  .mode-tab.active { background: var(--primary-color); color: var(--text-primary); border-color: var(--primary-color); }
+  .stats-info { color: var(--success-text); font-size: 13px; font-family: ui-monospace, monospace; }
+  .tool-page > p { color: var(--text-secondary); font-size: 13px; margin: 0; }
 </style>
 
 <script src="https://cdnjs.cloudflare.com/ajax/libs/pako/2.1.0/pako.min.js"></script>

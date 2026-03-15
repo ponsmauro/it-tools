@@ -6,11 +6,11 @@
   <title>{{ tr "app.title" }} - {{ tr "tools.commander" }}</title>
   <link rel="stylesheet" href="/static/css/style.css">
   <style>
-    .dual-pane { display: flex; height: 80vh; gap: 1px; background: #333; }
-    .pane { flex: 1; background: #1a1a1a; color: #0f0; padding: 10px; font-family: monospace; }
-    .path-bar { background: #222; padding: 5px; color: #fff; }
+    .dual-pane { display: flex; height: 80vh; gap: 1px; background: var(--border-color); }
+    .pane { flex: 1; background: var(--bg-color); color: var(--primary-color); padding: 10px; font-family: monospace; }
+    .path-bar { background: var(--card-bg); padding: 5px; color: var(--text-primary); }
     .file-tree { white-space: pre; line-height: 1.4; }
-    .selected { background: #444; }
+    .selected { background: var(--border-color); }
   </style>
 </head>
 <body>
