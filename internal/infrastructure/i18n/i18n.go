@@ -149,6 +149,12 @@ const (
 	KeyToolsJwtDecoderInvalid     = "tools.jwt-decoder.invalid"
 	KeyToolsJwtDecoderPlaceholder = "tools.jwt-decoder.placeholder"
 
+	// Hash Generator Tool
+	KeyToolsHashGenerator          = "tools.hash-generator"
+	KeyToolsHashGeneratorTitle     = "tools.hash-generator.title"
+	KeyToolsHashGeneratorDesc      = "tools.hash-generator.desc"
+	KeyToolsHashGeneratorUppercase = "tools.hash-generator.uppercase"
+
 	// Timestamp Converter Tool
 	KeyToolsTimestampConverter             = "tools.timestamp-converter"
 	KeyToolsTimestampConverterTitle        = "tools.timestamp-converter.title"
@@ -397,6 +403,12 @@ func (t *Translator) InitDefaultTranslations() {
 	t.AddTranslation(config.SupportedLangEN, KeyToolsJwtDecoderInvalid, "Invalid JWT format")
 	t.AddTranslation(config.SupportedLangEN, KeyToolsJwtDecoderPlaceholder, "Paste your JWT here (ey...)")
 
+	// Hash Generator Tool
+	t.AddTranslation(config.SupportedLangEN, KeyToolsHashGenerator, "Hash Generator")
+	t.AddTranslation(config.SupportedLangEN, KeyToolsHashGeneratorTitle, "Hash Generator")
+	t.AddTranslation(config.SupportedLangEN, KeyToolsHashGeneratorDesc, "Generate cryptographic hashes (MD5, SHA-1, SHA-256, SHA-512) from text.")
+	t.AddTranslation(config.SupportedLangEN, KeyToolsHashGeneratorUppercase, "Uppercase Output")
+
 	// Timestamp Converter Tool
 	t.AddTranslation(config.SupportedLangEN, KeyToolsTimestampConverter, "Timestamp Converter")
 	t.AddTranslation(config.SupportedLangEN, KeyToolsTimestampConverterTitle, "Timestamp Converter")
@@ -589,6 +601,12 @@ func (t *Translator) InitDefaultTranslations() {
 	t.AddTranslation(config.SupportedLangES, KeyToolsJwtDecoderSignature, "Firma")
 	t.AddTranslation(config.SupportedLangES, KeyToolsJwtDecoderInvalid, "Formato JWT inválido")
 	t.AddTranslation(config.SupportedLangES, KeyToolsJwtDecoderPlaceholder, "Pega tu JWT aquí (ey...)")
+
+	// Hash Generator Tool
+	t.AddTranslation(config.SupportedLangES, KeyToolsHashGenerator, "Generador de Hash")
+	t.AddTranslation(config.SupportedLangES, KeyToolsHashGeneratorTitle, "Generador de Hash")
+	t.AddTranslation(config.SupportedLangES, KeyToolsHashGeneratorDesc, "Genera hashes criptográficos (MD5, SHA-1, SHA-256, SHA-512) a partir de texto.")
+	t.AddTranslation(config.SupportedLangES, KeyToolsHashGeneratorUppercase, "Salida en Mayúsculas")
 
 	// Timestamp Converter Tool
 	t.AddTranslation(config.SupportedLangES, KeyToolsTimestampConverter, "Convertidor de Timestamp")

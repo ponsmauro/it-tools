@@ -1,0 +1,190 @@
+<!DOCTYPE html>
+<html lang="{{ .Lang }}">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>{{ tr "app.title" }} - {{ tr "tools.hash-generator.title" }}</title>
+    <link rel="stylesheet" href="/static/css/style.css">
+</head>
+<body>
+    <main class="main">
+        <div class="container">
+            <div class="tool-container">
+                <h1>{{ tr "tools.hash-generator.title" }}</h1>
+                <p>{{ tr "tools.hash-generator.desc" }}</p>
+
+                <div class="tool-grid">
+                    <div class="panel">
+                        <label for="hash-input">{{ tr "tools.input" }}</label>
+                        <textarea id="hash-input" class="tool-textarea" rows="6" placeholder="Type or paste text here..."></textarea>
+                        
+                        <div class="options-panel" style="margin-top: 12px;">
+                            <label class="option-label">
+                                <input type="checkbox" id="uppercase-output"> {{ tr "tools.hash-generator.uppercase" }}
+                            </label>
+                        </div>
+                        
+                        <div class="actions">
+                            <button type="button" id="btn-clear" class="btn-secondary">{{ tr "tools.clear" }}</button>
+                        </div>
+                    </div>
+
+                    <div class="panel">
+                        <h2>{{ tr "tools.output" }}</h2>
+                        
+                        <div class="hash-output-group">
+                            <label>SHA-1</label>
+                            <div class="output-with-copy">
+                                <input type="text" id="out-sha1" class="tool-input" readonly>
+                                <button class="btn-icon" onclick="copyText('out-sha1')" title="{{ tr "tools.copy" }}">📋</button>
+                            </div>
+
+                            <label>SHA-256</label>
+                            <div class="output-with-copy">
+                                <input type="text" id="out-sha256" class="tool-input" readonly>
+                                <button class="btn-icon" onclick="copyText('out-sha256')" title="{{ tr "tools.copy" }}">📋</button>
+                            </div>
+
+                            <label>SHA-384</label>
+                            <div class="output-with-copy">
+                                <input type="text" id="out-sha384" class="tool-input" readonly>
+                                <button class="btn-icon" onclick="copyText('out-sha384')" title="{{ tr "tools.copy" }}">📋</button>
+                            </div>
+
+                            <label>SHA-512</label>
+                            <div class="output-with-copy">
+                                <input type="text" id="out-sha512" class="tool-input" readonly>
+                                <button class="btn-icon" onclick="copyText('out-sha512')" title="{{ tr "tools.copy" }}">📋</button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </main>
+
+    <style>
+        .tool-input {
+            width: 100%;
+            padding: 10px;
+            border: 1px solid var(--border-color);
+            border-radius: 6px;
+            background: var(--bg-color);
+            color: var(--text-primary);
+            font-family: monospace;
+            margin-bottom: 16px;
+        }
+        .hash-output-group {
+            display: flex;
+            flex-direction: column;
+            gap: 4px;
+        }
+        .hash-output-group label {
+            font-weight: 600;
+            font-size: 0.9rem;
+            color: var(--text-secondary);
+        }
+        .output-with-copy {
+            display: flex;
+            gap: 8px;
+            margin-bottom: 16px;
+        }
+        .output-with-copy .tool-input {
+            margin-bottom: 0;
+        }
+        .btn-icon {
+            background: var(--bg-color);
+            border: 1px solid var(--border-color);
+            border-radius: 6px;
+            padding: 0 12px;
+            cursor: pointer;
+            transition: background 0.2s;
+        }
+        .btn-icon:hover {
+            background: var(--border-color);
+        }
+        .options-panel {
+            display: flex;
+            gap: 16px;
+            padding: 12px;
+            background: var(--bg-color);
+            border-radius: 8px;
+            border: 1px solid var(--border-color);
+        }
+        .option-label {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            cursor: pointer;
+            color: var(--text-primary);
+        }
+    </style>
+
+    <script>
+        // Utility to copy text
+        async function copyText(elementId) {
+            const el = document.getElementById(elementId);
+            if (!el.value) return;
+            try {
+                await navigator.clipboard.writeText(el.value);
+            } catch (err) {
+                console.error('Failed to copy', err);
+            }
+        }
+
+        // Convert ArrayBuffer to Hex String
+        function bufferToHex(buffer) {
+            const hashArray = Array.from(new Uint8Array(buffer));
+            return hashArray.map(b => b.toString(16).padStart(2, '0')).join('');
+        }
+
+        // Web Crypto API for SHA hashes
+        async function generateSHA(text, algorithm) {
+            const msgUint8 = new TextEncoder().encode(text);
+            const hashBuffer = await crypto.subtle.digest(algorithm, msgUint8);
+            return bufferToHex(hashBuffer);
+        }
+
+        // Update hashes
+        async function updateHashes() {
+            const input = document.getElementById('hash-input').value;
+            const isUppercase = document.getElementById('uppercase-output').checked;
+
+            if (!input) {
+                document.getElementById('out-sha1').value = '';
+                document.getElementById('out-sha256').value = '';
+                document.getElementById('out-sha384').value = '';
+                document.getElementById('out-sha512').value = '';
+                return;
+            }
+
+            try {
+                const [sha1, sha256, sha384, sha512] = await Promise.all([
+                    generateSHA(input, 'SHA-1'),
+                    generateSHA(input, 'SHA-256'),
+                    generateSHA(input, 'SHA-384'),
+                    generateSHA(input, 'SHA-512')
+                ]);
+
+                const formatOutput = (hash) => isUppercase ? hash.toUpperCase() : hash;
+
+                document.getElementById('out-sha1').value = formatOutput(sha1);
+                document.getElementById('out-sha256').value = formatOutput(sha256);
+                document.getElementById('out-sha384').value = formatOutput(sha384);
+                document.getElementById('out-sha512').value = formatOutput(sha512);
+            } catch (err) {
+                console.error('Error generating hashes', err);
+            }
+        }
+
+        // Event Listeners
+        document.getElementById('hash-input').addEventListener('input', updateHashes);
+        document.getElementById('uppercase-output').addEventListener('change', updateHashes);
+        
+        document.getElementById('btn-clear').addEventListener('click', () => {
+            document.getElementById('hash-input').value = '';
+            updateHashes();
+        });
+    </script>
+</body>
+</html>
