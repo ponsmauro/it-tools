@@ -1,0 +1,142 @@
+<!DOCTYPE html>
+<html lang="{{ .Lang }}">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>{{ tr "app.title" }} - {{ tr "tools.json-formatter.title" }}</title>
+    <link rel="stylesheet" href="/static/css/style.css">
+</head>
+<body>
+    <main class="main">
+        <div class="container">
+            <div class="tool-container">
+                <h1>{{ tr "tools.json-formatter.title" }}</h1>
+                <p>{{ tr "tools.json-formatter.desc" }}</p>
+
+                <div class="tool-grid">
+                    <div class="panel">
+                        <label for="json-input">{{ tr "tools.input" }}</label>
+                        <textarea id="json-input" class="tool-textarea" rows="15" placeholder='{"key": "value"}'></textarea>
+                        
+                        <div class="options-panel" style="margin-top: 12px;">
+                            <label class="option-label">
+                                {{ tr "tools.json-formatter.indent" }}:
+                                <select id="indent-select" class="tool-select">
+                                    <option value="2">{{ tr "tools.json-formatter.spaces2" }}</option>
+                                    <option value="4">{{ tr "tools.json-formatter.spaces4" }}</option>
+                                    <option value="tab">{{ tr "tools.json-formatter.tabs" }}</option>
+                                </select>
+                            </label>
+                        </div>
+                        
+                        <div class="actions">
+                            <button type="button" id="btn-format" class="btn-primary">{{ tr "tools.json-formatter.format" }}</button>
+                            <button type="button" id="btn-minify" class="btn-secondary">{{ tr "tools.json-formatter.minify" }}</button>
+                            <button type="button" id="btn-clear" class="btn-secondary">{{ tr "tools.clear" }}</button>
+                        </div>
+                    </div>
+
+                    <div class="panel">
+                        <label for="json-output">{{ tr "tools.output" }}</label>
+                        <textarea id="json-output" class="tool-textarea" rows="15" readonly></textarea>
+                        
+                        <div id="error-message" class="error-message" style="display: none;"></div>
+
+                        <div class="actions" style="margin-top: 12px;">
+                            <button type="button" id="btn-copy" class="btn-primary">{{ tr "tools.copy-output" }}</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </main>
+
+    <style>
+        .tool-select {
+            padding: 6px 12px;
+            border: 1px solid var(--border-color);
+            border-radius: 6px;
+            background: var(--bg-color);
+            color: var(--text-primary);
+            font-size: 14px;
+        }
+        .options-panel {
+            display: flex;
+            gap: 16px;
+            padding: 12px;
+            background: var(--bg-color);
+            border-radius: 8px;
+            border: 1px solid var(--border-color);
+        }
+        .option-label {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            color: var(--text-primary);
+            font-weight: 500;
+        }
+        .error-message {
+            margin-top: 12px;
+            padding: 12px;
+            background: rgba(239, 68, 68, 0.1);
+            border: 1px solid #ef4444;
+            border-radius: 6px;
+            color: #ef4444;
+            font-family: monospace;
+            font-size: 14px;
+            word-break: break-all;
+        }
+    </style>
+
+    <script>
+        const inputEl = document.getElementById('json-input');
+        const outputEl = document.getElementById('json-output');
+        const errorEl = document.getElementById('error-message');
+        const indentSelect = document.getElementById('indent-select');
+
+        function getIndent() {
+            const val = indentSelect.value;
+            if (val === 'tab') return '\t';
+            return parseInt(val, 10);
+        }
+
+        function processJson(minify = false) {
+            const raw = inputEl.value.trim();
+            if (!raw) {
+                outputEl.value = '';
+                errorEl.style.display = 'none';
+                return;
+            }
+
+            try {
+                const parsed = JSON.parse(raw);
+                const indent = minify ? 0 : getIndent();
+                outputEl.value = JSON.stringify(parsed, null, indent);
+                errorEl.style.display = 'none';
+            } catch (err) {
+                outputEl.value = '';
+                errorEl.textContent = '{{ tr "tools.json-formatter.invalid" }}: ' + err.message;
+                errorEl.style.display = 'block';
+            }
+        }
+
+        document.getElementById('btn-format').addEventListener('click', () => processJson(false));
+        document.getElementById('btn-minify').addEventListener('click', () => processJson(true));
+        
+        document.getElementById('btn-clear').addEventListener('click', () => {
+            inputEl.value = '';
+            outputEl.value = '';
+            errorEl.style.display = 'none';
+        });
+
+        document.getElementById('btn-copy').addEventListener('click', async () => {
+            if (!outputEl.value) return;
+            try {
+                await navigator.clipboard.writeText(outputEl.value);
+            } catch (err) {
+                console.error('Failed to copy', err);
+            }
+        });
+    </script>
+</body>
+</html>
