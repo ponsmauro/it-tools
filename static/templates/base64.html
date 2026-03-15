@@ -1,0 +1,390 @@
+<!DOCTYPE html>
+<html lang="{{ .Lang }}">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>{{ tr "app.title" }} - {{ tr "tools.base64" | default "Base64 Encoder/Decoder" }}</title>
+    <link rel="stylesheet" href="/static/css/style.css">
+</head>
+<body>
+    <div class="tabs">
+        <a href="/?lang={{ .Lang }}" class="tab {{ if eq .CurrentRoute "/" }}active{{ end }}">{{ tr "nav.it-tools" }}</a>
+    </div>
+
+    <main class="main">
+        <div class="container">
+            <div class="tool-content base64-tool">
+                <h1>{{ tr "tools.base64.title" | default "Base64 Encoder/Decoder" }}</h1>
+                <p>{{ tr "tools.base64.desc" | default "Convert text to Base64 and decode Base64 back to text. Also supports file encoding." }}</p>
+
+                <div class="mode-selector">
+                    <button id="encode-tab" class="mode-tab active">{{ tr "tools.base64.encode" | default "Encode" }}</button>
+                    <button id="decode-tab" class="mode-tab">{{ tr "tools.base64.decode" | default "Decode" }}</button>
+                </div>
+
+                <div class="tool-grid">
+                    <div class="panel">
+                        <label for="base64-input">{{ tr "tools.input" | default "Input" }}</label>
+                        <textarea id="base64-input" class="tool-textarea" placeholder="{{ tr "tools.base64.input-placeholder" | default "Type or paste text here..." }}"></textarea>
+                        
+                        <div class="file-upload" id="file-upload-section">
+                            <label for="file-input">{{ tr "tools.base64.file-upload" | default "Or upload a file:" }}</label>
+                            <input type="file" id="file-input" class="file-input">
+                            <div class="file-info" id="file-info"></div>
+                        </div>
+                    </div>
+
+                    <div class="panel actions">
+                        <button type="button" id="btn-process" class="btn-primary">{{ tr "tools.base64.encode-btn" | default "Encode" }}</button>
+                        <button type="button" id="btn-clear" class="btn-secondary">{{ tr "tools.clear" | default "Clear" }}</button>
+                        <button type="button" id="btn-copy" class="btn-primary">{{ tr "tools.copy-output" | default "Copy Output" }}</button>
+                    </div>
+
+                    <div class="panel">
+                        <label for="base64-output">{{ tr "tools.output" | default "Output" }}</label>
+                        <textarea id="base64-output" class="tool-textarea" placeholder="{{ tr "tools.base64.output-placeholder" | default "Result will appear here..." }}" readonly></textarea>
+                    </div>
+                </div>
+
+                <div id="base64-status" class="status" aria-live="polite"></div>
+                
+                <div class="info-section">
+                    <h2>{{ tr "tools.base64.about-title" | default "About Base64" }}</h2>
+                    <p>{{ tr "tools.base64.about-desc" | default "Base64 is a binary-to-text encoding scheme that represents binary data in an ASCII string format by translating it into a radix-64 representation." }}</p>
+                    <ul>
+                        <li>{{ tr "tools.base64.about-item1" | default "Used to encode binary data for transmission over text-based protocols" }}</li>
+                        <li>{{ tr "tools.base64.about-item2" | default "Common in email attachments, data URLs, and API communications" }}</li>
+                        <li>{{ tr "tools.base64.about-item3" | default "Increases data size by approximately 33% compared to binary" }}</li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </main>
+
+    <style>
+        .base64-tool {
+            width: 100%;
+            max-width: 100%;
+        }
+
+        .base64-tool h1 {
+            margin-bottom: 8px;
+        }
+
+        .base64-tool p {
+            margin-bottom: 16px;
+            color: #475569;
+        }
+
+        .mode-selector {
+            display: flex;
+            margin-bottom: 20px;
+            border-bottom: 1px solid #e2e8f0;
+        }
+
+        .mode-tab {
+            padding: 12px 24px;
+            background: none;
+            border: none;
+            border-bottom: 3px solid transparent;
+            cursor: pointer;
+            font-weight: 500;
+            color: #64748b;
+        }
+
+        .mode-tab.active {
+            color: #2563eb;
+            border-bottom-color: #2563eb;
+        }
+
+        .tool-grid {
+            display: grid;
+            gap: 20px;
+        }
+
+        .panel {
+            display: flex;
+            flex-direction: column;
+            gap: 12px;
+        }
+
+        .panel.actions {
+            display: flex;
+            flex-wrap: wrap;
+            flex-direction: row;
+            gap: 12px;
+            align-items: center;
+            justify-content: flex-start;
+        }
+
+        .btn-primary, .btn-secondary {
+            border-radius: 8px;
+            padding: 12px 20px;
+            cursor: pointer;
+            font-weight: 500;
+        }
+
+        .btn-primary {
+            background: #2563eb;
+            color: white;
+            border: none;
+        }
+
+        .btn-secondary {
+            background: #f1f5f9;
+            color: #334155;
+            border: 1px solid #cbd5e1;
+        }
+
+        .btn-primary:hover {
+            background: #1d4ed8;
+        }
+
+        .btn-secondary:hover {
+            background: #e2e8f0;
+        }
+
+        .tool-textarea {
+            width: 100%;
+            min-height: 180px;
+            border: 1px solid #cbd5e1;
+            border-radius: 8px;
+            padding: 16px;
+            font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, "Liberation Mono", "Courier New", monospace;
+            font-size: 14px;
+            line-height: 1.5;
+            resize: vertical;
+        }
+
+        .file-upload {
+            margin-top: 12px;
+            padding: 16px;
+            border: 1px dashed #cbd5e1;
+            border-radius: 8px;
+            background: #f8fafc;
+        }
+
+        .file-info {
+            margin-top: 8px;
+            font-size: 14px;
+            color: #64748b;
+        }
+
+        .status {
+            margin-top: 16px;
+            min-height: 24px;
+            font-size: 14px;
+            color: #0f766e;
+            padding: 8px 16px;
+            border-radius: 6px;
+            background: #f0fdfa;
+            display: none;
+        }
+
+        .status.error {
+            color: #b91c1c;
+            background: #fef2f2;
+        }
+
+        .status.visible {
+            display: block;
+        }
+
+        .info-section {
+            margin-top: 40px;
+            padding: 24px;
+            background: #f8fafc;
+            border-radius: 8px;
+            border-left: 4px solid #2563eb;
+        }
+
+        .info-section h2 {
+            margin-bottom: 12px;
+            font-size: 18px;
+        }
+
+        .info-section ul {
+            margin-top: 12px;
+            padding-left: 24px;
+        }
+
+        .info-section li {
+            margin-bottom: 8px;
+        }
+
+        @media (max-width: 768px) {
+            .panel.actions {
+                flex-direction: column;
+                align-items: stretch;
+            }
+            
+            .btn-primary, .btn-secondary {
+                width: 100%;
+            }
+        }
+    </style>
+
+    <script>
+        (function initBase64Tool() {
+            const input = document.getElementById('base64-input');
+            const output = document.getElementById('base64-output');
+            const status = document.getElementById('base64-status');
+            const processButton = document.getElementById('btn-process');
+            const clearButton = document.getElementById('btn-clear');
+            const copyButton = document.getElementById('btn-copy');
+            const encodeTab = document.getElementById('encode-tab');
+            const decodeTab = document.getElementById('decode-tab');
+            const fileInput = document.getElementById('file-input');
+            const fileInfo = document.getElementById('file-info');
+            const fileUploadSection = document.getElementById('file-upload-section');
+            
+            let currentMode = 'encode';
+            let currentFile = null;
+
+            function setStatus(message, isError = false) {
+                status.textContent = message;
+                status.classList.toggle('error', isError);
+                status.classList.add('visible');
+                
+                setTimeout(() => {
+                    status.classList.remove('visible');
+                }, 3000);
+            }
+
+            function switchMode(mode) {
+                currentMode = mode;
+                
+                if (mode === 'encode') {
+                    encodeTab.classList.add('active');
+                    decodeTab.classList.remove('active');
+                    processButton.textContent = '{{ tr "tools.base64.encode-btn" | default "Encode" }}';
+                    fileUploadSection.style.display = 'block';
+                } else {
+                    encodeTab.classList.remove('active');
+                    decodeTab.classList.add('active');
+                    processButton.textContent = '{{ tr "tools.base64.decode-btn" | default "Decode" }}';
+                    fileUploadSection.style.display = 'none';
+                }
+                
+                // Clear outputs when switching modes
+                output.value = '';
+                currentFile = null;
+                fileInfo.textContent = '';
+            }
+
+            function encodeBase64() {
+                try {
+                    if (currentFile) {
+                        // File is already processed in the file input handler
+                        return;
+                    }
+                    
+                    if (!input.value.trim()) {
+                        setStatus('{{ tr "tools.base64.no-input" | default "Please enter text to encode." }}', true);
+                        return;
+                    }
+                    
+                    output.value = btoa(input.value);
+                    setStatus('{{ tr "tools.base64.encode-success" | default "Text encoded successfully." }}');
+                } catch (error) {
+                    setStatus('{{ tr "tools.base64.encode-error" | default "Error encoding text. Make sure it contains valid characters." }}', true);
+                    console.error('Encode error:', error);
+                }
+            }
+
+            function decodeBase64() {
+                try {
+                    if (!input.value.trim()) {
+                        setStatus('{{ tr "tools.base64.no-input" | default "Please enter Base64 to decode." }}', true);
+                        return;
+                    }
+                    
+                    output.value = atob(input.value);
+                    setStatus('{{ tr "tools.base64.decode-success" | default "Base64 decoded successfully." }}');
+                } catch (error) {
+                    setStatus('{{ tr "tools.base64.decode-error" | default "Error decoding. Input is not valid Base64." }}', true);
+                    console.error('Decode error:', error);
+                }
+            }
+
+            function processInput() {
+                if (currentMode === 'encode') {
+                    encodeBase64();
+                } else {
+                    decodeBase64();
+                }
+            }
+
+            function clearAll() {
+                input.value = '';
+                output.value = '';
+                currentFile = null;
+                fileInfo.textContent = '';
+                fileInput.value = '';
+                setStatus('{{ tr "tools.base64.cleared" | default "Cleared." }}');
+                input.focus();
+            }
+
+            async function copyOutput() {
+                try {
+                    if (!output.value) {
+                        setStatus('{{ tr "tools.base64.nothing-to-copy" | default "Nothing to copy." }}', true);
+                        return;
+                    }
+                    
+                    await navigator.clipboard.writeText(output.value);
+                    setStatus('{{ tr "tools.base64.copy-success" | default "Output copied to clipboard." }}');
+                } catch (error) {
+                    setStatus('{{ tr "tools.base64.copy-error" | default "Failed to copy to clipboard." }}', true);
+                    console.error('Copy error:', error);
+                }
+            }
+
+            function handleFileUpload(event) {
+                const file = event.target.files[0];
+                if (!file) return;
+                
+                currentFile = file;
+                fileInfo.textContent = `${file.name} (${formatFileSize(file.size)})`;
+                
+                const reader = new FileReader();
+                
+                reader.onload = function(e) {
+                    try {
+                        // Get the base64 part from the data URL
+                        const base64String = e.target.result.split(',')[1];
+                        output.value = base64String;
+                        setStatus('{{ tr "tools.base64.file-encoded" | default "File encoded successfully." }}');
+                    } catch (error) {
+                        setStatus('{{ tr "tools.base64.file-error" | default "Error processing file." }}', true);
+                        console.error('File processing error:', error);
+                    }
+                };
+                
+                reader.onerror = function() {
+                    setStatus('{{ tr "tools.base64.file-read-error" | default "Error reading file." }}', true);
+                };
+                
+                reader.readAsDataURL(file);
+            }
+
+            function formatFileSize(bytes) {
+                if (bytes < 1024) return bytes + ' bytes';
+                else if (bytes < 1048576) return (bytes / 1024).toFixed(1) + ' KB';
+                else return (bytes / 1048576).toFixed(1) + ' MB';
+            }
+
+            // Event listeners
+            encodeTab.addEventListener('click', () => switchMode('encode'));
+            decodeTab.addEventListener('click', () => switchMode('decode'));
+            processButton.addEventListener('click', processInput);
+            clearButton.addEventListener('click', clearAll);
+            copyButton.addEventListener('click', copyOutput);
+            fileInput.addEventListener('change', handleFileUpload);
+            
+            // Initialize
+            switchMode('encode');
+        })();
+    </script>
+</body>
+</html>
