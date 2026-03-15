@@ -45,7 +45,7 @@ function simulateKill() {
 </script>
 	`
 	w.Header().Set("Content-Type", "text/html")
-	w.Write([]byte(content))
+	_, _ = w.Write([]byte(content))
 }
 
 func Init() {
