@@ -1,0 +1,236 @@
+<!DOCTYPE html>
+<html lang=\"{{ .Lang }}\">
+<head>
+    <meta charset=\"UTF-8\">
+    <meta name=\"viewport\" content=\"width=device-width, initial-scale=1.0\">
+    <title>{{ tr \"app.title\" }} - {{ tr \"tools.text-utils\" | default \"Text Utils\" }}</title>
+    <link rel=\"stylesheet\" href=\"/static/css/style.css\">
+</head>
+<body>
+    <div class=\"tabs\">
+        <a href=\"/\" class=\"tab active\">{{ tr \"nav.it-tools\" }}</a>
+    </div>
+
+    <main class=\"main\">
+        <div class=\"container\">
+            <div class=\"text-utils tool-container\">
+                <h1>{{ tr \"tools.text-utils.title\" | default \"Text Utilities\" }}</h1>
+                <p>{{ tr \"tools.text-utils.desc\" | default \"Live text statistics and transformations\" }}</p>
+                
+                <div class=\"input-output\">
+                    <div class=\"input-section\">
+                        <label>{{ tr \"tools.input\" | default \"Input\" }}</label>
+                        <textarea id=\"input-text\" placeholder=\"Paste your text here...\" rows=\"12\"></textarea>
+                    </div>
+                    
+                    <div class=\"output-section\">
+                        <label>{{ tr \"tools.output\" | default \"Output\" }}</label>
+                        <textarea id=\"output-text\" readonly rows=\"12\"></textarea>
+                        <button onclick=\"copyOutput()\" class=\"btn-copy-output\">{{ tr \"tools.copy-output\" | default \"Copy Output\" }}</button>
+                    </div>
+                </div>
+                
+                <div class=\"stats-grid\">
+                    <div class=\"stat-card\">
+                        <span class=\"stat-number\" id=\"chars\">0</span>
+                        <span class=\"stat-label\">{{ tr \"tools.chars\" | default \"Chars\" }}</span>
+                    </div>
+                    <div class=\"stat-card\">
+                        <span class=\"stat-number\" id=\"words\">0</span>
+                        <span class=\"stat-label\">{{ tr \"tools.words\" | default \"Words\" }}</span>
+                    </div>
+                    <div class=\"stat-card\">
+                        <span class=\"stat-number\" id=\"lines\">0</span>
+                        <span class=\"stat-label\">{{ tr \"tools.lines\" | default \"Lines\" }}</span>
+                    </div>
+                    <div class=\"stat-card\">
+                        <span class=\"stat-number\" id=\"empty-lines\">0</span>
+                        <span class=\"stat-label\">{{ tr \"tools.empty-lines\" | default \"Empty Lines\" }}</span>
+                    </div>
+                </div>
+                
+                <div class=\"controls-grid\">
+                    <button onclick=\"reverseLines()\" class=\"btn-primary\">{{ tr \"tools.reverse-lines\" | default \"Reverse Lines\" }}</button>
+                    <button onclick=\"sortLines()\" class=\"btn-primary\">{{ tr \"tools.sort-lines\" | default \"Sort Lines\" }}</button>
+                    <button onclick=\"uniqueLines()\" class=\"btn-primary\">{{ tr \"tools.unique-lines\" | default \"Unique Lines\" }}</button>
+                    <button onclick=\"clearText()\" class=\"btn-secondary\">{{ tr \"tools.clear-all\" | default \"Clear All\" }}</button>
+                </div>
+            </div>
+        </div>
+    </main>
+
+    <script>
+        const input = document.getElementById('input-text');
+        const output = document.getElementById('output-text');
+        
+        input.addEventListener('input', updateLive);
+        
+        function updateLive() {
+            updateStats();
+            output.value = input.value;
+        }
+        
+        function updateStats() {
+            const text = input.value;
+            const lines = text.split('\\n');
+            const words = text.trim().split(/\\s+/).filter(w => w.length > 0);
+            
+            document.getElementById('chars').textContent = text.length;
+            document.getElementById('words').textContent = words.length;
+            document.getElementById('lines').textContent = lines.length;
+            document.getElementById('empty-lines').textContent = lines.filter(l => l.trim() === '').length;
+        }
+        
+        function reverseLines() {
+            const lines = input.value.split('\\n').reverse().join('\\n');
+            input.value = lines;
+            updateLive();
+        }
+        
+        function sortLines() {
+            const lines = input.value.split('\\n').sort().join('\\n');
+            input.value = lines;
+            updateLive();
+        }
+        
+        function uniqueLines() {
+            const lines = input.value.split('\\n').filter((line, index, self) => 
+                self.findIndex(l => l === line) === index
+            ).join('\\n');
+            input.value = lines;
+            updateLive();
+        }
+        
+        function clearText() {
+            input.value = '';
+            output.value = '';
+            updateStats();
+        }
+        
+        function copyOutput() {
+            navigator.clipboard.writeText(output.value).then(() => {
+                const btn = event.target;
+                const original = btn.textContent;
+                btn.textContent = '✅ Copied!';
+                btn.style.background = '#10b981';
+                setTimeout(() => {
+                    btn.textContent = original;
+                    btn.style.background = '';
+                }, 1500);
+            });
+        }
+    </script>
+
+    <style>
+        .text-utils {
+            max-width: 100%;
+        }
+        .input-output {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 24px;
+            margin: 32px 0;
+        }
+        .input-section, .output-section {
+            display: flex;
+            flex-direction: column;
+        }
+        label {
+            font-weight: 600;
+            margin-bottom: 8px;
+            color: #374151;
+        }
+        textarea {
+            width: 100%;
+            padding: 16px;
+            border: 1px solid #d1d5db;
+            border-radius: 8px;
+            font-family: 'SF Mono', monospace;
+            font-size: 14px;
+            resize: vertical;
+            line-height: 1.5;
+            transition: border-color 0.2s;
+        }
+        textarea:focus {
+            outline: none;
+            border-color: #2563eb;
+            box-shadow: 0 0 0 3px rgba(37, 99, 235, 0.1);
+        }
+        .btn-copy-output {
+            margin-top: 8px;
+            padding: 12px 24px;
+            background: #3b82f6;
+            color: white;
+            border: none;
+            border-radius: 6px;
+            cursor: pointer;
+            align-self: flex-end;
+        }
+        .stats-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 16px;
+            margin: 32px 0;
+        }
+        .stat-card {
+            padding: 20px;
+            background: #f8fafc;
+            border: 1px solid #e2e8f0;
+            border-radius: 8px;
+            text-align: center;
+        }
+        .stat-number {
+            display: block;
+            font-size: 2rem;
+            font-weight: bold;
+            color: #1f2937;
+            font-family: 'SF Mono', monospace;
+        }
+        .controls-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+            gap: 12px;
+            margin: 32px 0;
+        }
+        .btn-primary {
+            padding: 16px 24px;
+            background: var(--primary-color, #2563eb);
+            color: white;
+            border: none;
+            border-radius: 8px;
+            cursor: pointer;
+            font-weight: 500;
+            font-size: 15px;
+            transition: all 0.2s;
+        }
+        .btn-secondary {
+            padding: 16px 24px;
+            background: #6b7280;
+            color: white;
+            border: none;
+            border-radius: 8px;
+            cursor: pointer;
+            font-weight: 500;
+            font-size: 15px;
+            transition: all 0.2s;
+        }
+        .btn-primary:hover {
+            background: #1d4ed8;
+            transform: translateY(-1px);
+        }
+        @media (max-width: 1024px) {
+            .input-output {
+                grid-template-columns: 1fr;
+            }
+        }
+        @media (max-width: 768px) {
+            .controls-grid {
+                grid-template-columns: 1fr;
+            }
+            .stats-grid {
+                grid-template-columns: 1fr 1fr;
+            }
+        }
+    </style>
+</body>
+</html>
