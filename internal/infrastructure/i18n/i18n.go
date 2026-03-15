@@ -149,6 +149,12 @@ const (
 	KeyToolsJwtDecoderInvalid     = "tools.jwt-decoder.invalid"
 	KeyToolsJwtDecoderPlaceholder = "tools.jwt-decoder.placeholder"
 
+	// QR Generator Tool
+	KeyToolsQrGenerator         = "tools.qr-generator"
+	KeyToolsQrGeneratorTitle    = "tools.qr-generator.title"
+	KeyToolsQrGeneratorDesc     = "tools.qr-generator.desc"
+	KeyToolsQrGeneratorDownload = "tools.qr-generator.download"
+
 	// JSON Formatter Tool
 	KeyToolsJsonFormatter        = "tools.json-formatter"
 	KeyToolsJsonFormatterTitle   = "tools.json-formatter.title"
@@ -415,6 +421,12 @@ func (t *Translator) InitDefaultTranslations() {
 	t.AddTranslation(config.SupportedLangEN, KeyToolsJwtDecoderInvalid, "Invalid JWT format")
 	t.AddTranslation(config.SupportedLangEN, KeyToolsJwtDecoderPlaceholder, "Paste your JWT here (ey...)")
 
+	// QR Generator Tool
+	t.AddTranslation(config.SupportedLangEN, KeyToolsQrGenerator, "QR Generator")
+	t.AddTranslation(config.SupportedLangEN, KeyToolsQrGeneratorTitle, "QR Generator")
+	t.AddTranslation(config.SupportedLangEN, KeyToolsQrGeneratorDesc, "Generate QR codes from text or URLs.")
+	t.AddTranslation(config.SupportedLangEN, KeyToolsQrGeneratorDownload, "Download QR Code")
+
 	// JSON Formatter Tool
 	t.AddTranslation(config.SupportedLangEN, KeyToolsJsonFormatter, "JSON Formatter")
 	t.AddTranslation(config.SupportedLangEN, KeyToolsJsonFormatterTitle, "JSON Formatter")
@@ -625,6 +637,12 @@ func (t *Translator) InitDefaultTranslations() {
 	t.AddTranslation(config.SupportedLangES, KeyToolsJwtDecoderSignature, "Firma")
 	t.AddTranslation(config.SupportedLangES, KeyToolsJwtDecoderInvalid, "Formato JWT inválido")
 	t.AddTranslation(config.SupportedLangES, KeyToolsJwtDecoderPlaceholder, "Pega tu JWT aquí (ey...)")
+
+	// QR Generator Tool
+	t.AddTranslation(config.SupportedLangES, KeyToolsQrGenerator, "Generador de QR")
+	t.AddTranslation(config.SupportedLangES, KeyToolsQrGeneratorTitle, "Generador de QR")
+	t.AddTranslation(config.SupportedLangES, KeyToolsQrGeneratorDesc, "Genera códigos QR a partir de texto o URLs.")
+	t.AddTranslation(config.SupportedLangES, KeyToolsQrGeneratorDownload, "Descargar Código QR")
 
 	// JSON Formatter Tool
 	t.AddTranslation(config.SupportedLangES, KeyToolsJsonFormatter, "Formateador JSON")
