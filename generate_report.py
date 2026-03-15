@@ -23,17 +23,27 @@ def analyze_backend():
     
     # Run go vet
     vet_out = run_cmd("go vet ./...")
-    vet_issues = len(vet_out.split('\n')) if vet_out else 0
+    vet_issues_count = len([line for line in vet_out.split('\n') if line.strip()]) if vet_out else 0
     
     # Calculate score (base 100, -5 per vet issue, + coverage weight)
-    score = max(0, min(100, (coverage * 0.8) + (20 - vet_issues * 5)))
+    score = max(0, min(100, (coverage * 0.8) + (20 - vet_issues_count * 5)))
     
+    recommendations = []
+    if coverage < 80:
+        recommendations.append(f"Test coverage is low ({coverage}%). Aim for at least 80% by writing more unit tests for your Go packages.")
+    if vet_issues_count > 0:
+        recommendations.append(f"Found {vet_issues_count} issues with 'go vet'. Run 'go vet ./...' and fix the reported warnings to ensure code correctness.")
+        recommendations.append(f"Vet Output:\n{vet_out}")
+    if score == 100:
+        recommendations.append("Backend code looks great! Keep up the good work.")
+
     return {
         "files": int(go_files),
         "loc": int(go_loc),
         "coverage": coverage,
-        "vet_issues": vet_issues,
-        "score": round(score, 1)
+        "vet_issues": vet_issues_count,
+        "score": round(score, 1),
+        "recommendations": recommendations
     }
 
 def analyze_frontend():
@@ -48,21 +58,43 @@ def analyze_frontend():
     total_loc = int(html_loc) + int(css_loc)
     
     # Check for inline styles and scripts in HTML
-    inline_styles = int(run_cmd("grep -r 'style=' static/templates | wc -l"))
-    style_tags = int(run_cmd("grep -r '<style>' static/templates | wc -l"))
-    script_tags = int(run_cmd("grep -r '<script>' static/templates | wc -l"))
+    inline_styles_count = int(run_cmd("grep -r 'style=' static/templates | wc -l"))
+    inline_styles_files = run_cmd("grep -rl 'style=' static/templates")
+    
+    style_tags_count = int(run_cmd("grep -r '<style>' static/templates | wc -l"))
+    style_tags_files = run_cmd("grep -rl '<style>' static/templates")
+    
+    script_tags_count = int(run_cmd("grep -r '<script>' static/templates | wc -l"))
+    script_tags_files = run_cmd("grep -rl '<script>' static/templates")
     
     # Calculate score (base 100, penalize inline styles and embedded scripts/styles)
-    penalty = (inline_styles * 0.5) + (style_tags * 2) + (script_tags * 1)
+    penalty = (inline_styles_count * 0.5) + (style_tags_count * 2) + (script_tags_count * 1)
     score = max(0, min(100, 100 - penalty))
     
+    recommendations = []
+    if inline_styles_count > 0:
+        files = [f.replace('static/templates/', '') for f in inline_styles_files.split('\n') if f]
+        recommendations.append(f"Found {inline_styles_count} inline styles (style=\"...\"). Inline styles make CSS hard to maintain and override. Move these to static/css/style.css using utility classes. Affected files: {', '.join(files[:5])}{'...' if len(files)>5 else ''}")
+    
+    if style_tags_count > 0:
+        files = [f.replace('static/templates/', '') for f in style_tags_files.split('\n') if f]
+        recommendations.append(f"Found {style_tags_count} embedded <style> tags. For better caching and separation of concerns, move CSS to static/css/style.css. Affected files: {', '.join(files[:5])}{'...' if len(files)>5 else ''}")
+        
+    if script_tags_count > 0:
+        files = [f.replace('static/templates/', '') for f in script_tags_files.split('\n') if f]
+        recommendations.append(f"Found {script_tags_count} embedded <script> tags. Consider moving complex JavaScript logic to external .js files in a static/js/ directory to improve maintainability and enable Content Security Policy (CSP). Affected files: {', '.join(files[:5])}{'...' if len(files)>5 else ''}")
+
+    if score == 100:
+        recommendations.append("Frontend code looks clean! Good separation of concerns.")
+
     return {
         "files": total_files,
         "loc": total_loc,
-        "inline_styles": inline_styles,
-        "style_tags": style_tags,
-        "script_tags": script_tags,
-        "score": round(score, 1)
+        "inline_styles": inline_styles_count,
+        "style_tags": style_tags_count,
+        "script_tags": script_tags_count,
+        "score": round(score, 1),
+        "recommendations": recommendations
     }
 
 def generate_html(backend_data, frontend_data):
@@ -155,6 +187,31 @@ def generate_html(backend_data, frontend_data):
             font-weight: bold;
             background: rgba(255,255,255,0.1);
         }}
+        .recommendations {{
+            margin-top: 24px;
+            padding-top: 24px;
+            border-top: 1px solid var(--border);
+        }}
+        .recommendations h3 {{
+            margin-top: 0;
+            color: var(--text);
+        }}
+        .recommendation-item {{
+            background: rgba(255,255,255,0.05);
+            padding: 12px;
+            border-radius: 6px;
+            margin-bottom: 12px;
+            border-left: 4px solid var(--warning);
+            font-size: 14px;
+        }}
+        .recommendation-item pre {{
+            background: var(--bg);
+            padding: 8px;
+            border-radius: 4px;
+            overflow-x: auto;
+            font-size: 12px;
+            margin-top: 8px;
+        }}
     </style>
 </head>
 <body>
@@ -195,6 +252,11 @@ def generate_html(backend_data, frontend_data):
                 <span class="metric-label">Embedded Script Tags</span>
                 <span class="metric-value" style="color: {get_color(100 - frontend_data['script_tags']*5)}">{frontend_data['script_tags']}</span>
             </div>
+            
+            <div class="recommendations">
+                <h3>Recommendations</h3>
+                {''.join(f'<div class="recommendation-item">{r}</div>' for r in frontend_data['recommendations'])}
+            </div>
         </div>
 
         <div id="backend" class="panel">
@@ -217,6 +279,11 @@ def generate_html(backend_data, frontend_data):
             <div class="metric">
                 <span class="metric-label">Go Vet Issues</span>
                 <span class="metric-value" style="color: {get_color(100 - backend_data['vet_issues']*10)}">{backend_data['vet_issues']}</span>
+            </div>
+            
+            <div class="recommendations">
+                <h3>Recommendations</h3>
+                {''.join(f'<div class="recommendation-item">{r.replace(chr(10), "<br>")}</div>' if not r.startswith('Vet Output:') else f'<div class="recommendation-item"><pre>{r}</pre></div>' for r in backend_data['recommendations'])}
             </div>
         </div>
     </div>
