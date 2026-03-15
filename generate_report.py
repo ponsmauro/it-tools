@@ -74,15 +74,15 @@ def analyze_frontend():
     recommendations = []
     if inline_styles_count > 0:
         files = [f.replace('static/templates/', '') for f in inline_styles_files.split('\n') if f]
-        recommendations.append(f"Found {inline_styles_count} inline styles (style=\"...\"). Inline styles make CSS hard to maintain and override. Move these to static/css/style.css using utility classes. Affected files: {', '.join(files[:5])}{'...' if len(files)>5 else ''}")
+        recommendations.append(f"Found {inline_styles_count} inline styles (style=\"...\"). Inline styles make CSS hard to maintain and override. Move these to static/css/style.css using utility classes. Affected files: {', '.join(files)}")
     
     if style_tags_count > 0:
         files = [f.replace('static/templates/', '') for f in style_tags_files.split('\n') if f]
-        recommendations.append(f"Found {style_tags_count} embedded <style> tags. For better caching and separation of concerns, move CSS to static/css/style.css. Affected files: {', '.join(files[:5])}{'...' if len(files)>5 else ''}")
+        recommendations.append(f"Found {style_tags_count} embedded <style> tags. For better caching and separation of concerns, move CSS to static/css/style.css. Affected files: {', '.join(files)}")
         
     if script_tags_count > 0:
         files = [f.replace('static/templates/', '') for f in script_tags_files.split('\n') if f]
-        recommendations.append(f"Found {script_tags_count} embedded <script> tags. Consider moving complex JavaScript logic to external .js files in a static/js/ directory to improve maintainability and enable Content Security Policy (CSP). Affected files: {', '.join(files[:5])}{'...' if len(files)>5 else ''}")
+        recommendations.append(f"Found {script_tags_count} embedded <script> tags. Consider moving complex JavaScript logic to external .js files in a static/js/ directory to improve maintainability and enable Content Security Policy (CSP). Affected files: {', '.join(files)}")
 
     if score == 100:
         recommendations.append("Frontend code looks clean! Good separation of concerns.")
@@ -223,8 +223,8 @@ def generate_html(backend_data, frontend_data):
         </div>
 
         <div class="tabs">
-            <div class="tab active" onclick="switchTab('frontend')">Frontend</div>
-            <div class="tab" onclick="switchTab('backend')">Backend</div>
+            <div class="tab active" onclick="switchTab('frontend', this)">Frontend</div>
+            <div class="tab" onclick="switchTab('backend', this)">Backend</div>
         </div>
 
         <div id="frontend" class="panel active">
@@ -289,11 +289,15 @@ def generate_html(backend_data, frontend_data):
     </div>
 
     <script>
-        function switchTab(tabId) {{
+        function switchTab(tabId, element) {{
             document.querySelectorAll('.tab').forEach(t => t.classList.remove('active'));
             document.querySelectorAll('.panel').forEach(p => p.classList.remove('active'));
             
-            event.target.classList.add('active');
+            if (element) {{
+                element.classList.add('active');
+            }} else {{
+                document.querySelector(`.tab[onclick="switchTab('${{tabId}}', this)"]`).classList.add('active');
+            }}
             document.getElementById(tabId).classList.add('active');
         }}
     </script>
