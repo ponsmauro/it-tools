@@ -149,6 +149,17 @@ const (
 	KeyToolsJwtDecoderInvalid     = "tools.jwt-decoder.invalid"
 	KeyToolsJwtDecoderPlaceholder = "tools.jwt-decoder.placeholder"
 
+	// Regex Tester Tool
+	KeyToolsRegexTester           = "tools.regex-tester"
+	KeyToolsRegexTesterTitle      = "tools.regex-tester.title"
+	KeyToolsRegexTesterDesc       = "tools.regex-tester.desc"
+	KeyToolsRegexTesterRegex      = "tools.regex-tester.regex"
+	KeyToolsRegexTesterFlags      = "tools.regex-tester.flags"
+	KeyToolsRegexTesterTestString = "tools.regex-tester.test-string"
+	KeyToolsRegexTesterMatches    = "tools.regex-tester.matches"
+	KeyToolsRegexTesterNoMatch    = "tools.regex-tester.no-match"
+	KeyToolsRegexTesterError      = "tools.regex-tester.error"
+
 	// Color Converter Tool
 	KeyToolsColorConverter      = "tools.color-converter"
 	KeyToolsColorConverterTitle = "tools.color-converter.title"
@@ -429,6 +440,17 @@ func (t *Translator) InitDefaultTranslations() {
 	t.AddTranslation(config.SupportedLangEN, KeyToolsJwtDecoderInvalid, "Invalid JWT format")
 	t.AddTranslation(config.SupportedLangEN, KeyToolsJwtDecoderPlaceholder, "Paste your JWT here (ey...)")
 
+	// Regex Tester Tool
+	t.AddTranslation(config.SupportedLangEN, KeyToolsRegexTester, "Regex Tester")
+	t.AddTranslation(config.SupportedLangEN, KeyToolsRegexTesterTitle, "Regex Tester")
+	t.AddTranslation(config.SupportedLangEN, KeyToolsRegexTesterDesc, "Test regular expressions against text.")
+	t.AddTranslation(config.SupportedLangEN, KeyToolsRegexTesterRegex, "Regular Expression")
+	t.AddTranslation(config.SupportedLangEN, KeyToolsRegexTesterFlags, "Flags")
+	t.AddTranslation(config.SupportedLangEN, KeyToolsRegexTesterTestString, "Test String")
+	t.AddTranslation(config.SupportedLangEN, KeyToolsRegexTesterMatches, "Matches")
+	t.AddTranslation(config.SupportedLangEN, KeyToolsRegexTesterNoMatch, "No matches found.")
+	t.AddTranslation(config.SupportedLangEN, KeyToolsRegexTesterError, "Invalid regular expression.")
+
 	// Color Converter Tool
 	t.AddTranslation(config.SupportedLangEN, KeyToolsColorConverter, "Color Converter")
 	t.AddTranslation(config.SupportedLangEN, KeyToolsColorConverterTitle, "Color Converter")
@@ -653,6 +675,17 @@ func (t *Translator) InitDefaultTranslations() {
 	t.AddTranslation(config.SupportedLangES, KeyToolsJwtDecoderSignature, "Firma")
 	t.AddTranslation(config.SupportedLangES, KeyToolsJwtDecoderInvalid, "Formato JWT inválido")
 	t.AddTranslation(config.SupportedLangES, KeyToolsJwtDecoderPlaceholder, "Pega tu JWT aquí (ey...)")
+
+	// Regex Tester Tool
+	t.AddTranslation(config.SupportedLangES, KeyToolsRegexTester, "Probador de Regex")
+	t.AddTranslation(config.SupportedLangES, KeyToolsRegexTesterTitle, "Probador de Regex")
+	t.AddTranslation(config.SupportedLangES, KeyToolsRegexTesterDesc, "Prueba expresiones regulares contra texto.")
+	t.AddTranslation(config.SupportedLangES, KeyToolsRegexTesterRegex, "Expresión Regular")
+	t.AddTranslation(config.SupportedLangES, KeyToolsRegexTesterFlags, "Banderas")
+	t.AddTranslation(config.SupportedLangES, KeyToolsRegexTesterTestString, "Cadena de Prueba")
+	t.AddTranslation(config.SupportedLangES, KeyToolsRegexTesterMatches, "Coincidencias")
+	t.AddTranslation(config.SupportedLangES, KeyToolsRegexTesterNoMatch, "No se encontraron coincidencias.")
+	t.AddTranslation(config.SupportedLangES, KeyToolsRegexTesterError, "Expresión regular inválida.")
 
 	// Color Converter Tool
 	t.AddTranslation(config.SupportedLangES, KeyToolsColorConverter, "Conversor de Color")
