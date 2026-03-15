@@ -1,0 +1,130 @@
+<!DOCTYPE html>
+<html lang="{{ .Lang }}">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>{{ tr "app.title" }} - {{ tr "tools.qr-generator.title" }}</title>
+    <link rel="stylesheet" href="/static/css/style.css">
+    <!-- Using a CDN for the QR code library. For true offline capability, this should be downloaded and served locally. -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/qrcodejs/1.0.0/qrcode.min.js"></script>
+</head>
+<body>
+    <main class="main">
+        <div class="container">
+            <div class="tool-container">
+                <h1>{{ tr "tools.qr-generator.title" }}</h1>
+                <p>{{ tr "tools.qr-generator.desc" }}</p>
+
+                <div class="tool-grid">
+                    <div class="panel">
+                        <label for="qr-input">{{ tr "tools.input" }}</label>
+                        <textarea id="qr-input" class="tool-textarea" rows="6" placeholder="https://example.com"></textarea>
+                        
+                        <div class="actions" style="margin-top: 12px;">
+                            <button type="button" id="btn-clear" class="btn-secondary">{{ tr "tools.clear" }}</button>
+                        </div>
+                    </div>
+
+                    <div class="panel qr-panel">
+                        <h2>{{ tr "tools.output" }}</h2>
+                        
+                        <div class="qr-container" id="qr-container">
+                            <!-- QR Code will be generated here -->
+                        </div>
+
+                        <div class="actions" style="margin-top: 24px; justify-content: center;">
+                            <button type="button" id="btn-download" class="btn-primary" disabled>{{ tr "tools.qr-generator.download" }}</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </main>
+
+    <style>
+        .qr-panel {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+        }
+        .qr-container {
+            margin-top: 24px;
+            padding: 24px;
+            background: white; /* QR codes should always have a white background for scannability */
+            border-radius: 12px;
+            box-shadow: var(--shadow);
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 256px;
+            min-width: 256px;
+        }
+        .qr-container img {
+            max-width: 100%;
+            height: auto;
+        }
+    </style>
+
+    <script>
+        const inputEl = document.getElementById('qr-input');
+        const qrContainer = document.getElementById('qr-container');
+        const btnDownload = document.getElementById('btn-download');
+        let qrcode = null;
+
+        function generateQR() {
+            const text = inputEl.value.trim();
+            
+            // Clear previous
+            qrContainer.innerHTML = '';
+            btnDownload.disabled = true;
+
+            if (!text) return;
+
+            try {
+                qrcode = new QRCode(qrContainer, {
+                    text: text,
+                    width: 256,
+                    height: 256,
+                    colorDark : "#000000",
+                    colorLight : "white",
+                    correctLevel : QRCode.CorrectLevel.H
+                });
+
+                // Enable download after a short delay to allow image generation
+                setTimeout(() => {
+                    const img = qrContainer.querySelector('img');
+                    if (img && img.src) {
+                        btnDownload.disabled = false;
+                    }
+                }, 100);
+            } catch (err) {
+                console.error('Error generating QR code', err);
+            }
+        }
+
+        inputEl.addEventListener('input', generateQR);
+
+        document.getElementById('btn-clear').addEventListener('click', () => {
+            inputEl.value = '';
+            generateQR();
+        });
+
+        btnDownload.addEventListener('click', () => {
+            const img = qrContainer.querySelector('img');
+            if (!img || !img.src) return;
+
+            const link = document.createElement('a');
+            link.download = 'qrcode.png';
+            link.href = img.src;
+            document.body.appendChild(link);
+            link.click();
+            document.body.removeChild(link);
+        });
+
+        // Initial generation if there's a value
+        if (inputEl.value) {
+            generateQR();
+        }
+    </script>
+</body>
+</html>
