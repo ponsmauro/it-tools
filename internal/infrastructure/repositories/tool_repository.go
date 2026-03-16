@@ -7,17 +7,47 @@ import (
 	"it-tools/internal/domain/models"
 )
 
-// ToolRepository implements models.ToolRepository
-type ToolRepository struct{}
+// ToolCount is the total number of registered tools. Update when adding or removing tools.
+const ToolCount = 24
 
-// NewToolRepository creates a new ToolRepository instance
-func NewToolRepository() *ToolRepository {
-	return &ToolRepository{}
+// ToolRepository implements models.ToolRepository.
+// Tools are pre-computed once at construction time for O(1) lookups and zero per-request allocations.
+type ToolRepository struct {
+	tools []models.Tool
+	byID  map[string]models.Tool
 }
 
-// GetAll returns all available tools
+// NewToolRepository creates a new ToolRepository instance and pre-computes the tool list and index.
+func NewToolRepository() *ToolRepository {
+	tools := buildTools()
+	sort.Slice(tools, func(i, j int) bool {
+		return tools[i].Name < tools[j].Name
+	})
+	byID := make(map[string]models.Tool, len(tools))
+	for _, t := range tools {
+		byID[t.ID] = t
+	}
+	return &ToolRepository{tools: tools, byID: byID}
+}
+
+// GetAll returns a copy of all available tools (pre-sorted by name).
 func (r *ToolRepository) GetAll() []models.Tool {
-	tools := []models.Tool{
+	result := make([]models.Tool, len(r.tools))
+	copy(result, r.tools)
+	return result
+}
+
+// GetByID returns a tool by its ID in O(1), or models.ErrNotFound if not found.
+func (r *ToolRepository) GetByID(id string) (*models.Tool, error) {
+	if t, ok := r.byID[id]; ok {
+		return &t, nil
+	}
+	return nil, models.ErrNotFound
+}
+
+// buildTools returns the static list of all registered tools.
+func buildTools() []models.Tool {
+	return []models.Tool{
 		{
 			ID:          "commander",
 			Name:        "File Commander",
@@ -25,7 +55,7 @@ func (r *ToolRepository) GetAll() []models.Tool {
 			Icon:        "📁",
 			Category:    "File Management",
 			URL:         "/tools/commander",
-			CreatedAt:   time.Now(),
+			CreatedAt:   time.Time{},
 		},
 		{
 			ID:          "terminal",
@@ -34,9 +64,8 @@ func (r *ToolRepository) GetAll() []models.Tool {
 			Icon:        "💻",
 			Category:    "Development",
 			URL:         "/tools/terminal",
-			CreatedAt:   time.Now(),
+			CreatedAt:   time.Time{},
 		},
-
 		{
 			ID:          "base64",
 			Name:        "Base64 Encoder/Decoder",
@@ -44,7 +73,7 @@ func (r *ToolRepository) GetAll() []models.Tool {
 			Icon:        "🔐",
 			Category:    "Development",
 			URL:         "/tools/base64",
-			CreatedAt:   time.Now(),
+			CreatedAt:   time.Time{},
 		},
 		{
 			ID:          "uuid-generator",
@@ -53,7 +82,7 @@ func (r *ToolRepository) GetAll() []models.Tool {
 			Icon:        "🎲",
 			Category:    "Development",
 			URL:         "/tools/uuid-generator",
-			CreatedAt:   time.Now(),
+			CreatedAt:   time.Time{},
 		},
 		{
 			ID:          "hash-generator",
@@ -62,7 +91,7 @@ func (r *ToolRepository) GetAll() []models.Tool {
 			Icon:        "#️⃣",
 			Category:    "Security",
 			URL:         "/tools/hash-generator",
-			CreatedAt:   time.Now(),
+			CreatedAt:   time.Time{},
 		},
 		{
 			ID:          "url-encoder",
@@ -71,7 +100,7 @@ func (r *ToolRepository) GetAll() []models.Tool {
 			Icon:        "🔗",
 			Category:    "Development",
 			URL:         "/tools/url-encoder",
-			CreatedAt:   time.Now(),
+			CreatedAt:   time.Time{},
 		},
 		{
 			ID:          "cron-parser",
@@ -80,7 +109,7 @@ func (r *ToolRepository) GetAll() []models.Tool {
 			Icon:        "⏰",
 			Category:    "Development",
 			URL:         "/tools/cron-parser",
-			CreatedAt:   time.Now(),
+			CreatedAt:   time.Time{},
 		},
 		{
 			ID:          "jwt-decoder",
@@ -89,7 +118,7 @@ func (r *ToolRepository) GetAll() []models.Tool {
 			Icon:        "🎫",
 			Category:    "Security",
 			URL:         "/tools/jwt-decoder",
-			CreatedAt:   time.Now(),
+			CreatedAt:   time.Time{},
 		},
 		{
 			ID:          "converters",
@@ -98,7 +127,7 @@ func (r *ToolRepository) GetAll() []models.Tool {
 			Icon:        "🔄",
 			Category:    "Development",
 			URL:         "/tools/converters",
-			CreatedAt:   time.Now(),
+			CreatedAt:   time.Time{},
 		},
 		{
 			ID:          "formatters",
@@ -107,7 +136,7 @@ func (r *ToolRepository) GetAll() []models.Tool {
 			Icon:        "✨",
 			Category:    "Development",
 			URL:         "/tools/formatters",
-			CreatedAt:   time.Now(),
+			CreatedAt:   time.Time{},
 		},
 		{
 			ID:          "regex-tester",
@@ -116,7 +145,7 @@ func (r *ToolRepository) GetAll() []models.Tool {
 			Icon:        "🔍",
 			Category:    "Development",
 			URL:         "/tools/regex-tester",
-			CreatedAt:   time.Now(),
+			CreatedAt:   time.Time{},
 		},
 		{
 			ID:          "timestamp-converter",
@@ -125,7 +154,7 @@ func (r *ToolRepository) GetAll() []models.Tool {
 			Icon:        "🕐",
 			Category:    "Development",
 			URL:         "/tools/timestamp-converter",
-			CreatedAt:   time.Now(),
+			CreatedAt:   time.Time{},
 		},
 		{
 			ID:          "case-converter",
@@ -134,7 +163,7 @@ func (r *ToolRepository) GetAll() []models.Tool {
 			Icon:        "🔤",
 			Category:    "Development",
 			URL:         "/tools/case-converter",
-			CreatedAt:   time.Now(),
+			CreatedAt:   time.Time{},
 		},
 		{
 			ID:          "password-generator",
@@ -143,7 +172,7 @@ func (r *ToolRepository) GetAll() []models.Tool {
 			Icon:        "🔑",
 			Category:    "Security",
 			URL:         "/tools/password-generator",
-			CreatedAt:   time.Now(),
+			CreatedAt:   time.Time{},
 		},
 		{
 			ID:          "text-utils",
@@ -152,7 +181,7 @@ func (r *ToolRepository) GetAll() []models.Tool {
 			Icon:        "📝",
 			Category:    "Development",
 			URL:         "/tools/text-utils",
-			CreatedAt:   time.Now(),
+			CreatedAt:   time.Time{},
 		},
 		{
 			ID:          "html-escape",
@@ -161,7 +190,7 @@ func (r *ToolRepository) GetAll() []models.Tool {
 			Icon:        "🏷️",
 			Category:    "Development",
 			URL:         "/tools/html-escape",
-			CreatedAt:   time.Now(),
+			CreatedAt:   time.Time{},
 		},
 		{
 			ID:          "qr-generator",
@@ -170,7 +199,7 @@ func (r *ToolRepository) GetAll() []models.Tool {
 			Icon:        "📱",
 			Category:    "Utilities",
 			URL:         "/tools/qr-generator",
-			CreatedAt:   time.Now(),
+			CreatedAt:   time.Time{},
 		},
 		{
 			ID:          "env-formatter",
@@ -179,7 +208,7 @@ func (r *ToolRepository) GetAll() []models.Tool {
 			Icon:        "⚙️",
 			Category:    "Development",
 			URL:         "/tools/env-formatter",
-			CreatedAt:   time.Now(),
+			CreatedAt:   time.Time{},
 		},
 		{
 			ID:          "diff-checker",
@@ -188,7 +217,7 @@ func (r *ToolRepository) GetAll() []models.Tool {
 			Icon:        "➕➖",
 			Category:    "Development",
 			URL:         "/tools/diff-checker",
-			CreatedAt:   time.Now(),
+			CreatedAt:   time.Time{},
 		},
 		{
 			ID:          "lorem-generator",
@@ -197,16 +226,16 @@ func (r *ToolRepository) GetAll() []models.Tool {
 			Icon:        "📄",
 			Category:    "Utilities",
 			URL:         "/tools/lorem-generator",
-			CreatedAt:   time.Now(),
+			CreatedAt:   time.Time{},
 		},
 		{
 			ID:          "kill-port",
 			Name:        "Kill Port",
-			Description: "Mata procesos ocupando puerto (lsof/kill)",
+			Description: "Find and kill processes occupying a port (lsof/kill)",
 			Icon:        "⚡",
 			Category:    "DevOps",
 			URL:         "/tools/kill-port",
-			CreatedAt:   time.Now(),
+			CreatedAt:   time.Time{},
 		},
 		{
 			ID:          "ip-calculator",
@@ -215,7 +244,7 @@ func (r *ToolRepository) GetAll() []models.Tool {
 			Icon:        "🌐",
 			Category:    "Network",
 			URL:         "/tools/ip-calculator",
-			CreatedAt:   time.Now(),
+			CreatedAt:   time.Time{},
 		},
 		{
 			ID:          "gzip-tool",
@@ -224,7 +253,7 @@ func (r *ToolRepository) GetAll() []models.Tool {
 			Icon:        "📦",
 			Category:    "Utilities",
 			URL:         "/tools/gzip-tool",
-			CreatedAt:   time.Now(),
+			CreatedAt:   time.Time{},
 		},
 		{
 			ID:          "csv-parser",
@@ -233,24 +262,7 @@ func (r *ToolRepository) GetAll() []models.Tool {
 			Icon:        "📊",
 			Category:    "Data",
 			URL:         "/tools/csv-parser",
-			CreatedAt:   time.Now(),
+			CreatedAt:   time.Time{},
 		},
 	}
-
-	sort.Slice(tools, func(i, j int) bool {
-		return tools[i].Name < tools[j].Name
-	})
-
-	return tools
-}
-
-// GetByID returns a tool by its ID
-func (r *ToolRepository) GetByID(id string) (*models.Tool, error) {
-	tools := r.GetAll()
-	for _, tool := range tools {
-		if tool.ID == id {
-			return &tool, nil
-		}
-	}
-	return nil, nil
 }

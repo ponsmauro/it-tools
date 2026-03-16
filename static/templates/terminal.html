@@ -5,82 +5,23 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>{{ tr "app.title" }} - {{ tr "tools.terminal" }}</title>
   <link rel="stylesheet" href="/static/css/style.css">
-  <style>
-    .terminal-container { 
-      height: 80vh; 
-      background: var(--bg-color); 
-      color: var(--primary-color); 
-      font-family: 'Courier New', monospace; 
-      padding: 20px; 
-      border-radius: 8px;
-      max-width: 100%;
-      overflow: hidden;
-    }
-    .terminal-input { 
-      width: 100%; 
-      background: transparent; 
-      border: none; 
-      color: var(--primary-color); 
-      font-family: inherit; 
-      font-size: 16px;
-    }
-    .terminal-input:focus { outline: none; }
-    .prompt { color: var(--text-primary); }
-  </style>
+  
 </head>
 <body>
   <main class="main">
     <div class="container">
       <h1>{{ tr "tools.terminal.title" }}</h1>
       <p>{{ tr "tools.terminal.desc" }}</p>
-      <div class="terminal-container" id="terminal">
-        <div>{{ tr "tools.terminal.welcome" }}</div>
-        <div>pwd: /home/user</div>
-        <div>ls: dir1 docs image.png</div>
-        <div class="prompt">$ </div>
+      <div class="coming-soon-banner">
+        <div class="coming-soon-icon">💻</div>
+        <span class="coming-soon-badge">Coming Soon</span>
+        <div class="coming-soon-title">Web Terminal</div>
+        <div class="coming-soon-desc">
+          A fully interactive browser-based terminal emulator is under development.
+          It will support common shell commands, a mock filesystem, and command history.
+        </div>
       </div>
-      <textarea class="terminal-input" id="input" placeholder="{{ tr "tools.terminal.placeholder" }}" autofocus></textarea>
     </div>
   </main>
-  <script>
-    const term = document.getElementById('terminal');
-    const input = document.getElementById('input');
-    const mockFS = {
-      '/home/user': { files: ['dir1/', 'docs/', 'image.png'], dir1: { files: ['file1.txt'] } }
-    };
-    let cwd = '/home/user';
-    input.addEventListener('keydown', (e) => {
-      if (e.key === 'Enter') {
-        const cmd = input.value.trim();
-        input.value = '';
-        const line = document.createElement('div');
-        line.textContent = `$ ${cmd}`;
-        term.appendChild(line);
-        // Mock commands
-        if (cmd === 'ls') {
-          line = document.createElement('div');
-          line.textContent = mockFS[cwd]?.files?.join(' ') || 'empty';
-          term.appendChild(line);
-        } else if (cmd === 'pwd') {
-          line = document.createElement('div');
-          line.textContent = `pwd: ${cwd}`;
-          term.appendChild(line);
-        } else if (cmd === 'clear') {
-          term.innerHTML = '<div>{{ tr "tools.terminal.cleared" }}</div><div class="prompt">$ </div>';
-          return;
-        } else {
-          line = document.createElement('div');
-          line.textContent = `{{ tr "tools.terminal.command-not-found" }}: ${cmd}`;
-          term.appendChild(line);
-        }
-        line = document.createElement('div');
-        line.className = 'prompt';
-        line.textContent = '$ ';
-        term.appendChild(line);
-        term.scrollTop = term.scrollHeight;
-      }
-    });
-  </script>
 </body>
 </html>
-

@@ -5,60 +5,23 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>{{ tr "app.title" }} - {{ tr "tools.commander" }}</title>
   <link rel="stylesheet" href="/static/css/style.css">
-  <style>
-    .dual-pane { display: flex; height: 80vh; gap: 1px; background: var(--border-color); }
-    .pane { flex: 1; background: var(--bg-color); color: var(--primary-color); padding: 10px; font-family: monospace; }
-    .path-bar { background: var(--card-bg); padding: 5px; color: var(--text-primary); }
-    .file-tree { white-space: pre; line-height: 1.4; }
-    .selected { background: var(--border-color); }
-  </style>
+  
 </head>
 <body>
   <main class="main">
     <div class="container">
       <h1>{{ tr "tools.commander.title" }}</h1>
       <p>{{ tr "tools.commander.desc" }}</p>
-      <div class="dual-pane">
-        <div class="pane">
-          <div class="path-bar" id="left-path">/home/user</div>
-          <div class="file-tree" id="left-tree">
-dir1/
-  file1.txt
-  subdir/
-docs/
-  readme.md
-image.png
-          </div>
+      <div class="coming-soon-banner">
+        <div class="coming-soon-icon">📁</div>
+        <span class="coming-soon-badge">Coming Soon</span>
+        <div class="coming-soon-title">File Commander</div>
+        <div class="coming-soon-desc">
+          A dual-pane file manager inspired by Total Commander is under development.
+          It will support copy, move, delete, and rename operations between two directory panels.
         </div>
-        <div class="pane">
-          <div class="path-bar" id="right-path">/tmp</div>
-          <div class="file-tree" id="right-tree">
-temp.txt
-backup.zip
-          </div>
-        </div>
-      </div>
-      <div style="margin-top: 10px;">
-        <button onclick="copySelected()">{{ tr "tools.commander.copy" }}</button>
-        <button onclick="moveSelected()">{{ tr "tools.commander.move" }}</button>
-        <button onclick="deleteSelected()">{{ tr "tools.commander.delete" }}</button>
       </div>
     </div>
   </main>
-  <script>
-    // Mock file manager logic
-    let selectedLeft = '', selectedRight = '';
-    document.addEventListener('click', (e) => {
-      if (e.target.classList.contains('file-tree')) {
-        const pane = e.target.closest('.pane');
-        const path = pane.querySelector('.path-bar');
-        path.textContent = e.target.textContent.trim() || path.textContent;
-      }
-    });
-    function copySelected() { alert('{{ tr "tools.commander.copy-alert" }}'); }
-    function moveSelected() { alert('{{ tr "tools.commander.move-alert" }}'); }
-    function deleteSelected() { alert('{{ tr "tools.commander.delete-alert" }}'); }
-  </script>
 </body>
 </html>
-

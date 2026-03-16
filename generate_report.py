@@ -3,6 +3,9 @@ import subprocess
 import re
 from pathlib import Path
 
+COVERAGE_PROFILE = "coverage.out"
+DEFAULT_REPORT_OUTPUT = "/Users/mpons/git-repo/ponsmauro/it-tools-code-quality-gpt-codex.html"
+
 def run_cmd(cmd):
     try:
         result = subprocess.run(cmd, shell=True, capture_output=True, text=True)
@@ -10,16 +13,24 @@ def run_cmd(cmd):
     except Exception as e:
         return str(e)
 
+
+def get_total_coverage(profile_path):
+    cover_out = run_cmd(f"go tool cover -func={profile_path}")
+    match = re.search(r"total:\s+\(statements\)\s+([0-9]+\.?[0-9]*)%", cover_out)
+    if match:
+        return float(match.group(1))
+    return 0.0
+
+
 def analyze_backend():
     print("Analyzing Backend...")
     # Count Go files and LOC
     go_files = run_cmd("find . -name '*.go' | wc -l")
     go_loc = run_cmd("find . -name '*.go' -exec cat {} + | wc -l")
     
-    # Run tests and get coverage
-    coverage_out = run_cmd("go test ./... -coverprofile=coverage.out")
-    coverage_match = re.search(r'coverage: (\d+\.\d+)%', coverage_out)
-    coverage = float(coverage_match.group(1)) if coverage_match else 0.0
+    # Run tests and get real total coverage from coverage profile
+    run_cmd(f"go test ./... -coverprofile={COVERAGE_PROFILE}")
+    coverage = get_total_coverage(COVERAGE_PROFILE)
     
     # Run go vet
     vet_out = run_cmd("go vet ./...")
@@ -337,8 +348,8 @@ if __name__ == "__main__":
     
     html_content = generate_html(backend_data, frontend_data)
     
-    output_path = "/Users/mpons/git-repo/ponsmauro/it-tools-code-quality-gemini.html"
+    output_path = os.environ.get("REPORT_OUTPUT_PATH", DEFAULT_REPORT_OUTPUT)
     with open(output_path, "w") as f:
         f.write(html_content)
-        
+
     print(f"Report generated successfully at: {output_path}")

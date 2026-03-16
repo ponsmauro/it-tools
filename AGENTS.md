@@ -135,11 +135,12 @@ func TestFunctionName(t *testing.T) {
 - Content should never be unnecessarily constrained
 
 ### 12. Test Coverage
-- **ALWAYS try to reach 100% test coverage for each file**
-- Write comprehensive tests that cover all functions, edge cases, and error paths
-- Use table-driven tests for thorough coverage
-- Every public function should have corresponding tests
-- Aim for 100% coverage; if not achievable, document why
+- **ALWAYS try to reach 100% test coverage for each file** (Minimum acceptable is 80%).
+- Write comprehensive tests that cover all functions, edge cases, and error paths.
+- Use table-driven tests for thorough coverage.
+- Every public function should have corresponding tests.
+- Aim for 100% coverage; if not achievable, document why.
+- **Coverage reports must use the total from `coverage.out`** via `go tool cover -func=coverage.out` and parse the `total: (statements)` line. Do not derive overall coverage from the first `go test` package output line, as it can produce false 0.0% results.
 
 ### 13. Error Logging
 - **ONLY log error cases, never successful operations**
@@ -161,9 +162,13 @@ func TestFunctionName(t *testing.T) {
 - **Keyboard Navigation**: Ensure all interactive elements are reachable and usable via the `Tab` and `Enter` keys.
 
 ### 16. CSS & Styling Conventions
-- **No Inline Styles**: Avoid using `style="..."` attributes in HTML unless strictly necessary for dynamic JS calculations.
+- **No Inline Styles**: NEVER use `style="..."` attributes in HTML. All styling must be done via CSS classes in `static/css/style.css`.
+- **No Embedded Style Tags**: NEVER use `<style>` tags inside HTML files. All CSS must be in `static/css/style.css`.
 - **CSS Variables**: Use CSS variables (`var(--primary-color)`) for theming, especially to support Dark Mode.
 - **Methodology**: Keep CSS modular and scoped to avoid global style conflicts.
+
+### 16.1 JavaScript Conventions
+- **No Embedded Script Tags**: NEVER use `<script>` tags with inline code inside HTML files. All JavaScript logic must be in separate `.js` files under `static/js/` and linked via `<script src="...">`. This is crucial for maintainability and Content Security Policy (CSP).
 
 ### 17. Frontend Error Handling & State
 - **Visible Feedback**: Never fail silently. Always show a visible error message (toast, inline text) to the user if an API call fails.
@@ -411,6 +416,125 @@ A feature is considered done only if all are true:
 - **ALWAYS close terminals when they are no longer needed.**
 - Do not leave multiple terminals open in the background unless a long-running process (like a server) is explicitly required.
 - Use the `exit` command or equivalent to close terminals after executing one-off scripts or commands.
+
+### 30. No HTML/JS/CSS Embedded in Go Files (MANDATORY)
+- **NEVER embed HTML, CSS, or JavaScript as string literals or constants inside `.go` files.**
+- All markup belongs in `.html` template files under `static/templates/`.
+- Go handlers must only call `templates.ExecuteTemplate(...)` — never write raw HTML strings to `http.ResponseWriter`.
+- Example violation: `const content = "<div style=...><script>...</script></div>"` inside a `.go` file.
+
+### 31. Single Initialization in main.go (MANDATORY)
+- Every initialization or registration function (e.g. `tool.Init()`) must be called **exactly once** in `main.go`.
+- Group all init calls under a clearly commented section: `// Register tools`.
+- Duplicate init calls cause silent bugs if the registry or resource is not idempotent.
+
+### 32. Explicit Errors on Not-Found Lookups (MANDATORY)
+- Functions that search by ID or key must **never return `(nil, nil)`**.
+- When a resource is not found, return a named sentinel error: `var ErrNotFound = errors.New("not found")`.
+- Callers must be able to distinguish "not found" from "internal error" without nil-checking a pointer.
+- Example: `return nil, ErrNotFound` instead of `return nil, nil`.
+
+### 33. No time.Now() in Static Data (MANDATORY)
+- Hardcoded/static data (e.g. seed lists, in-memory repositories) must **not** use `time.Now()`.
+- Use `time.Time{}` (zero value) for timestamps in static records.
+- `time.Now()` in static data makes every call non-deterministic and breaks timestamp-based tests.
+
+### 34. No Ignored Parameters in Public Function Signatures (MANDATORY)
+- Public functions must **not** have ignored parameters (`_`) in their signature.
+- If a parameter is unused, remove it from the signature entirely and update all callers.
+- Ignored parameters in public APIs confuse callers and indicate dead interface design.
+- Example violation: `func Register(id string, handler HandlerFunc, _ string)`.
+
+### 35. Stub/Placeholder Tools Must Show "Coming Soon" (MANDATORY)
+- Any tool that is not fully implemented must display a visible **"Coming Soon"** banner.
+- **Never** expose mock data, hardcoded fake results, or `alert()` calls as if they were real functionality.
+- Stub tools must clearly communicate their status to the user.
+- Mock results (e.g. random PIDs, fake process lists, incorrect cron schedules) are forbidden without an explicit disclaimer.
+
+### 36. No Deprecated JavaScript APIs (MANDATORY)
+- **Never use deprecated browser APIs** in frontend templates:
+  - Use `TextDecoder` instead of `escape()` / `unescape()`.
+  - Use `navigator.clipboard.writeText()` instead of `document.execCommand('copy')`.
+  - Use `crypto.randomUUID()` instead of manual UUID generation.
+- If a fallback for older browsers is needed, wrap it in a feature-detection block and document it with a comment.
+
+### 37. No External CDNs in Production (MANDATORY)
+- **All third-party JavaScript libraries must be served locally** from `/static/js/vendor/`.
+- Never load libraries from external CDNs (cdnjs, jsdelivr, unpkg, etc.) in production templates.
+- External CDN dependencies cause failures when the network is unavailable and introduce supply-chain risks.
+- To add a new vendor library: download the minified file, place it in `static/js/vendor/{lib}-{version}.min.js`, and reference it via `/static/js/vendor/...`.
+
+### 38. No innerHTML with Unescaped Data (MANDATORY)
+- **NEVER use `innerHTML` with user-controlled data, error messages, or any dynamic string.**
+- Always use `textContent` to set text content of DOM elements.
+- To build dynamic HTML structures, use `document.createElement()` + `textContent` + `appendChild()`.
+- The only safe use of `innerHTML` is with fully static, developer-controlled strings (no variables).
+- This applies to: user inputs, API responses, error messages from `catch(err)`, tool IDs from URLs, generated values (passwords, UUIDs, etc.).
+- Example violation: `element.innerHTML = 'Error: ' + err.message`
+- Example fix: `element.textContent = 'Error: ' + err.message`
+
+### 39. Validate All HTTP Input at the Boundary (MANDATORY)
+- **Every value extracted from an HTTP request must be validated before use.**
+- Query parameters (e.g. `?lang=`) must be whitelisted against known valid values. Unknown values must fall back to the default.
+- Path segments used as identifiers (e.g. `toolID` from `/tools/{id}`) must be validated against the known set of resources (e.g. via `GetByID`). If not found, return `404 Not Found` — never `500`.
+- Never concatenate unvalidated URL path segments into template names, page titles, or any output.
+- Example: `lang` param → whitelist against `config.SupportedLangEN`, `config.SupportedLangES`. Anything else → `config.DefaultLanguage`.
+
+### 40. HTTP Security Headers Middleware (MANDATORY)
+- **Every HTTP server must include a security headers middleware** applied globally to all routes.
+- Minimum required headers:
+  - `X-Content-Type-Options: nosniff`
+  - `X-Frame-Options: DENY`
+  - `Referrer-Policy: strict-origin-when-cross-origin`
+- Implement as a single middleware function wrapping the default mux in `main.go`.
+- Do NOT set these headers individually in each handler.
+
+### 41. Limit Request Body Size on All POST Handlers (MANDATORY)
+- **Every POST handler must wrap `r.Body` with `http.MaxBytesReader` before decoding.**
+- Use a size appropriate to the expected payload. For JSON action payloads: `1024` bytes (1KB).
+- This prevents trivial memory exhaustion DoS attacks.
+- Example: `r.Body = http.MaxBytesReader(w, r.Body, 1024)`
+- Place this as the first line in every handler that reads `r.Body`.
+
+### 42. Pre-compute Static Data — No Alloc per Request (MANDATORY)
+- **Static data (seed lists, in-memory repositories) must be computed once at construction time**, not on every method call.
+- Repositories with static data must initialize their slice and lookup map in `New...()`, not in `GetAll()` or `GetByID()`.
+- `GetAll()` must return a copy of the pre-computed slice. `GetByID()` must use a pre-built `map[string]T` for O(1) lookup.
+- Never call `sort.Slice` or allocate a new slice inside a method that is called on every HTTP request.
+
+### 43. Depend on Interfaces, Not Concrete Types (MANDATORY)
+- **Infrastructure layer handlers must depend on interfaces, not concrete application layer types.**
+- Define a port interface (e.g. `ToolUseCasePort`) in the `handlers` package that declares only the methods the handler needs.
+- The concrete use case struct implements the interface implicitly (Go duck typing).
+- This enables handler unit tests to use mocks without instantiating the real use case or repository.
+- Example violation: `type Handler struct { toolUC *usecases.ToolUseCase }`
+- Example fix: `type Handler struct { toolUC ToolUseCasePort }` where `ToolUseCasePort` is a local interface.
+
+### 44. Cap All User-Driven Processing Loops (MANDATORY)
+- **Any loop that processes user input must have an explicit upper bound.**
+- Regex match loops, CSV row loops, diff computation loops, and any other iterative processing of user-provided data must stop at a reasonable maximum (e.g. 500 matches, 10,000 rows).
+- When the cap is reached, show a visible notice to the user: "Showing first N results".
+- This prevents browser hangs and server-side resource exhaustion from crafted inputs.
+
+### 45. CSS Variables for All Dynamic Styling in JavaScript (MANDATORY)
+- **Never hardcode hex color values in JavaScript** for dynamic styling (e.g. hover states, copy feedback, highlights).
+- Use CSS classes with CSS variable-based styles instead: `element.classList.add('state-copied')`.
+- Define the state styles in `style.css` using CSS variables: `.state-copied { background: var(--success-bg); color: var(--success-text); }`.
+- This ensures all dynamic styles respect the theme and are maintainable from a single source.
+
+### 46. Focus Styles Required for All Interactive Elements (MANDATORY)
+- **Every interactive element must have a visible `:focus-visible` style** defined in `style.css`.
+- This includes: `<button>`, `<a>`, `<input>`, `<textarea>`, `<select>`, tabs, and any `div` with `onclick`.
+- Use `outline: 2px solid var(--primary-color); outline-offset: 2px;` as the minimum focus style.
+- Never use `outline: none` without providing an alternative focus indicator.
+- This is required for WCAG 2.1 SC 2.4.7 (Focus Visible) compliance.
+
+### 47. No Implicit Global Event Object in JavaScript (MANDATORY)
+- **Never reference `window.event` or the implicit `event` global** inside named functions.
+- `window.event` is deprecated and does not exist in Firefox.
+- Always pass the event or the target element explicitly as a function parameter.
+- Example violation: `function copyItem(index) { const el = event.currentTarget; }`
+- Example fix: `function copyItem(index, element) { ... }` called as `onclick="copyItem(0, this)"`
 
 
 ## Notes

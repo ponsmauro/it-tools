@@ -18,7 +18,7 @@
                         <label for="json-input">{{ tr "tools.input" }}</label>
                         <textarea id="json-input" class="tool-textarea" rows="15" placeholder='{"key": "value"}'></textarea>
                         
-                        <div class="options-panel" style="margin-top: 12px;">
+                        <div class="options-panel mt-12">
                             <label class="option-label">
                                 {{ tr "tools.json-formatter.indent" }}:
                                 <select id="indent-select" class="tool-select">
@@ -40,9 +40,9 @@
                         <label for="json-output">{{ tr "tools.output" }}</label>
                         <textarea id="json-output" class="tool-textarea" rows="15" readonly></textarea>
                         
-                        <div id="error-message" class="error-message" style="display: none;"></div>
+                        <div id="error-message" class="error-message hidden"></div>
 
-                        <div class="actions" style="margin-top: 12px;">
+                        <div class="actions mt-12">
                             <button type="button" id="btn-copy" class="btn-primary">{{ tr "tools.copy-output" }}</button>
                         </div>
                     </div>
@@ -51,92 +51,8 @@
         </div>
     </main>
 
-    <style>
-        .tool-select {
-            padding: 6px 12px;
-            border: 1px solid var(--border-color);
-            border-radius: 6px;
-            background: var(--bg-color);
-            color: var(--text-primary);
-            font-size: 14px;
-        }
-        .options-panel {
-            display: flex;
-            gap: 16px;
-            padding: 12px;
-            background: var(--bg-color);
-            border-radius: 8px;
-            border: 1px solid var(--border-color);
-        }
-        .option-label {
-            display: flex;
-            align-items: center;
-            gap: 8px;
-            color: var(--text-primary);
-            font-weight: 500;
-        }
-        .error-message {
-            margin-top: 12px;
-            padding: 12px;
-            background: rgba(239, 68, 68, 0.1);
-            border: 1px solid var(--error-text);
-            border-radius: 6px;
-            color: var(--error-text);
-            font-family: monospace;
-            font-size: 14px;
-            word-break: break-all;
-        }
-    </style>
+    
 
-    <script>
-        const inputEl = document.getElementById('json-input');
-        const outputEl = document.getElementById('json-output');
-        const errorEl = document.getElementById('error-message');
-        const indentSelect = document.getElementById('indent-select');
-
-        function getIndent() {
-            const val = indentSelect.value;
-            if (val === 'tab') return '\t';
-            return parseInt(val, 10);
-        }
-
-        function processJson(minify = false) {
-            const raw = inputEl.value.trim();
-            if (!raw) {
-                outputEl.value = '';
-                errorEl.style.display = 'none';
-                return;
-            }
-
-            try {
-                const parsed = JSON.parse(raw);
-                const indent = minify ? 0 : getIndent();
-                outputEl.value = JSON.stringify(parsed, null, indent);
-                errorEl.style.display = 'none';
-            } catch (err) {
-                outputEl.value = '';
-                errorEl.textContent = '{{ tr "tools.json-formatter.invalid" }}: ' + err.message;
-                errorEl.style.display = 'block';
-            }
-        }
-
-        document.getElementById('btn-format').addEventListener('click', () => processJson(false));
-        document.getElementById('btn-minify').addEventListener('click', () => processJson(true));
-        
-        document.getElementById('btn-clear').addEventListener('click', () => {
-            inputEl.value = '';
-            outputEl.value = '';
-            errorEl.style.display = 'none';
-        });
-
-        document.getElementById('btn-copy').addEventListener('click', async () => {
-            if (!outputEl.value) return;
-            try {
-                await navigator.clipboard.writeText(outputEl.value);
-            } catch (err) {
-                console.error('Failed to copy', err);
-            }
-        });
-    </script>
+    <script src="/static/js/json-formatter.js"></script>
 </body>
 </html>
