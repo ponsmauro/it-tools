@@ -18,7 +18,7 @@
                         <label for="hash-input">{{ tr "tools.input" }}</label>
                         <textarea id="hash-input" class="tool-textarea" rows="6" placeholder="Type or paste text here..."></textarea>
                         
-                        <div class="options-panel" style="margin-top: 12px;">
+                        <div class="options-panel mt-12">
                             <label class="option-label">
                                 <input type="checkbox" id="uppercase-output"> {{ tr "tools.hash-generator.uppercase" }}
                             </label>
@@ -63,128 +63,8 @@
         </div>
     </main>
 
-    <style>
-        .tool-input {
-            width: 100%;
-            padding: 10px;
-            border: 1px solid var(--border-color);
-            border-radius: 6px;
-            background: var(--bg-color);
-            color: var(--text-primary);
-            font-family: monospace;
-            margin-bottom: 16px;
-        }
-        .hash-output-group {
-            display: flex;
-            flex-direction: column;
-            gap: 4px;
-        }
-        .hash-output-group label {
-            font-weight: 600;
-            font-size: 0.9rem;
-            color: var(--text-secondary);
-        }
-        .output-with-copy {
-            display: flex;
-            gap: 8px;
-            margin-bottom: 16px;
-        }
-        .output-with-copy .tool-input {
-            margin-bottom: 0;
-        }
-        .btn-icon {
-            background: var(--bg-color);
-            border: 1px solid var(--border-color);
-            border-radius: 6px;
-            padding: 0 12px;
-            cursor: pointer;
-            transition: background 0.2s;
-        }
-        .btn-icon:hover {
-            background: var(--border-color);
-        }
-        .options-panel {
-            display: flex;
-            gap: 16px;
-            padding: 12px;
-            background: var(--bg-color);
-            border-radius: 8px;
-            border: 1px solid var(--border-color);
-        }
-        .option-label {
-            display: flex;
-            align-items: center;
-            gap: 8px;
-            cursor: pointer;
-            color: var(--text-primary);
-        }
-    </style>
+    
 
-    <script>
-        // Utility to copy text
-        async function copyText(elementId) {
-            const el = document.getElementById(elementId);
-            if (!el.value) return;
-            try {
-                await navigator.clipboard.writeText(el.value);
-            } catch (err) {
-                console.error('Failed to copy', err);
-            }
-        }
-
-        // Convert ArrayBuffer to Hex String
-        function bufferToHex(buffer) {
-            const hashArray = Array.from(new Uint8Array(buffer));
-            return hashArray.map(b => b.toString(16).padStart(2, '0')).join('');
-        }
-
-        // Web Crypto API for SHA hashes
-        async function generateSHA(text, algorithm) {
-            const msgUint8 = new TextEncoder().encode(text);
-            const hashBuffer = await crypto.subtle.digest(algorithm, msgUint8);
-            return bufferToHex(hashBuffer);
-        }
-
-        // Update hashes
-        async function updateHashes() {
-            const input = document.getElementById('hash-input').value;
-            const isUppercase = document.getElementById('uppercase-output').checked;
-
-            if (!input) {
-                document.getElementById('out-sha1').value = '';
-                document.getElementById('out-sha256').value = '';
-                document.getElementById('out-sha384').value = '';
-                document.getElementById('out-sha512').value = '';
-                return;
-            }
-
-            try {
-                const [sha1, sha256, sha384, sha512] = await Promise.all([
-                    generateSHA(input, 'SHA-1'),
-                    generateSHA(input, 'SHA-256'),
-                    generateSHA(input, 'SHA-384'),
-                    generateSHA(input, 'SHA-512')
-                ]);
-
-                const formatOutput = (hash) => isUppercase ? hash.toUpperCase() : hash;
-
-                document.getElementById('out-sha1').value = formatOutput(sha1);
-                document.getElementById('out-sha256').value = formatOutput(sha256);
-                document.getElementById('out-sha384').value = formatOutput(sha384);
-                document.getElementById('out-sha512').value = formatOutput(sha512);
-            } catch (err) {
-                console.error('Error generating hashes', err);
-            }
-        }
-
-        // Event Listeners
-        document.getElementById('hash-input').addEventListener('input', updateHashes);
-        document.getElementById('uppercase-output').addEventListener('change', updateHashes);
-        
-        document.getElementById('btn-clear').addEventListener('click', () => {
-            document.getElementById('hash-input').value = '';
-            updateHashes();
-        });
-    </script>
+    <script src="/static/js/hash-generator.js"></script>
 </body>
 </html>

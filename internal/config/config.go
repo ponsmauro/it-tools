@@ -2,8 +2,7 @@ package config
 
 // Server configuration constants
 const (
-	DefaultPort         = 8080
-	ServerAddress       = ":8080"
+	DefaultPort = 8080
 )
 
 // Language constants

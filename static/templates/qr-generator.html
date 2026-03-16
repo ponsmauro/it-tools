@@ -20,7 +20,7 @@
                         <label for="qr-input">{{ tr "tools.input" }}</label>
                         <textarea id="qr-input" class="tool-textarea" rows="6" placeholder="https://example.com"></textarea>
                         
-                        <div class="actions" style="margin-top: 12px;">
+                        <div class="actions mt-12">
                             <button type="button" id="btn-clear" class="btn-secondary">{{ tr "tools.clear" }}</button>
                         </div>
                     </div>
@@ -32,7 +32,7 @@
                             <!-- QR Code will be generated here -->
                         </div>
 
-                        <div class="actions" style="margin-top: 24px; justify-content: center;">
+                        <div class="actions mt-24 justify-center">
                             <button type="button" id="btn-download" class="btn-primary" disabled>{{ tr "tools.qr-generator.download" }}</button>
                         </div>
                     </div>
@@ -41,90 +41,8 @@
         </div>
     </main>
 
-    <style>
-        .qr-panel {
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-        }
-        .qr-container {
-            margin-top: 24px;
-            padding: 24px;
-            background: white; /* QR codes should always have a white background for scannability */
-            border-radius: 12px;
-            box-shadow: var(--shadow);
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            min-height: 256px;
-            min-width: 256px;
-        }
-        .qr-container img {
-            max-width: 100%;
-            height: auto;
-        }
-    </style>
+    
 
-    <script>
-        const inputEl = document.getElementById('qr-input');
-        const qrContainer = document.getElementById('qr-container');
-        const btnDownload = document.getElementById('btn-download');
-        let qrcode = null;
-
-        function generateQR() {
-            const text = inputEl.value.trim();
-            
-            // Clear previous
-            qrContainer.innerHTML = '';
-            btnDownload.disabled = true;
-
-            if (!text) return;
-
-            try {
-                qrcode = new QRCode(qrContainer, {
-                    text: text,
-                    width: 256,
-                    height: 256,
-                    colorDark : "var(--bg-color)000",
-                    colorLight : "white",
-                    correctLevel : QRCode.CorrectLevel.H
-                });
-
-                // Enable download after a short delay to allow image generation
-                setTimeout(() => {
-                    const img = qrContainer.querySelector('img');
-                    if (img && img.src) {
-                        btnDownload.disabled = false;
-                    }
-                }, 100);
-            } catch (err) {
-                console.error('Error generating QR code', err);
-            }
-        }
-
-        inputEl.addEventListener('input', generateQR);
-
-        document.getElementById('btn-clear').addEventListener('click', () => {
-            inputEl.value = '';
-            generateQR();
-        });
-
-        btnDownload.addEventListener('click', () => {
-            const img = qrContainer.querySelector('img');
-            if (!img || !img.src) return;
-
-            const link = document.createElement('a');
-            link.download = 'qrcode.png';
-            link.href = img.src;
-            document.body.appendChild(link);
-            link.click();
-            document.body.removeChild(link);
-        });
-
-        // Initial generation if there's a value
-        if (inputEl.value) {
-            generateQR();
-        }
-    </script>
+    <script src="/static/js/qr-generator.js"></script>
 </body>
 </html>

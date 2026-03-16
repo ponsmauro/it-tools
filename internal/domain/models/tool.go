@@ -1,6 +1,12 @@
 package models
 
-import "time"
+import (
+	"errors"
+	"time"
+)
+
+// ErrNotFound is returned when a tool is not found by ID
+var ErrNotFound = errors.New("tool not found")
 
 // Tool represents a developer tool in the application
 type Tool struct {

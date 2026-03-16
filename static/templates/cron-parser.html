@@ -30,7 +30,7 @@
                     Every minute
                   </div>
                   
-                  <h3 style="margin-top: 16px; margin-bottom: 8px;">Next occurrences</h3>
+                  <h3 class="next-occurrences-title">Next occurrences <small class="next-occurrences-note">(approximate — based on 1-minute intervals)</small></h3>
                   <ul id="cron-next" class="cron-next-list">
                   </ul>
                 </div>
@@ -39,65 +39,9 @@
         </div>
     </main>
 
-<style>
-  .tool-page { display: flex; flex-direction: column; gap: 12px; }
-  .tool-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: 12px; }
-  .panel { background: var(--card-bg); border: 1px solid var(--border-color); border-radius: 6px; padding: 12px; }
-  .panel label { display: block; margin-bottom: 6px; font-weight: 500; font-size: 13px; color: var(--text-secondary); }
-  .tool-input { width: 100%; background: var(--bg-color); color: var(--text-primary); border: 1px solid var(--border-color); border-radius: 6px; padding: 10px; font-family: ui-monospace, monospace; font-size: 16px; }
-  .actions { display: flex; gap: 8px; margin-top: 12px; flex-wrap: wrap; }
-  .cron-explanation { font-size: 16px; font-weight: 500; color: var(--success-text); padding: 12px; background: var(--bg-color); border-radius: 6px; border: 1px solid var(--border-color); }
-  .cron-next-list { list-style: none; padding: 0; margin: 0; }
-  .cron-next-list li { padding: 8px; border-bottom: 1px solid var(--border-color); font-family: ui-monospace, monospace; font-size: 13px; color: var(--text-secondary); }
-  .cron-next-list li:last-child { border-bottom: none; }
-  .tool-page > p { color: var(--text-secondary); font-size: 13px; margin: 0; }
-</style>
+
 
 <script src="https://cdn.jsdelivr.net/npm/cronstrue@2.26.0/cronstrue.min.js"></script>
-<script>
-  (function () {
-    const inputEl = document.getElementById('cron-input');
-    const parseBtn = document.getElementById('parse-btn');
-    const explanationEl = document.getElementById('cron-explanation');
-    const nextListEl = document.getElementById('cron-next');
-
-    function parseCron() {
-      const expr = inputEl.value.trim();
-      if (!expr) return;
-
-      try {
-        // Use cronstrue if available
-        if (window.cronstrue) {
-          const explanation = window.cronstrue.toString(expr);
-          explanationEl.textContent = explanation;
-          explanationEl.style.color = 'var(--success-text)';
-        } else {
-          explanationEl.textContent = 'cronstrue library not loaded';
-          explanationEl.style.color = 'var(--error-text)';
-        }
-        
-        // Mock next occurrences for now
-        const now = new Date();
-        let html = '';
-        for (let i = 1; i <= 5; i++) {
-            const next = new Date(now.getTime() + i * 60000);
-            html += `<li>${next.toLocaleString()}</li>`;
-        }
-        nextListEl.innerHTML = html;
-        
-      } catch (err) {
-        explanationEl.textContent = err.toString();
-        explanationEl.style.color = 'var(--error-text)';
-        nextListEl.innerHTML = '';
-      }
-    }
-
-    parseBtn.addEventListener('click', parseCron);
-    inputEl.addEventListener('input', parseCron);
-    
-    // Initial parse
-    setTimeout(parseCron, 500);
-  })();
-</script>
+<script src="/static/js/cron-parser.js"></script>
 </body>
 </html>

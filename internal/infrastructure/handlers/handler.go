@@ -3,25 +3,35 @@ package handlers
 import (
 	"bytes"
 	"encoding/json"
+	"errors"
 	"fmt"
 	"html/template"
 	"log"
 	"net/http"
 
-	"it-tools/internal/application/usecases"
 	"it-tools/internal/config"
+	"it-tools/internal/domain/models"
 	"it-tools/internal/infrastructure/templates"
 )
+
+const maxRequestBodyBytes = 1024
+
+// ToolUseCasePort defines the application operations required by the handler layer.
+// Using an interface decouples the handler from the concrete use case implementation.
+type ToolUseCasePort interface {
+	GetAllTools() []models.Tool
+	GetToolByID(id string) (*models.Tool, error)
+}
 
 // Handler contains all HTTP handlers
 type Handler struct {
 	templates    *template.Template
-	toolUC       *usecases.ToolUseCase
+	toolUC       ToolUseCasePort
 	templateHelp *templates.TemplateHelper
 }
 
 // NewHandler creates a new Handler instance
-func NewHandler(templates *template.Template, toolUC *usecases.ToolUseCase, templateHelp *templates.TemplateHelper) *Handler {
+func NewHandler(templates *template.Template, toolUC ToolUseCasePort, templateHelp *templates.TemplateHelper) *Handler {
 	return &Handler{
 		templates:    templates,
 		toolUC:       toolUC,
@@ -39,7 +49,7 @@ func (h *Handler) AboutHandler(w http.ResponseWriter, r *http.Request) {
 	h.servePage(w, r, config.AboutTemplate, "About - IT Tools", config.RouteAbout)
 }
 
-// ToolHandler serves individual tools GET + POST tab
+// ToolHandler serves individual tools via GET (full page) or POST (AJAX tab content)
 func (h *Handler) ToolHandler(w http.ResponseWriter, r *http.Request) {
 	toolID := r.URL.Path[len("/tools/"):]
 	if toolID == "" {
@@ -47,18 +57,28 @@ func (h *Handler) ToolHandler(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 
-	if r.Method == http.MethodPost {
-		h.handleToolPost(w, r, toolID)
+	// Validate toolID against the known set of tools
+	if _, err := h.toolUC.GetToolByID(toolID); errors.Is(err, models.ErrNotFound) {
+		http.NotFound(w, r)
 		return
 	}
 
-	// Legacy GET: serve static HTML
-	templateName := toolID + ".html"
-	h.servePage(w, r, templateName, toolID+" - IT Tools", "/tools/"+toolID)
+	switch r.Method {
+	case http.MethodGet:
+		templateName := toolID + ".html"
+		h.servePage(w, r, templateName, toolID+" - IT Tools", "/tools/"+toolID)
+	case http.MethodPost:
+		h.handleToolPost(w, r, toolID)
+	default:
+		w.Header().Set("Allow", "GET, POST")
+		http.Error(w, "Method Not Allowed", http.StatusMethodNotAllowed)
+	}
 }
 
 // handleToolPost handles POST /tools/{id} dynamic content
 func (h *Handler) handleToolPost(w http.ResponseWriter, r *http.Request, toolID string) {
+	r.Body = http.MaxBytesReader(w, r.Body, maxRequestBodyBytes)
+
 	var req struct {
 		Action string `json:"action"`
 	}
@@ -111,13 +131,13 @@ func (h *Handler) buildPageData(title string, lang string, currentRoute string) 
 	}
 }
 
-// getLanguage extracts the language from the request
+// getLanguage extracts and validates the language from the request
 func (h *Handler) getLanguage(r *http.Request) string {
 	lang := r.URL.Query().Get("lang")
-	if lang == "" {
-		return config.DefaultLanguage
+	if lang == config.SupportedLangEN || lang == config.SupportedLangES {
+		return lang
 	}
-	return lang
+	return config.DefaultLanguage
 }
 
 // executeTemplate executes a template with error handling

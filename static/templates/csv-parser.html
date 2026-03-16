@@ -26,7 +26,7 @@
                 </div>
               </div>
 
-              <div class="panel" style="margin-top: 12px; overflow-x: auto;">
+              <div class="panel mt-12 overflow-x-auto">
                 <h2>Data Table</h2>
                 <div id="csv-table-container">
                   <div class="csv-placeholder">Enter CSV data and click Parse</div>
@@ -36,116 +36,9 @@
         </div>
     </main>
 
-<style>
-  .tool-page { display: flex; flex-direction: column; gap: 12px; }
-  .tool-grid { display: grid; grid-template-columns: 1fr; gap: 12px; }
-  .panel { background: var(--card-bg); border: 1px solid var(--border-color); border-radius: 6px; padding: 12px; }
-  .panel label { display: block; margin-bottom: 6px; font-weight: 500; font-size: 13px; color: var(--text-secondary); }
-  .tool-textarea { width: 100%; background: var(--bg-color); color: var(--text-primary); border: 1px solid var(--border-color); border-radius: 6px; padding: 10px; font-family: ui-monospace, monospace; font-size: 13px; resize: vertical; }
-  .actions { display: flex; gap: 8px; margin-top: 12px; flex-wrap: wrap; }
-  .csv-placeholder { color: var(--text-secondary); font-style: italic; padding: 20px 0; text-align: center; }
-  .csv-table { width: 100%; border-collapse: collapse; font-size: 13px; }
-  .csv-table th, .csv-table td { border: 1px solid var(--border-color); padding: 8px 12px; text-align: left; }
-  .csv-table th { background: var(--bg-color); color: var(--text-primary); font-weight: 600; }
-  .csv-table tr:nth-child(even) { background: rgba(15, 23, 42, 0.5); }
-  .tool-page > p { color: var(--text-secondary); font-size: 13px; margin: 0; }
-</style>
 
-<script src="https://cdnjs.cloudflare.com/ajax/libs/PapaParse/5.3.2/papaparse.min.js"></script>
-<script>
-  (function () {
-    const inputEl = document.getElementById('csv-input');
-    const parseBtn = document.getElementById('parse-btn');
-    const clearBtn = document.getElementById('clear-btn');
-    const tableContainer = document.getElementById('csv-table-container');
 
-    // Simple CSV parser since PapaParse might not be loaded correctly via CDN in some environments
-    function parseCSV(text) {
-      const lines = text.split('\n');
-      const result = [];
-      for (let i = 0; i < lines.length; i++) {
-        const line = lines[i].trim();
-        if (!line) continue;
-        
-        // Simple split by comma, doesn't handle quotes properly but good enough for basic use
-        // A real implementation would use PapaParse
-        const row = [];
-        let inQuotes = false;
-        let currentValue = '';
-        
-        for (let j = 0; j < line.length; j++) {
-          const char = line[j];
-          if (char === '"') {
-            inQuotes = !inQuotes;
-          } else if (char === ',' && !inQuotes) {
-            row.push(currentValue);
-            currentValue = '';
-          } else {
-            currentValue += char;
-          }
-        }
-        row.push(currentValue);
-        result.push(row);
-      }
-      return result;
-    }
 
-    function renderTable() {
-      const text = inputEl.value.trim();
-      if (!text) {
-        tableContainer.innerHTML = '<div class="csv-placeholder">Enter CSV data and click Parse</div>';
-        return;
-      }
-
-      try {
-        const data = parseCSV(text);
-        if (data.length === 0) {
-          tableContainer.innerHTML = '<div class="csv-placeholder">No valid data found</div>';
-          return;
-        }
-
-        let html = '<table class="csv-table">';
-        
-        // Header
-        html += '<thead><tr>';
-        for (let i = 0; i < data[0].length; i++) {
-          html += `<th>${escapeHtml(data[0][i])}</th>`;
-        }
-        html += '</tr></thead>';
-        
-        // Body
-        html += '<tbody>';
-        for (let i = 1; i < data.length; i++) {
-          html += '<tr>';
-          for (let j = 0; j < data[i].length; j++) {
-            html += `<td>${escapeHtml(data[i][j] || '')}</td>`;
-          }
-          html += '</tr>';
-        }
-        html += '</tbody></table>';
-        
-        tableContainer.innerHTML = html;
-      } catch (err) {
-        tableContainer.innerHTML = `<div style="color: var(--error-text);">Error parsing CSV: ${err.message}</div>`;
-      }
-    }
-
-    function escapeHtml(text) {
-      return String(text)
-        .replace(/&/g, '&amp;')
-        .replace(/</g, '<')
-        .replace(/>/g, '>')
-        .replace(/"/g, '"')
-        .replace(/'/g, '&#039;');
-    }
-
-    parseBtn.addEventListener('click', renderTable);
-    
-    clearBtn.addEventListener('click', () => {
-      inputEl.value = '';
-      tableContainer.innerHTML = '<div class="csv-placeholder">Enter CSV data and click Parse</div>';
-    });
-  })();
-</script>
+<script src="/static/js/csv-parser.js"></script>
 </body>
 </html>
