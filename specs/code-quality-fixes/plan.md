@@ -30,3 +30,9 @@
 - [ ] Open PR to develop
 - [ ] Address review feedback
 - [ ] Merge
+
+## Follow-up Fix (Current Branch)
+- [x] Validate real backend coverage with `go tool cover -func=coverage.out`.
+- [x] Fix report generation to compute total coverage from coverage profile.
+- [x] Regenerate `it-tools-code-quality-gpt-codex.html` with corrected metrics.
+- [ ] Add preventive rule to `AGENTS.md` for future coverage-report generation.

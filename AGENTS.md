@@ -140,6 +140,7 @@ func TestFunctionName(t *testing.T) {
 - Use table-driven tests for thorough coverage.
 - Every public function should have corresponding tests.
 - Aim for 100% coverage; if not achievable, document why.
+- **Coverage reports must use the total from `coverage.out`** via `go tool cover -func=coverage.out` and parse the `total: (statements)` line. Do not derive overall coverage from the first `go test` package output line, as it can produce false 0.0% results.
 
 ### 13. Error Logging
 - **ONLY log error cases, never successful operations**
